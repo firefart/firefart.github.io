@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turning Piwik Superuser Credentials into Remote Code Execution</title>
+    <meta name="description" content="Turning Piwik Superuser Credentials into Remote Code Execution">
+    
+    <meta name="author" content="Christian Mehlmauer">
+
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:site" content="@_FireFart_" />
+    <meta name="twitter:creator" content="@_FireFart_" />
+    
+    <meta name="twitter:title" content="Turning Piwik Superuser Credentials into Remote Code Execution">
+    <meta name="twitter:description" content="Turning Piwik Superuser Credentials into Remote Code Execution">
+    <meta property="og:title" content="Turning Piwik Superuser Credentials into Remote Code Execution">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://firefart.at/post/turning_piwik_superuser_creds_into_rce/" />
+    <meta property="og:description" content="Turning Piwik Superuser Credentials into Remote Code Execution">
+    
+    <meta property="og:image" content="https://firefart.at/img/misc/hacker.jpg" />
+    <meta name="twitter:image" content="https://firefart.at/img/misc/hacker.jpg" />
+    
+    <meta property="og:updated_time" content="2017-02-07 23:30:00 &#43;0100 CET"/>
+    <meta property="article:author" content="https://twitter.com/_FireFart_"/>
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href='https://firefart.at/css/all.min.css'>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <script type="application/ld+json">
+    [
+      {
+        "@context" : "http://schema.org",
+        "@type" : "WebSite",
+        "name" : "FireFart",
+        "url" : "https://firefart.at"
+      },
+      {
+        "@context" : "http://schema.org",
+        "@type" : "Person",
+        "name" : "Christian Mehlmauer",
+        "url" : "https://firefart.at",
+        "sameAs" : [
+          "https://twitter.com/_FireFart_",
+          "https://github.com/FireFart",
+          "https://www.facebook.com/christian.mehlmauer"
+        ]
+      }
+    ]
+    </script>
+
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <h1 class="brand-title"><a href="/">FireFart</a></h1>
+        <h2 class="brand-tagline"> that austrian security guy </h2>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href="https://twitter.com/_FireFart_">
+                        <i class="fa fa-twitter"></i> Twitter
+                    </a>
+                </li>
+                
+                
+                <li class="nav-item">
+                     <a class="pure-button" target="_blank" href="https://github.com/FireFart">
+                        <i class="fa fa-github-alt"></i> Github
+                    </a>
+                </li>
+                
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="/page/about/"><i class="fa fa-info"></i> about me</a>
+                </li>
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href='https://firefart.at/index.xml'>
+                        <i class="fa fa-rss"></i> rss
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">07 Feb 2017, 23:30</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/turning_piwik_superuser_creds_into_rce/" class="post-title">Turning Piwik Superuser Credentials into Remote Code Execution</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div id="toc" class="well col-md-4 col-sm-6">
+                      
+                    </div>
+
+                    <div class="post-description">
+                      <p>On a recent pentest I got root access to a MySQL database hosting a PHP web application and also an instance of <a href="https://piwik.org/">Piwik</a>. I was able to extract the credentials from the database and crack them really fast because they were only hashed using MD5. It looks like Piwik introduced stronger hashes in Piwik 3 but luckily this target is still running version 2.</p>
+
+<p><strong>Edit</strong>:  <em>Piwik now disabled custom plugin uploads by default in 3.0.3 (<a href="https://piwik.org/changelog/piwik-3-0-3/">Changelog</a>). You have to manually enable it in the config (See <a href="https://piwik.org/faq/plugins/faq_21/">FAQ</a>) so this removes a lot attack surface from existing installs.</em></p>
+
+<p>So what to do with the passwords? Only changing some Piwik parameters or reading visitor stats is not really exciting so I took a look around in the superuser dashboard and found something interesting: Piwik supports plugins.</p>
+
+<p>Piwik has 3 levels of access: view, admin and superuser. If you have an user with superuser access (the first user from the database) you can install new plugins to the server if the web root is writeable by the web server.</p>
+
+<p>Finding some tutorials on the internet for writing Piwik plugins is hard (most of them are about writing plugins for Piwik 1) so I had to download several plugins and do a copy paste to generate my own plugin.</p>
+
+<p>The plugin generally consist of a <code>plugin.json</code> containing some metadata showed in the Marketplace and a main PHP file named after the plugin containing the code.</p>
+
+<p>You can write a super fancy plugin adding new menus to the dashboard and showing some nice remote code execution pages with templates but that&rsquo;s way too much work. Luckily there is a <code>install</code> method which will be called when the plugin is activated. So this looks like a good place to put a payload in.</p>
+
+<p>If we write a plugin called <strong>pwned</strong> the folder structure would be:</p>
+
+<pre><code>pwned/
+pwned/pwned.php
+pwned/plugin.json
+</code></pre>
+
+<p>And the file content:</p>
+
+<p><strong>pwned.php</strong></p>
+
+<pre><code class="language-php">&lt;?php
+namespace Piwik\Plugins\pwned;
+class pwned extends \Piwik\Plugin {
+  public function install()
+  {
+    PHP_PAYLOAD
+  }
+}
+</code></pre>
+
+<p><strong>plugin.json</strong></p>
+
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;pwned&quot;,
+  &quot;description&quot;: &quot;DESCRIPTION&quot;,
+  &quot;version&quot;: &quot;1.0&quot;,
+  &quot;theme&quot;: false
+}
+</code></pre>
+
+<p>You can zip those files together and upload it from the Marketplace site in the dashboard as superuser. After you activate the plugin the payload will be executed effectively turning the superuser credentials into remote code execution.</p>
+
+<p>As I like to automate the boring stuff I also wrote a Metasploit module to easily pwn Piwik installations. Because the payload fires on install and the files are automatically removed once the session is opened the plugin will not show up in the Marketplace and thus be really stealthy.</p>
+
+<p>You can find the Metasploit module here: <a href="https://github.com/rapid7/metasploit-framework/pull/7917">https://github.com/rapid7/metasploit-framework/pull/7917</a></p>
+                    </div>
+                </section>
+            </div>
+            <div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>Copyright by Christian Mehlmauer</li>
+            <li>source code available on <a href="https://github.com/FireFart/blog">Github</a></li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src='https://firefart.at/js/all.min.js'></script>
+<script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
+
+<script type="text/javascript" src='https://firefart.at/js/anal.js'></script>
+<noscript><p><img src="//firefart.at/pi.php?idsite=1" style="border:0;" alt="placeholder" /></p></noscript>
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

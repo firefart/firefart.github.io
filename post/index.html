@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts</title>
+    <meta name="description" content="that austrian security guy">
+    
+    <meta name="author" content="Christian Mehlmauer">
+
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:site" content="@_FireFart_" />
+    <meta name="twitter:creator" content="@_FireFart_" />
+    
+    <meta name="twitter:title" content="Posts">
+    <meta name="twitter:description" content="that austrian security guy">
+    <meta property="og:title" content="Posts">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://firefart.at/post/" />
+    <meta property="og:description" content="that austrian security guy">
+    
+    <meta property="og:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+    <meta name="twitter:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+    
+    <meta property="og:updated_time" content="2017-11-06 00:30:00 &#43;0100 CET"/>
+    <meta property="article:author" content="https://twitter.com/_FireFart_"/>
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href='https://firefart.at/css/all.min.css'>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link href="/post/index.xml" rel="alternate" type="application/rss+xml" title="FireFart" />
+    <link href="/post/index.xml" rel="feed" type="application/rss+xml" title="FireFart" />
+    
+    <script type="application/ld+json">
+    [
+      {
+        "@context" : "http://schema.org",
+        "@type" : "WebSite",
+        "name" : "FireFart",
+        "url" : "https://firefart.at"
+      },
+      {
+        "@context" : "http://schema.org",
+        "@type" : "Person",
+        "name" : "Christian Mehlmauer",
+        "url" : "https://firefart.at",
+        "sameAs" : [
+          "https://twitter.com/_FireFart_",
+          "https://github.com/FireFart",
+          "https://www.facebook.com/christian.mehlmauer"
+        ]
+      }
+    ]
+    </script>
+
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <h1 class="brand-title"><a href="/">FireFart</a></h1>
+        <h2 class="brand-tagline"> that austrian security guy </h2>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href="https://twitter.com/_FireFart_">
+                        <i class="fa fa-twitter"></i> Twitter
+                    </a>
+                </li>
+                
+                
+                <li class="nav-item">
+                     <a class="pure-button" target="_blank" href="https://github.com/FireFart">
+                        <i class="fa fa-github-alt"></i> Github
+                    </a>
+                </li>
+                
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="/page/about/"><i class="fa fa-info"></i> about me</a>
+                </li>
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href='https://firefart.at/index.xml'>
+                        <i class="fa fa-rss"></i> rss
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                
+                
+                <h1 class="content-subhead">06 Nov 2017, 00:30</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/docker_and_cron_jobs/" class="post-title">How to run cron jobs with docker</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>Lately I came across the problem of running cron jobs in a docker based environment when we migrated <a href="https://wpvulndb.com">wpvulndb.com</a> to a docker based install.
+So how should we execute cron jobs when the application is running with docker or docker-compose?</p>
+                        
+                        <a href="/post/docker_and_cron_jobs/">Read more</a>
+                        
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">30 May 2017, 20:00</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/rhme2_whac_the_mole/" class="post-title">rhme2 - Solving the whac the mole challenge</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>RHme2 (Riscure Hack me 2) was a hardware based CTF challenge started back in 2016. Although it&rsquo;s already over you can download the challenges from their <a href="https://github.com/Riscure/Rhme-2016">Github page</a>.</p>
+
+<p>All you need is an Arduino (or Arduino compatible) board with an <em>atmega328p</em> chip (Arduino UNO or Arduino Nano). In this post we will solve this challenge by brute forcing it using a second Arduino.</p>
+
+<p>Stuff needed to solve this challenge:</p>
+
+<ul>
+<li>an Arduino Nano or UNO</li>
+<li>a second Arduino</li>
+<li>an oscilloscope</li>
+</ul>
+                        
+                        <a href="/post/rhme2_whac_the_mole/">Read more</a>
+                        
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">07 Feb 2017, 23:30</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/turning_piwik_superuser_creds_into_rce/" class="post-title">Turning Piwik Superuser Credentials into Remote Code Execution</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>On a recent pentest I got root access to a MySQL database hosting a PHP web application and also an instance of <a href="https://piwik.org/">Piwik</a>. I was able to extract the credentials from the database and crack them really fast because they were only hashed using MD5. It looks like Piwik introduced stronger hashes in Piwik 3 but luckily this target is still running version 2.</p>
+
+<p><strong>Edit</strong>:  <em>Piwik now disabled custom plugin uploads by default in 3.0.3 (<a href="https://piwik.org/changelog/piwik-3-0-3/">Changelog</a>). You have to manually enable it in the config (See <a href="https://piwik.org/faq/plugins/faq_21/">FAQ</a>) so this removes a lot attack surface from existing installs.</em></p>
+                        
+                        <a href="/post/turning_piwik_superuser_creds_into_rce/">Read more</a>
+                        
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">13 Jan 2017, 23:45</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/vulnhub_dc416_fortress/" class="post-title">Vulnhub - DC416: Fortress Writeup</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><a href="https://www.vulnhub.com/entry/dc416-2016,168/">Fortress</a> is the last of 4 DC416 VMs by <a href="https://twitter.com/superkojiman">@superkojiman</a>.</p>
+                        
+                        <a href="/post/vulnhub_dc416_fortress/">Read more</a>
+                        
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">10 Jan 2017, 23:00</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/vulnhub_dc416_dick_dastardly/" class="post-title">Vulnhub - DC416: Dick Dastardly Writeup</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>New evening, new VM: <a href="https://www.vulnhub.com/entry/dc416-2016,168/">DC416 Dick Dastardly</a> by the famous <a href="https://twitter.com/_RastaMouse">@_RastaMouse</a>.</p>
+                        
+                        <a href="/post/vulnhub_dc416_dick_dastardly/">Read more</a>
+                        
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">02 Jan 2017, 22:00</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/vulnhub_dc416_baffle/" class="post-title">Vulnhub - DC416: Baffle Writeup</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>After I finished <a href="/post/vulnhub_dc416_basement/">DC416 - Basement</a> I wanted to give the next VM a try: <a href="https://www.vulnhub.com/entry/dc416-2016,168/">DC416 - baffle</a> by <a href="https://twitter.com/superkojiman">@superkojiman</a>.</p>
+                        
+                        <a href="/post/vulnhub_dc416_baffle/">Read more</a>
+                        
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">18 Dec 2016, 01:00</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/vulnhub_dc416_basement/" class="post-title">Vulnhub - DC416: Basement Writeup</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>Basement is the first of 4 VMs from the DC416 CTF by <a href="https://twitter.com/barrebas">@barrebas</a> on <a href="https://www.vulnhub.com/entry/dc416-2016,168/">Vulnhub</a>. There are 5 flags on this machine but I was only able to get 4 of them.</p>
+                        
+                        <a href="/post/vulnhub_dc416_basement/">Read more</a>
+                        
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">24 Nov 2016, 18:45</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/vulnhub_hackday_abania_walkthrough/" class="post-title">Vulnhub - HackDay: Albania Writeup</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>I was bored today so I thought it would be a good chance to try any of the current <a href="https://www.vulnhub.com/">VulnHub</a> VMs.
+I decided to try the latest <a href="https://www.vulnhub.com/entry/hackday-albania,167/">HackDay: Albania</a> from <a href="https://twitter.com/r_73en">@R-73eN</a>.</p>
+                        
+                        <a href="/post/vulnhub_hackday_abania_walkthrough/">Read more</a>
+                        
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">17 Jan 2016, 12:45</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/upc_ubee_fail/" class="post-title">UPC Ubee EVW3226 Fail</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>Inspired by <a href="https://twitter.com/bl4sty">Blasty</a> and his <a href="https://haxx.in/upc-wifi/">UPC Wifi key generator</a> I decided to take a look at my UPC router too. It&rsquo;s a <strong>Ubee EVW3226</strong> with a custom firmware built by UPC providing a modified web interface and a lot of other stuff.</p>
+                        
+                        <a href="/post/upc_ubee_fail/">Read more</a>
+                        
+                    </div>
+                </section>
+                
+                <h1 class="content-subhead">21 Apr 2015, 19:20</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/how-to-crack-mifare-classic-cards/" class="post-title">How to Crack Mifare Classic Cards</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>In this blog post I will cover some quick basics about NFC, Mifare Classic and how to set up everything for reading and writing a NFC tag. At the end I show you how to reprogram a vending machine&rsquo;s NFC tag to contain more credits.</p>
+
+<p>NFC stands for Near Field Communication and is used to communicate over short distances. For more Infos on NFC you can read the <a href="http://en.wikipedia.org/wiki/Near_field_communication">Wikipedia article</a>. NFC nowadays is used for access cards, public transport, some more and in this case: Vending Machines. Basically there is an active NFC enabled device (the reader) and a passive device (the tag). The active device scans for the passive one and establishes a connection on contact. It also powers the passive device via an electromagnetic field. There is also an active - active mode where both endpoints can send data and need to be powered seperately. This is usually used when sending data for example in &ldquo;Android Beam&rdquo;.</p>
+
+<p>In this example the vending machine has an active NFC reader built in. You can touch it with your tag to buy some drinks and the corresponding price is subtracted from the ammount stored on the tag. You can also recharge your tag via the machine if you run out of credits.</p>
+                        
+                        <a href="/post/how-to-crack-mifare-classic-cards/">Read more</a>
+                        
+                    </div>
+                </section>
+                
+            </div>
+            
+<div class="pagination">
+  <nav role="pagination" class="post-list-pagination">
+      
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 1 of 2</span>
+    
+      <a href="/post/page/2/" class="post-list-pagination-item pure-button post-list-pagination-item-next">
+        Older&nbsp;<i class="fa fa-angle-double-right"></i>
+      </a>
+    
+  </nav>
+</div>
+
+
+            <div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>Copyright by Christian Mehlmauer</li>
+            <li>source code available on <a href="https://github.com/FireFart/blog">Github</a></li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src='https://firefart.at/js/all.min.js'></script>
+<script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
+
+<script type="text/javascript" src='https://firefart.at/js/anal.js'></script>
+<noscript><p><img src="//firefart.at/pi.php?idsite=1" style="border:0;" alt="placeholder" /></p></noscript>
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

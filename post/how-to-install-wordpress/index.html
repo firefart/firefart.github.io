@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Install Wordpress</title>
+    <meta name="description" content="How to Install Wordpress">
+    
+    <meta name="author" content="Christian Mehlmauer">
+
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:site" content="@_FireFart_" />
+    <meta name="twitter:creator" content="@_FireFart_" />
+    
+    <meta name="twitter:title" content="How to Install Wordpress">
+    <meta name="twitter:description" content="How to Install Wordpress">
+    <meta property="og:title" content="How to Install Wordpress">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://firefart.at/post/how-to-install-wordpress/" />
+    <meta property="og:description" content="How to Install Wordpress">
+    
+    <meta property="og:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+    <meta name="twitter:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+    
+    <meta property="og:updated_time" content="2014-07-03 17:48:00 &#43;0100 &#43;0100"/>
+    <meta property="article:author" content="https://twitter.com/_FireFart_"/>
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href='https://firefart.at/css/all.min.css'>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <script type="application/ld+json">
+    [
+      {
+        "@context" : "http://schema.org",
+        "@type" : "WebSite",
+        "name" : "FireFart",
+        "url" : "https://firefart.at"
+      },
+      {
+        "@context" : "http://schema.org",
+        "@type" : "Person",
+        "name" : "Christian Mehlmauer",
+        "url" : "https://firefart.at",
+        "sameAs" : [
+          "https://twitter.com/_FireFart_",
+          "https://github.com/FireFart",
+          "https://www.facebook.com/christian.mehlmauer"
+        ]
+      }
+    ]
+    </script>
+
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <h1 class="brand-title"><a href="/">FireFart</a></h1>
+        <h2 class="brand-tagline"> that austrian security guy </h2>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href="https://twitter.com/_FireFart_">
+                        <i class="fa fa-twitter"></i> Twitter
+                    </a>
+                </li>
+                
+                
+                <li class="nav-item">
+                     <a class="pure-button" target="_blank" href="https://github.com/FireFart">
+                        <i class="fa fa-github-alt"></i> Github
+                    </a>
+                </li>
+                
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="/page/about/"><i class="fa fa-info"></i> about me</a>
+                </li>
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href='https://firefart.at/index.xml'>
+                        <i class="fa fa-rss"></i> rss
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">03 Jul 2014, 17:48</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/how-to-install-wordpress/" class="post-title">How to Install Wordpress</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div id="toc" class="well col-md-4 col-sm-6">
+                      
+                    </div>
+
+                    <div class="post-description">
+                      <p>Because I have installed Wordpress for testing purposes way too often, i decided to write my setup down so I can reference it and others can benefit from the install.
+The installation was tested with Ubuntu 14.04 LTS 64bit.</p>
+
+<p>Here are my steps to get a Wordpress VM up and running in Ubuntu:</p>
+
+<ul>
+<li>Get the Ubuntu ISO image from their download site <a href="http://www.ubuntu.com/download/server">http://www.ubuntu.com/download/server</a></li>
+<li>Install it in your favourite VM software using the defaults</li>
+</ul>
+
+<p>I personally like to add the IP of the VM to the login dialog so i can spot the IP when booting the VM without logging in, and then use putty or something else to SSH into the machine.
+To add the IP to the login screen we have to change the <code>/etc/issue</code> file. Because this is only a text file, we need to add the IP on boot to it. So add the following lines to your <code>/etc/rc.local</code> file (right above the <code>exit 0;</code> statement):</p>
+
+<pre><code class="language-bash">IP=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+echo &quot;eth0 IP: $IP&quot; &gt; /etc/issue
+</code></pre>
+
+<p>Now log in via SSH to the machine and execute the following commands:</p>
+
+<pre><code class="language-bash">sudo su
+apt update
+apt -qy install apache2 mariadb-server php5-mysql php5 libapache2-mod-php5 php5-mcrypt php5-gd unzip curl ed
+</code></pre>
+
+<p>Enter your MYSQL root PW during installation when prompted</p>
+
+<pre><code class="language-bash">/usr/bin/mysql_secure_installation
+</code></pre>
+
+<p>Enter your MYSQL root password again, select no do not change it and answer all other questions with <code>YES</code>.</p>
+
+<pre><code class="language-bash">cd /var/www/
+wget http://wordpress.org/latest.zip
+unzip latest.zip
+rm latest.zip
+cd wordpress/
+mv wp-config-sample.php wp-config.php
+# create DB user
+mysql -u root -ppassword -e &quot;CREATE DATABASE wordpress;&quot;
+mysql -u root -ppassword -e &quot;CREATE USER wordpress@localhost;&quot;
+mysql -u root -ppassword -e &quot;SET PASSWORD FOR wordpress@localhost=PASSWORD('wordpress');&quot;
+mysql -u root -ppassword -e &quot;GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost;&quot;
+mysql -u root -ppassword -e &quot;FLUSH PRIVILEGES;&quot;
+# configure Wordpress
+sed -i -r &quot;s/define\('DB_NAME', '[^']+'\);/define\('DB_NAME', 'wordpress'\);/g&quot; wp-config.php
+sed -i -r &quot;s/define\('DB_USER', '[^']+'\);/define\('DB_USER', 'wordpress'\);/g&quot; wp-config.php
+sed -i -r &quot;s/define\('DB_PASSWORD', '[^']+'\);/define\('DB_PASSWORD', 'wordpress'\);/g&quot; wp-config.php
+# add Salts
+printf '%s\n' &quot;g/put your unique phrase here/d&quot; a &quot;$(curl -sL https://api.wordpress.org/secret-key/1.1/salt/)&quot; . w | ed -s wp-config.php
+chown -R www-data:www-data /var/www
+cd /etc/apache2/sites-available/
+cp 000-default.conf 001-wordpress.conf
+vim 001-wordpress.conf
+</code></pre>
+
+<p>set <code>DocumentRoot</code> to <code>/var/www/wordpress</code></p>
+
+<pre><code class="language-bash">a2dissite 000-default # disable default site
+a2ensite 001-wordpress # enable new wordpress site
+# set file upload size to something bigger then 2MB
+sed -i &quot;s/upload_max_filesize = 2M/upload_max_filesize = 20M/&quot; /etc/php5/apache2/php.ini
+service apache2 restart
+</code></pre>
+
+<p>If you want to disable automatic updates to have a stable testing machine, just add the following lines to your <code>wp-config.php</code> right before the line <code>/* That's all, stop editing! Happy blogging. */</code>.</p>
+
+<pre><code class="language-php">define( 'WP_AUTO_UPDATE_CORE', false );
+define( 'AUTOMATIC_UPDATER_DISABLED', true );
+</code></pre>
+
+<p>If you also want to block all external internet traffic from your machine (ie when sitting behind a proxy) add the following line to <code>wp-config.php</code>:</p>
+
+<pre><code class="language-php">define( 'WP_HTTP_BLOCK_EXTERNAL', TRUE );
+</code></pre>
+
+<p>Now call the site via your browser, configure the last details and your blog is fully configured.</p>
+                    </div>
+                </section>
+            </div>
+            <div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>Copyright by Christian Mehlmauer</li>
+            <li>source code available on <a href="https://github.com/FireFart/blog">Github</a></li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src='https://firefart.at/js/all.min.js'></script>
+<script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
+
+<script type="text/javascript" src='https://firefart.at/js/anal.js'></script>
+<noscript><p><img src="//firefart.at/pi.php?idsite=1" style="border:0;" alt="placeholder" /></p></noscript>
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

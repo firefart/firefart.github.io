@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on FireFart</title>
+    <link>https://firefart.at/post/</link>
+    <description>Recent content in Posts on FireFart</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright by Christian Mehlmauer</copyright>
+    <lastBuildDate>Mon, 06 Nov 2017 00:30:00 +0100</lastBuildDate>
+    
+	<atom:link href="https://firefart.at/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How to run cron jobs with docker</title>
+      <link>https://firefart.at/post/docker_and_cron_jobs/</link>
+      <pubDate>Mon, 06 Nov 2017 00:30:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/docker_and_cron_jobs/</guid>
+      <description>&lt;p&gt;Lately I came across the problem of running cron jobs in a docker based environment when we migrated &lt;a href=&#34;https://wpvulndb.com&#34;&gt;wpvulndb.com&lt;/a&gt; to a docker based install.
+So how should we execute cron jobs when the application is running with docker or docker-compose?&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>rhme2 - Solving the whac the mole challenge</title>
+      <link>https://firefart.at/post/rhme2_whac_the_mole/</link>
+      <pubDate>Tue, 30 May 2017 20:00:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/rhme2_whac_the_mole/</guid>
+      <description>&lt;p&gt;RHme2 (Riscure Hack me 2) was a hardware based CTF challenge started back in 2016. Although it&amp;rsquo;s already over you can download the challenges from their &lt;a href=&#34;https://github.com/Riscure/Rhme-2016&#34;&gt;Github page&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;All you need is an Arduino (or Arduino compatible) board with an &lt;em&gt;atmega328p&lt;/em&gt; chip (Arduino UNO or Arduino Nano). In this post we will solve this challenge by brute forcing it using a second Arduino.&lt;/p&gt;
+
+&lt;p&gt;Stuff needed to solve this challenge:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;an Arduino Nano or UNO&lt;/li&gt;
+&lt;li&gt;a second Arduino&lt;/li&gt;
+&lt;li&gt;an oscilloscope&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Turning Piwik Superuser Credentials into Remote Code Execution</title>
+      <link>https://firefart.at/post/turning_piwik_superuser_creds_into_rce/</link>
+      <pubDate>Tue, 07 Feb 2017 23:30:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/turning_piwik_superuser_creds_into_rce/</guid>
+      <description>&lt;p&gt;On a recent pentest I got root access to a MySQL database hosting a PHP web application and also an instance of &lt;a href=&#34;https://piwik.org/&#34;&gt;Piwik&lt;/a&gt;. I was able to extract the credentials from the database and crack them really fast because they were only hashed using MD5. It looks like Piwik introduced stronger hashes in Piwik 3 but luckily this target is still running version 2.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Edit&lt;/strong&gt;:  &lt;em&gt;Piwik now disabled custom plugin uploads by default in 3.0.3 (&lt;a href=&#34;https://piwik.org/changelog/piwik-3-0-3/&#34;&gt;Changelog&lt;/a&gt;). You have to manually enable it in the config (See &lt;a href=&#34;https://piwik.org/faq/plugins/faq_21/&#34;&gt;FAQ&lt;/a&gt;) so this removes a lot attack surface from existing installs.&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vulnhub - DC416: Fortress Writeup</title>
+      <link>https://firefart.at/post/vulnhub_dc416_fortress/</link>
+      <pubDate>Fri, 13 Jan 2017 23:45:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/vulnhub_dc416_fortress/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://www.vulnhub.com/entry/dc416-2016,168/&#34;&gt;Fortress&lt;/a&gt; is the last of 4 DC416 VMs by &lt;a href=&#34;https://twitter.com/superkojiman&#34;&gt;@superkojiman&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vulnhub - DC416: Dick Dastardly Writeup</title>
+      <link>https://firefart.at/post/vulnhub_dc416_dick_dastardly/</link>
+      <pubDate>Tue, 10 Jan 2017 23:00:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/vulnhub_dc416_dick_dastardly/</guid>
+      <description>&lt;p&gt;New evening, new VM: &lt;a href=&#34;https://www.vulnhub.com/entry/dc416-2016,168/&#34;&gt;DC416 Dick Dastardly&lt;/a&gt; by the famous &lt;a href=&#34;https://twitter.com/_RastaMouse&#34;&gt;@_RastaMouse&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vulnhub - DC416: Baffle Writeup</title>
+      <link>https://firefart.at/post/vulnhub_dc416_baffle/</link>
+      <pubDate>Mon, 02 Jan 2017 22:00:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/vulnhub_dc416_baffle/</guid>
+      <description>&lt;p&gt;After I finished &lt;a href=&#34;https://firefart.at/post/vulnhub_dc416_basement/&#34;&gt;DC416 - Basement&lt;/a&gt; I wanted to give the next VM a try: &lt;a href=&#34;https://www.vulnhub.com/entry/dc416-2016,168/&#34;&gt;DC416 - baffle&lt;/a&gt; by &lt;a href=&#34;https://twitter.com/superkojiman&#34;&gt;@superkojiman&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vulnhub - DC416: Basement Writeup</title>
+      <link>https://firefart.at/post/vulnhub_dc416_basement/</link>
+      <pubDate>Sun, 18 Dec 2016 01:00:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/vulnhub_dc416_basement/</guid>
+      <description>&lt;p&gt;Basement is the first of 4 VMs from the DC416 CTF by &lt;a href=&#34;https://twitter.com/barrebas&#34;&gt;@barrebas&lt;/a&gt; on &lt;a href=&#34;https://www.vulnhub.com/entry/dc416-2016,168/&#34;&gt;Vulnhub&lt;/a&gt;. There are 5 flags on this machine but I was only able to get 4 of them.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vulnhub - HackDay: Albania Writeup</title>
+      <link>https://firefart.at/post/vulnhub_hackday_abania_walkthrough/</link>
+      <pubDate>Thu, 24 Nov 2016 18:45:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/vulnhub_hackday_abania_walkthrough/</guid>
+      <description>&lt;p&gt;I was bored today so I thought it would be a good chance to try any of the current &lt;a href=&#34;https://www.vulnhub.com/&#34;&gt;VulnHub&lt;/a&gt; VMs.
+I decided to try the latest &lt;a href=&#34;https://www.vulnhub.com/entry/hackday-albania,167/&#34;&gt;HackDay: Albania&lt;/a&gt; from &lt;a href=&#34;https://twitter.com/r_73en&#34;&gt;@R-73eN&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>UPC Ubee EVW3226 Fail</title>
+      <link>https://firefart.at/post/upc_ubee_fail/</link>
+      <pubDate>Sun, 17 Jan 2016 12:45:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/upc_ubee_fail/</guid>
+      <description>&lt;p&gt;Inspired by &lt;a href=&#34;https://twitter.com/bl4sty&#34;&gt;Blasty&lt;/a&gt; and his &lt;a href=&#34;https://haxx.in/upc-wifi/&#34;&gt;UPC Wifi key generator&lt;/a&gt; I decided to take a look at my UPC router too. It&amp;rsquo;s a &lt;strong&gt;Ubee EVW3226&lt;/strong&gt; with a custom firmware built by UPC providing a modified web interface and a lot of other stuff.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>How to Crack Mifare Classic Cards</title>
+      <link>https://firefart.at/post/how-to-crack-mifare-classic-cards/</link>
+      <pubDate>Tue, 21 Apr 2015 19:20:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/how-to-crack-mifare-classic-cards/</guid>
+      <description>&lt;p&gt;In this blog post I will cover some quick basics about NFC, Mifare Classic and how to set up everything for reading and writing a NFC tag. At the end I show you how to reprogram a vending machine&amp;rsquo;s NFC tag to contain more credits.&lt;/p&gt;
+
+&lt;p&gt;NFC stands for Near Field Communication and is used to communicate over short distances. For more Infos on NFC you can read the &lt;a href=&#34;http://en.wikipedia.org/wiki/Near_field_communication&#34;&gt;Wikipedia article&lt;/a&gt;. NFC nowadays is used for access cards, public transport, some more and in this case: Vending Machines. Basically there is an active NFC enabled device (the reader) and a passive device (the tag). The active device scans for the passive one and establishes a connection on contact. It also powers the passive device via an electromagnetic field. There is also an active - active mode where both endpoints can send data and need to be powered seperately. This is usually used when sending data for example in &amp;ldquo;Android Beam&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;In this example the vending machine has an active NFC reader built in. You can touch it with your tag to buy some drinks and the corresponding price is subtracted from the ammount stored on the tag. You can also recharge your tag via the machine if you run out of credits.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>How to Install Wordpress</title>
+      <link>https://firefart.at/post/how-to-install-wordpress/</link>
+      <pubDate>Thu, 03 Jul 2014 17:48:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/how-to-install-wordpress/</guid>
+      <description>&lt;p&gt;Because I have installed Wordpress for testing purposes way too often, i decided to write my setup down so I can reference it and others can benefit from the install.
+The installation was tested with Ubuntu 14.04 LTS 64bit.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Multiple Vulnerabilities in ionCube Loader-wizard</title>
+      <link>https://firefart.at/post/multiple-vulnerabilities-in-ioncube-loader-wizard/</link>
+      <pubDate>Sun, 30 Mar 2014 12:00:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/multiple-vulnerabilities-in-ioncube-loader-wizard/</guid>
+      <description>&lt;p&gt;In a recent security audit I spotted a file on the server which caught my attention: &lt;code&gt;loader-wizard.php&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;After calling the file via a Browser I noticed it&amp;rsquo;s part of ionCubes encoding and &lt;a href=&#34;http://en.wikipedia.org/wiki/Obfuscation&#34;&gt;obfuscation&lt;/a&gt; software. The software can be found on &lt;a href=&#34;http://www.ioncube.com/php_encoder.php&#34;&gt;ionCubes Homepage&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>SQL-Injection and XSS in All-in-one-event-calendar Wordpress Plugin</title>
+      <link>https://firefart.at/post/sql-injection-and-xss-in-all-in-one-event-calendar-wordpress-plugin/</link>
+      <pubDate>Thu, 14 Nov 2013 22:05:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/sql-injection-and-xss-in-all-in-one-event-calendar-wordpress-plugin/</guid>
+      <description>&lt;p&gt;During a recent security audit I found multiple vulnerabilities in the Wordpress plugin &amp;ldquo;all-in-one-event-calendar&amp;rdquo;.
+There is a lite version provided through the Wordpress site (&lt;a href=&#34;http://wordpress.org/plugins/all-in-one-event-calendar/&#34;&gt;http://wordpress.org/plugins/all-in-one-event-calendar/&lt;/a&gt;), and a standard version provided through a third party site (&lt;a href=&#34;http://time.ly/&#34;&gt;http://time.ly/&lt;/a&gt;).
+Both versions were tested and are vulnerable to the reported issues.&lt;/p&gt;
+
+&lt;p&gt;PS: There is also a paid pro version. This was not tested but it&amp;rsquo;s likely also vulnerable to the mentioned issues.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Analyzing HP Thinpro Firmware</title>
+      <link>https://firefart.at/post/analyzing-hp-thinpro-firmware/</link>
+      <pubDate>Wed, 13 Nov 2013 17:44:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/analyzing-hp-thinpro-firmware/</guid>
+      <description>&lt;p&gt;Today I got my hands on a &lt;a href=&#34;http://www8.hp.com/us/en/campaigns/thin-client-solutions/t510.html&#34;&gt;HP t510 Thinclient&lt;/a&gt; and wanted to analyze the OS and running services (apparently it&amp;rsquo;s running Ubuntu 10.04.4 LTS).
+Here is my solution to run the Firmware in a VMware Infrastructure, or simply mount the image for browsing.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
