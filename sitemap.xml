@@ -4,16 +4,21 @@
   
   <url>
     <loc>https://firefart.at/</loc>
-    <lastmod>2017-11-06T00:30:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://firefart.at/post/docker_and_cron_jobs/</loc>
-    <lastmod>2017-11-06T00:30:00+01:00</lastmod>
+    <lastmod>2019-11-27T08:00:00+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://firefart.at/post/</loc>
+    <lastmod>2019-11-27T08:00:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://firefart.at/post/using-mysql-service-with-github-actions/</loc>
+    <lastmod>2019-11-27T08:00:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://firefart.at/post/docker_and_cron_jobs/</loc>
     <lastmod>2017-11-06T00:30:00+01:00</lastmod>
   </url>
   

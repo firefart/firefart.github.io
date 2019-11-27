@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using the MySQL Service with Github Actions</title>
+    <meta name="description" content="Using the MySQL/MariaDB Service with Github Actions">
+    
+    <meta name="keywords" content="github, github actions, mysql, mariadb">
+    
+    <meta name="author" content="Christian Mehlmauer">
+
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:site" content="@firefart" />
+    <meta name="twitter:creator" content="@firefart" />
+    
+    <meta name="twitter:title" content="Using the MySQL Service with Github Actions">
+    <meta name="twitter:description" content="Using the MySQL/MariaDB Service with Github Actions">
+    <meta property="og:title" content="Using the MySQL Service with Github Actions">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://firefart.at/post/using-mysql-service-with-github-actions/" />
+    <meta property="og:description" content="Using the MySQL/MariaDB Service with Github Actions">
+    
+    <meta property="og:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+    <meta name="twitter:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+    
+    <meta property="og:updated_time" content="2019-11-27 08:00:00 &#43;0100 CET"/>
+    <meta property="article:author" content="https://twitter.com/firefart"/>
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href='https://firefart.at/css/all.min.css'>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <script type="application/ld+json">
+    [
+      {
+        "@context" : "http://schema.org",
+        "@type" : "WebSite",
+        "name" : "FireFart",
+        "url" : "https://firefart.at"
+      },
+      {
+        "@context" : "http://schema.org",
+        "@type" : "Person",
+        "name" : "Christian Mehlmauer",
+        "url" : "https://firefart.at",
+        "sameAs" : [
+          "https://twitter.com/firefart",
+          "https://github.com/FireFart",
+          "https://www.facebook.com/christian.mehlmauer"
+        ]
+      }
+    ]
+    </script>
+
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <h1 class="brand-title"><a href="/">FireFart</a></h1>
+        <h2 class="brand-tagline"> that austrian security guy </h2>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href="https://twitter.com/firefart">
+                        <i class="fa fa-twitter"></i> Twitter
+                    </a>
+                </li>
+                
+                
+                <li class="nav-item">
+                     <a class="pure-button" target="_blank" href="https://github.com/FireFart">
+                        <i class="fa fa-github-alt"></i> Github
+                    </a>
+                </li>
+                
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="/page/about/"><i class="fa fa-info"></i> about me</a>
+                </li>
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href='https://firefart.at/index.xml'>
+                        <i class="fa fa-rss"></i> rss
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">27 Nov 2019, 08:00</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/using-mysql-service-with-github-actions/" class="post-title">Using the MySQL Service with Github Actions</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div id="toc" class="well col-md-4 col-sm-6">
+                      
+                    </div>
+
+                    <div class="post-description">
+                      <p>With the newly introduced <a href="https://help.github.com/en/actions/automating-your-workflow-with-github-actions">Github Actions</a> it&rsquo;s now possible to run your unit tests and other automation tasks automatically on Githubs infrastructure based on events. This is a short blog post describing how to use the MySQL / MariaDB services with Github Actions.</p>
+
+<p>The Ubuntu image already contains a preconfigured MySQL server but if you want to use a specific or newer version or even a MariaDB server you need to use a service. A service in Github Actions is just a docker container running a specific image and exposing it&rsquo;s ports to localhost. You can also install the services you need via <code>apt-get</code> but using Docker might be easier in this case.</p>
+
+<p>You need to be careful with this setup because if you use the default port your app or tests will connect to the local mysql server instead of the docker one. To ensure the app is using the correct database be sure to use the <code>${{ job.services.SERVICENAME.ports[3306] }}</code> variable and pass it to your config. As MySQL in Docker can take up to a few minutes to be available due to the startup scripts being run you need to wait until the server becomes ready or it will not accept connections and the following steps may fail due to the missing database connection.</p>
+
+<p>The following YML code can be used as an example for such an action.</p>
+
+<p>In the <code>services</code> section we define which database docker image to start (<code>mariadb:latest</code> in this case) and which ports are exposed. The Environment variables passed to it are used by the docker image to create the initial database and specify the users. See <a href="https://hub.docker.com/_/mariadb/">https://hub.docker.com/_/mariadb/</a> or <a href="https://hub.docker.com/_/mysql">https://hub.docker.com/_/mysql</a> for more details. The <code>options</code> specified are passed to docker for it&rsquo;s internal healthcheck. This command ensures that the database is reachable during the tests and docker will auto restart the container if the command specified fails for <code>health-retries</code> times.
+In the <code>Verify MariaDB connection</code> section a simple <code>mysqladmin ping</code> is executed to ensure the database is fully up and running before continuing with the tests. As the port from the container is mapped to a random port on the host we also need to grab it via the exposed variable <code>${{ job.services.mariadb.ports[3306] }}</code> and pass it via an environment variable to the command.</p>
+
+<pre><code class="language-yml">name: Tests
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mariadb:
+        image: mariadb:latest
+        ports:
+          - 3306
+        env:
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_DATABASE: test
+          MYSQL_ROOT_PASSWORD: password
+        options: --health-cmd=&quot;mysqladmin ping&quot; --health-interval=5s --health-timeout=2s --health-retries=3
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Verify MariaDB connection
+      env:
+        PORT: ${{ job.services.mariadb.ports[3306] }}
+      run: |
+        while ! mysqladmin ping -h&quot;127.0.0.1&quot; -P&quot;$PORT&quot; --silent; do
+          sleep 1
+        done
+
+    - name: Test
+      run: |
+        your tests
+</code></pre>
+                    </div>
+                </section>
+            </div>
+            <div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>Copyright by Christian Mehlmauer</li>
+            <li>source code available on <a href="https://github.com/FireFart/blog">Github</a></li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src='https://firefart.at/js/all.min.js'></script>
+<script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
+
+<script type="text/javascript">
+    var _paq = window._paq || [];
+     
+    _paq.push(["setCookieDomain", "*.firefart.at"]);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var u="https://tracking.firefart.at/";
+        _paq.push(['setTrackerUrl', u+'mat.php']);
+        _paq.push(['setSiteId', '1']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'mat.js'; s.parentNode.insertBefore(g,s);
+    })();
+</script>
+<noscript><p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

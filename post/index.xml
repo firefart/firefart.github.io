@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright by Christian Mehlmauer</copyright>
-    <lastBuildDate>Mon, 06 Nov 2017 00:30:00 +0100</lastBuildDate>
+    <lastBuildDate>Wed, 27 Nov 2019 08:00:00 +0100</lastBuildDate>
     
 	<atom:link href="https://firefart.at/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Using the MySQL Service with Github Actions</title>
+      <link>https://firefart.at/post/using-mysql-service-with-github-actions/</link>
+      <pubDate>Wed, 27 Nov 2019 08:00:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/using-mysql-service-with-github-actions/</guid>
+      <description>&lt;p&gt;With the newly introduced &lt;a href=&#34;https://help.github.com/en/actions/automating-your-workflow-with-github-actions&#34;&gt;Github Actions&lt;/a&gt; it&amp;rsquo;s now possible to run your unit tests and other automation tasks automatically on Githubs infrastructure based on events. This is a short blog post describing how to use the MySQL / MariaDB services with Github Actions.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>How to run cron jobs with docker</title>
