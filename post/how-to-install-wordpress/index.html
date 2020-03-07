@@ -141,7 +141,7 @@ echo &quot;eth0 IP: $IP&quot; &gt; /etc/issue
 
 <pre><code class="language-bash">sudo su
 apt update
-apt -qy install apache2 mariadb-server php5-mysql php5 libapache2-mod-php5 php5-mcrypt php5-gd unzip curl ed
+apt -qy install apache2 mariadb-server php-mysql php libapache2-mod-php php-gd unzip curl ed wget vim
 </code></pre>
 
 <p>Enter your MYSQL root PW during installation when prompted</p>
@@ -164,9 +164,9 @@ mysql -u root -ppassword -e &quot;SET PASSWORD FOR wordpress@localhost=PASSWORD(
 mysql -u root -ppassword -e &quot;GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost;&quot;
 mysql -u root -ppassword -e &quot;FLUSH PRIVILEGES;&quot;
 # configure Wordpress
-sed -i -r &quot;s/define\('DB_NAME', '[^']+'\);/define\('DB_NAME', 'wordpress'\);/g&quot; wp-config.php
-sed -i -r &quot;s/define\('DB_USER', '[^']+'\);/define\('DB_USER', 'wordpress'\);/g&quot; wp-config.php
-sed -i -r &quot;s/define\('DB_PASSWORD', '[^']+'\);/define\('DB_PASSWORD', 'wordpress'\);/g&quot; wp-config.php
+sed -i -r &quot;s/define\(\s*'DB_NAME', '[^']+'\s*\);/define\( 'DB_NAME', 'wordpress' \);/g&quot; wp-config.php
+sed -i -r &quot;s/define\(\s*'DB_USER', '[^']+'\s*\);/define\( 'DB_USER', 'wordpress' \);/g&quot; wp-config.php
+sed -i -r &quot;s/define\(\s*'DB_PASSWORD', '[^']+'\s*\);/define\( 'DB_PASSWORD', 'wordpress' \);/g&quot; wp-config.php
 # add Salts
 printf '%s\n' &quot;g/put your unique phrase here/d&quot; a &quot;$(curl -sL https://api.wordpress.org/secret-key/1.1/salt/)&quot; . w | ed -s wp-config.php
 chown -R www-data:www-data /var/www
