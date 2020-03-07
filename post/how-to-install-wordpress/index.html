@@ -180,7 +180,7 @@ vim 001-wordpress.conf
 <pre><code class="language-bash">a2dissite 000-default # disable default site
 a2ensite 001-wordpress # enable new wordpress site
 # set file upload size to something bigger then 2MB
-sed -i &quot;s/upload_max_filesize = 2M/upload_max_filesize = 20M/&quot; /etc/php5/apache2/php.ini
+sed -i &quot;s/upload_max_filesize = 2M/upload_max_filesize = 20M/&quot; /etc/php7.2/apache2/php.ini
 service apache2 restart
 </code></pre>
 
