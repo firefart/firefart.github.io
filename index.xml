@@ -38,11 +38,8 @@ So how should we execute cron jobs when the application is running with docker o
       
       <guid>https://firefart.at/post/rhme2_whac_the_mole/</guid>
       <description>&lt;p&gt;RHme2 (Riscure Hack me 2) was a hardware based CTF challenge started back in 2016. Although it&amp;rsquo;s already over you can download the challenges from their &lt;a href=&#34;https://github.com/Riscure/Rhme-2016&#34;&gt;Github page&lt;/a&gt;.&lt;/p&gt;
-
 &lt;p&gt;All you need is an Arduino (or Arduino compatible) board with an &lt;em&gt;atmega328p&lt;/em&gt; chip (Arduino UNO or Arduino Nano). In this post we will solve this challenge by brute forcing it using a second Arduino.&lt;/p&gt;
-
 &lt;p&gt;Stuff needed to solve this challenge:&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;an Arduino Nano or UNO&lt;/li&gt;
 &lt;li&gt;a second Arduino&lt;/li&gt;
@@ -57,8 +54,7 @@ So how should we execute cron jobs when the application is running with docker o
       
       <guid>https://firefart.at/post/turning_piwik_superuser_creds_into_rce/</guid>
       <description>&lt;p&gt;On a recent pentest I got root access to a MySQL database hosting a PHP web application and also an instance of &lt;a href=&#34;https://piwik.org/&#34;&gt;Piwik&lt;/a&gt;. I was able to extract the credentials from the database and crack them really fast because they were only hashed using MD5. It looks like Piwik introduced stronger hashes in Piwik 3 but luckily this target is still running version 2.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Edit&lt;/strong&gt;:  &lt;em&gt;Piwik now disabled custom plugin uploads by default in 3.0.3 (&lt;a href=&#34;https://piwik.org/changelog/piwik-3-0-3/&#34;&gt;Changelog&lt;/a&gt;). You have to manually enable it in the config (See &lt;a href=&#34;https://piwik.org/faq/plugins/faq_21/&#34;&gt;FAQ&lt;/a&gt;) so this removes a lot attack surface from existing installs.&lt;/em&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;strong&gt;Edit&lt;/strong&gt;: &lt;em&gt;Piwik now disabled custom plugin uploads by default in 3.0.3 (&lt;a href=&#34;https://piwik.org/changelog/piwik-3-0-3/&#34;&gt;Changelog&lt;/a&gt;). You have to manually enable it in the config (See &lt;a href=&#34;https://piwik.org/faq/plugins/faq_21/&#34;&gt;FAQ&lt;/a&gt;) so this removes a lot attack surface from existing installs.&lt;/em&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -123,9 +119,7 @@ I decided to try the latest &lt;a href=&#34;https://www.vulnhub.com/entry/hackda
       
       <guid>https://firefart.at/post/how-to-crack-mifare-classic-cards/</guid>
       <description>&lt;p&gt;In this blog post I will cover some quick basics about NFC, Mifare Classic and how to set up everything for reading and writing a NFC tag. At the end I show you how to reprogram a vending machine&amp;rsquo;s NFC tag to contain more credits.&lt;/p&gt;
-
 &lt;p&gt;NFC stands for Near Field Communication and is used to communicate over short distances. For more Infos on NFC you can read the &lt;a href=&#34;http://en.wikipedia.org/wiki/Near_field_communication&#34;&gt;Wikipedia article&lt;/a&gt;. NFC nowadays is used for access cards, public transport, some more and in this case: Vending Machines. Basically there is an active NFC enabled device (the reader) and a passive device (the tag). The active device scans for the passive one and establishes a connection on contact. It also powers the passive device via an electromagnetic field. There is also an active - active mode where both endpoints can send data and need to be powered seperately. This is usually used when sending data for example in &amp;ldquo;Android Beam&amp;rdquo;.&lt;/p&gt;
-
 &lt;p&gt;In this example the vending machine has an active NFC reader built in. You can touch it with your tag to buy some drinks and the corresponding price is subtracted from the ammount stored on the tag. You can also recharge your tag via the machine if you run out of credits.&lt;/p&gt;</description>
     </item>
     
@@ -146,7 +140,6 @@ The installation was tested with Ubuntu 14.04 LTS 64bit.&lt;/p&gt;</description>
       
       <guid>https://firefart.at/post/multiple-vulnerabilities-in-ioncube-loader-wizard/</guid>
       <description>&lt;p&gt;In a recent security audit I spotted a file on the server which caught my attention: &lt;code&gt;loader-wizard.php&lt;/code&gt;.&lt;/p&gt;
-
 &lt;p&gt;After calling the file via a Browser I noticed it&amp;rsquo;s part of ionCubes encoding and &lt;a href=&#34;http://en.wikipedia.org/wiki/Obfuscation&#34;&gt;obfuscation&lt;/a&gt; software. The software can be found on &lt;a href=&#34;http://www.ioncube.com/php_encoder.php&#34;&gt;ionCubes Homepage&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
@@ -159,7 +152,6 @@ The installation was tested with Ubuntu 14.04 LTS 64bit.&lt;/p&gt;</description>
       <description>&lt;p&gt;During a recent security audit I found multiple vulnerabilities in the Wordpress plugin &amp;ldquo;all-in-one-event-calendar&amp;rdquo;.
 There is a lite version provided through the Wordpress site (&lt;a href=&#34;http://wordpress.org/plugins/all-in-one-event-calendar/&#34;&gt;http://wordpress.org/plugins/all-in-one-event-calendar/&lt;/a&gt;), and a standard version provided through a third party site (&lt;a href=&#34;http://time.ly/&#34;&gt;http://time.ly/&lt;/a&gt;).
 Both versions were tested and are vulnerable to the reported issues.&lt;/p&gt;
-
 &lt;p&gt;PS: There is also a paid pro version. This was not tested but it&amp;rsquo;s likely also vulnerable to the mentioned issues.&lt;/p&gt;</description>
     </item>
     

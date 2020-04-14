@@ -1,67 +1,71 @@
 <!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>rhme2 - Solving the whac the mole challenge</title>
-    <meta name="description" content="rhme2 - Solving the whac the mole challenge">
-    
-    <meta name="keywords" content="rhme2, whac the mole, hacking, arduino, hardware, rs232, serial, baud rate, oscilloscope">
-    
-    <meta name="author" content="Christian Mehlmauer">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>rhme2 - Solving the whac the mole challenge</title>
+  <meta name="description"
+    content="rhme2 - Solving the whac the mole challenge">
+  
+  <meta name="keywords" content="rhme2, whac the mole, hacking, arduino, hardware, rs232, serial, baud rate, oscilloscope">
+  
+  <meta name="author" content="Christian Mehlmauer">
 
-    <meta name="twitter:card" content="summary">
-    
-    <meta name="twitter:site" content="@firefart" />
-    <meta name="twitter:creator" content="@firefart" />
-    
-    <meta name="twitter:title" content="rhme2 - Solving the whac the mole challenge">
-    <meta name="twitter:description" content="rhme2 - Solving the whac the mole challenge">
-    <meta property="og:title" content="rhme2 - Solving the whac the mole challenge">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://firefart.at/post/rhme2_whac_the_mole/" />
-    <meta property="og:description" content="rhme2 - Solving the whac the mole challenge">
-    
-    <meta property="og:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
-    <meta name="twitter:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
-    
-    <meta property="og:updated_time" content="2017-05-30 20:00:00 &#43;0100 &#43;0100"/>
-    <meta property="article:author" content="https://twitter.com/firefart"/>
+  <meta name="twitter:card" content="summary">
+  
+  <meta name="twitter:site" content="@firefart" />
+  <meta name="twitter:creator" content="@firefart" />
+  
+  <meta name="twitter:title" content="rhme2 - Solving the whac the mole challenge">
+  <meta name="twitter:description"
+    content="rhme2 - Solving the whac the mole challenge">
+  <meta property="og:title" content="rhme2 - Solving the whac the mole challenge">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://firefart.at/post/rhme2_whac_the_mole/" />
+  <meta property="og:description"
+    content="rhme2 - Solving the whac the mole challenge">
+  
+  <meta property="og:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+  <meta name="twitter:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+  
+  <meta property="og:updated_time" content="2017-05-30 20:00:00 &#43;0100 &#43;0100" />
+  <meta property="article:author" content="https://twitter.com/firefart" />
 
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
-    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet"
+    type="text/css">
+  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
+  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
 
-    <link rel="stylesheet" href='https://firefart.at/css/all.min.css'>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href='https://firefart.at/css/all.css'>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
-    
-    
-    <script type="application/ld+json">
-    [
-      {
-        "@context" : "http://schema.org",
-        "@type" : "WebSite",
-        "name" : "FireFart",
-        "url" : "https://firefart.at"
+  
+  
+  <script type="application/ld+json">
+    [{
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "name": "FireFart",
+        "url": "https://firefart.at"
       },
       {
-        "@context" : "http://schema.org",
-        "@type" : "Person",
-        "name" : "Christian Mehlmauer",
-        "url" : "https://firefart.at",
-        "sameAs" : [
+        "@context": "http://schema.org",
+        "@type": "Person",
+        "name": "Christian Mehlmauer",
+        "url": "https://firefart.at",
+        "sameAs": [
           "https://twitter.com/firefart",
           "https://github.com/FireFart",
           "https://www.facebook.com/christian.mehlmauer"
         ]
       }
     ]
-    </script>
+  </script>
 
 </head>
-<body>
 
+<body>
 
 <div id="layout" class="pure-g">
     <div class="sidebar pure-u-1 pure-u-md-1-4">
@@ -80,7 +84,7 @@
                 
                 
                 <li class="nav-item">
-                     <a class="pure-button" target="_blank" href="https://github.com/FireFart">
+                    <a class="pure-button" target="_blank" href="https://github.com/FireFart">
                         <i class="fa fa-github-alt"></i> Github
                     </a>
                 </li>
@@ -100,7 +104,6 @@
     </div>
 </div>
 
-
     <div class="content pure-u-1 pure-u-md-3-4">
         <div>
             
@@ -118,86 +121,50 @@
                     </header>
 
                     <div id="toc" class="well col-md-4 col-sm-6">
-                      
+                        <nav id="TableOfContents"></nav>
                     </div>
 
                     <div class="post-description">
-                      <p>RHme2 (Riscure Hack me 2) was a hardware based CTF challenge started back in 2016. Although it&rsquo;s already over you can download the challenges from their <a href="https://github.com/Riscure/Rhme-2016">Github page</a>.</p>
-
+                        <p>RHme2 (Riscure Hack me 2) was a hardware based CTF challenge started back in 2016. Although it&rsquo;s already over you can download the challenges from their <a href="https://github.com/Riscure/Rhme-2016">Github page</a>.</p>
 <p>All you need is an Arduino (or Arduino compatible) board with an <em>atmega328p</em> chip (Arduino UNO or Arduino Nano). In this post we will solve this challenge by brute forcing it using a second Arduino.</p>
-
 <p>Stuff needed to solve this challenge:</p>
-
 <ul>
 <li>an Arduino Nano or UNO</li>
 <li>a second Arduino</li>
 <li>an oscilloscope</li>
 </ul>
-
 <p>To flash the <strong>whac the mole</strong> challenge to an Arduino Nano execute the following command (from within <code>./challenges/binaries/whac_the_mole/</code> and <code>avrdude</code> in your path):</p>
-
-<pre><code class="language-bash">avrdude -c arduino -p atmega328p -P /dev/ttyUSB0 -b57600 -u -V -U flash:w:whac_the_mole.hex
-</code></pre>
-
-<p><em>Note:</em> If you want to flash it to an Arduino UNO you need to adjust the baud rate in the command to <em>115200</em>.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">avrdude -c arduino -p atmega328p -P /dev/ttyUSB0 -b57600 -u -V -U flash:w:whac_the_mole.hex
+</code></pre></div><p><em>Note:</em> If you want to flash it to an Arduino UNO you need to adjust the baud rate in the command to <em>115200</em>.</p>
 <p>The first thing to check is if there is anything being sent via the serial interface. We could just bruteforce the baudrate used by the firmware but as we already need an oscilloscope for this challenge let&rsquo;s go the l33t way.</p>
-
 <p>UART uses the RX and TX pins - RX is the receive and TX the transmit pin. So if we hook our oscilloscope to the TX pin of the Arduino Nano we can see some data being sent after hitting the reset pin. If you connect your Arduino Nano to a PC via USB the output will also show up in the serial console.</p>
-
 <p>If data is sent via the <a href="https://learn.sparkfun.com/tutorials/serial-communication/rules-of-serial">serial protocol</a> the voltage drops from HIGH (+5V) to LOW (0V). So we set the oscilloscope trigger to falling edge, enable single shot mode and press the reset pin on the Arduino. We now have some data packages and need to extract the baud rate from it. The first drop from high to low on each package is the start bit followed by the data and the stop bit. By zooming in on a package we can measure the width of the shortest pulse and simply calculate <em>1/width</em> or simply read the data on the oscilloscope. The width in this example is <em>54µs</em> so the calculation is <em>1/(54*10^-6)</em> which gives <em>18518.5185185</em> (<em>18.52k</em> which can also be read from the oscilloscope).</p>
-
-<p><img src="/img/rhme2/whac_the_mole/baud_rate.png" alt="baud rate" /></p>
-
+<p><img src="/img/rhme2/whac_the_mole/baud_rate.png" alt="baud rate"></p>
 <p><em>Note:</em> Be careful when connecting the oscilloscope - <a href="https://www.youtube.com/watch?v=xaELqAo4kkQ">look here why you should be careful</a></p>
-
 <p>Now simply round this value to the next standard baud rate and give it a try. My oscilloscope has a built in RS232 decoder so we can directly try to decode it and see the data.</p>
-
-<p><img src="/img/rhme2/whac_the_mole/rs232.png" alt="rs232" /></p>
-
+<p><img src="/img/rhme2/whac_the_mole/rs232.png" alt="rs232"></p>
 <p>YAY! So we found the correct baud rate: <strong>19200</strong>.</p>
-
 <p>Next connect the Arduino to your PC&rsquo;s serial monitor using the determined baud rate and give the challenge a try. You have to press enter, a countdown with the words <code>Ready? Get set! GO!</code> starts and quickly states we have failed (<code>You missed it. Try again by pressing &lt;Enter&gt;.</code>). After trying all sort of inputs via the serial console it seems that there is no direct user input via the serial interface except the newline to start a new try.</p>
-
 <p>As the challenge name states this seems to be a &ldquo;<a href="https://en.wikipedia.org/wiki/Whac-A-Mole">whac a mole</a>&rdquo; game. We most likely have to hit some moles but how? Maybe this is a pure hardware challenge? Let&rsquo;s see.</p>
-
 <p>By hooking up the oscilloscope to every digital output pin of the Arduino Nano and pressing Enter on the serial console we can identify some pulses being sent on pin D13. On the following screenshot you can see the TX pin on channel 1 (yellow) and the pulses sent by the Arduino Nano on channel 2 (blue).</p>
-
-<p><img src="/img/rhme2/whac_the_mole/peaks.png" alt="pulse" /></p>
-
+<p><img src="/img/rhme2/whac_the_mole/peaks.png" alt="pulse"></p>
 <p>The 3 yellow spikes are the <code>Ready?</code>, <code>Get set!</code> and <code>GO!</code> messages immediately followed by 2 short pulses on pin D13. We can also see the LED on the Arduino is flashing exactly the number of pulses being sent on the pin.</p>
-
 <p>By doing a lot boot cycles and capturing data with the oscilloscope there only seem to be 1 to 6 peaks sent on this pin.</p>
-
 <p>If this is a pure hardware challenge we might have to hit a specific <em>mole hole</em> mapped to the number of pulses.</p>
-
 <p>By zooming in on one of the pulses sent on pin D13 we can see the pulse width is about 51ms (bottom of the screenshot).</p>
-
-<p><img src="/img/rhme2/whac_the_mole/pulse_width.png" alt="pulse width" /></p>
-
+<p><img src="/img/rhme2/whac_the_mole/pulse_width.png" alt="pulse width"></p>
 <p>So I hooked up my Arduino UNO to some of the digital pins and set random pins to HIGH and LOW with a 50ms delay to generate the same pulse as we observed to determine the behavior.</p>
-
 <p>After some time and shitty code I had luck and after sending a pulse to the correct pin a second set of pulses appeared on pin D13. \o/</p>
-
 <p>At first I tried to manually brute force the corresponding pins for each number of pulses but oddly it seems like the pins are randomized on each power up of the Arduino Nano - so I had to find another way.</p>
-
 <p>My way of doing it was the good old dirty brute force way: I hooked up the TX and RX pins of the Nano to some digital pins of my UNO and created a so called <em>SoftwareSerial</em> interface to communicate with the Nano&rsquo;s serial interface instead of connecting a PC. I also connected the Nano to the 5V output of the UNO so it runs completely standalone and needs no connected PC. Next I hooked up all digital pins from the Nano to my UNO and started monitoring the D13 pin for peaks and brute force the correct pin order. This was an extreme coding challenge for me as I haven&rsquo;t written C code for a long long time.</p>
-
 <p>Also the timing on this one is very important so I had to set a relative exact pulse width to determine when no more pulses are sent otherwise the challenge fails because we have waited too long with the next input.</p>
-
-<p><a href="/img/rhme2/whac_the_mole/setup.png"><img src="/img/rhme2/whac_the_mole/setup_thumb.png" alt="setup" /></a></p>
-
+<p><a href="/img/rhme2/whac_the_mole/setup.png"><img src="/img/rhme2/whac_the_mole/setup_thumb.png" alt="setup"></a></p>
 <p>And here is the wiring diagram (click for a larger version):</p>
-
-<p><a href="/img/rhme2/whac_the_mole/wiring.png"><img src="/img/rhme2/whac_the_mole/wiring_thumb.png" alt="wiring" /></a></p>
-
+<p><a href="/img/rhme2/whac_the_mole/wiring.png"><img src="/img/rhme2/whac_the_mole/wiring_thumb.png" alt="wiring"></a></p>
 <p>After some minutes of running the pin order was correctly solved and all 50 mole holes where hit correctly and the final message is shown on serial output of the UNO (the challenge does not contain a flag any more).</p>
-
 <p>I put my code up on my Github page if you are interested: <a href="https://github.com/FireFart/rhme2">https://github.com/FireFart/rhme2</a></p>
-
 <p>Here you can see a video of the complete brute force running on my oscilloscope in rolling mode (sorry for the poor framerate quality). Channel 1 (yellow) shows the pulses sent on pin D13, Channel 2 (blue) is hooked up to the serial transmit pin and shows when the messages are sent and Channel 3 (magenta) shows when I send a pulse back (I added a monitoring pin and sent a seperate pulse to it). At the end of the video (around 02:20) you can see how the UNO hits all correct mole holes. On the right side I also included the debug output from the Arduino UNO so you can see what&rsquo;s going on.</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/H30CJ7w-0I8" frameborder="0" allowfullscreen></iframe>
+<!-- raw HTML omitted -->
                     </div>
                 </section>
             </div>
@@ -209,7 +176,7 @@
         </ul>
     </div>
 </div>
-<script type="text/javascript" src='https://firefart.at/js/all.min.js'></script>
+<script type="text/javascript" src='https://firefart.at/js/all.js'></script>
 <script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
 
 <script type="text/javascript">
@@ -218,19 +185,27 @@
     _paq.push(["setCookieDomain", "*.firefart.at"]);
     _paq.push(['trackPageView']);
     _paq.push(['enableLinkTracking']);
-    (function() {
-        var u="https://tracking.firefart.at/";
-        _paq.push(['setTrackerUrl', u+'mat.php']);
+    (function () {
+        var u = "https://tracking.firefart.at/";
+        _paq.push(['setTrackerUrl', u + 'mat.php']);
         _paq.push(['setSiteId', '1']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'mat.js'; s.parentNode.insertBefore(g,s);
+        var d = document,
+            g = d.createElement('script'),
+            s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.defer = true;
+        g.src = u + 'mat.js';
+        s.parentNode.insertBefore(g, s);
     })();
 </script>
-<noscript><p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p></noscript>
-
+<noscript>
+    <p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p>
+</noscript>
 
         </div>
     </div>
 </div>
 </body>
+
 </html>

@@ -1,65 +1,69 @@
 <!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turning Piwik Superuser Credentials into Remote Code Execution</title>
-    <meta name="description" content="Turning Piwik Superuser Credentials into Remote Code Execution">
-    
-    <meta name="author" content="Christian Mehlmauer">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Turning Piwik Superuser Credentials into Remote Code Execution</title>
+  <meta name="description"
+    content="Turning Piwik Superuser Credentials into Remote Code Execution">
+  
+  <meta name="author" content="Christian Mehlmauer">
 
-    <meta name="twitter:card" content="summary">
-    
-    <meta name="twitter:site" content="@firefart" />
-    <meta name="twitter:creator" content="@firefart" />
-    
-    <meta name="twitter:title" content="Turning Piwik Superuser Credentials into Remote Code Execution">
-    <meta name="twitter:description" content="Turning Piwik Superuser Credentials into Remote Code Execution">
-    <meta property="og:title" content="Turning Piwik Superuser Credentials into Remote Code Execution">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://firefart.at/post/turning_piwik_superuser_creds_into_rce/" />
-    <meta property="og:description" content="Turning Piwik Superuser Credentials into Remote Code Execution">
-    
-    <meta property="og:image" content="https://firefart.at/img/misc/hacker.jpg" />
-    <meta name="twitter:image" content="https://firefart.at/img/misc/hacker.jpg" />
-    
-    <meta property="og:updated_time" content="2017-02-07 23:30:00 &#43;0100 CET"/>
-    <meta property="article:author" content="https://twitter.com/firefart"/>
+  <meta name="twitter:card" content="summary">
+  
+  <meta name="twitter:site" content="@firefart" />
+  <meta name="twitter:creator" content="@firefart" />
+  
+  <meta name="twitter:title" content="Turning Piwik Superuser Credentials into Remote Code Execution">
+  <meta name="twitter:description"
+    content="Turning Piwik Superuser Credentials into Remote Code Execution">
+  <meta property="og:title" content="Turning Piwik Superuser Credentials into Remote Code Execution">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://firefart.at/post/turning_piwik_superuser_creds_into_rce/" />
+  <meta property="og:description"
+    content="Turning Piwik Superuser Credentials into Remote Code Execution">
+  
+  <meta property="og:image" content="https://firefart.at/img/misc/hacker.jpg" />
+  <meta name="twitter:image" content="https://firefart.at/img/misc/hacker.jpg" />
+  
+  <meta property="og:updated_time" content="2017-02-07 23:30:00 &#43;0100 CET" />
+  <meta property="article:author" content="https://twitter.com/firefart" />
 
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
-    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet"
+    type="text/css">
+  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
+  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
 
-    <link rel="stylesheet" href='https://firefart.at/css/all.min.css'>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href='https://firefart.at/css/all.css'>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
-    
-    
-    <script type="application/ld+json">
-    [
-      {
-        "@context" : "http://schema.org",
-        "@type" : "WebSite",
-        "name" : "FireFart",
-        "url" : "https://firefart.at"
+  
+  
+  <script type="application/ld+json">
+    [{
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "name": "FireFart",
+        "url": "https://firefart.at"
       },
       {
-        "@context" : "http://schema.org",
-        "@type" : "Person",
-        "name" : "Christian Mehlmauer",
-        "url" : "https://firefart.at",
-        "sameAs" : [
+        "@context": "http://schema.org",
+        "@type": "Person",
+        "name": "Christian Mehlmauer",
+        "url": "https://firefart.at",
+        "sameAs": [
           "https://twitter.com/firefart",
           "https://github.com/FireFart",
           "https://www.facebook.com/christian.mehlmauer"
         ]
       }
     ]
-    </script>
+  </script>
 
 </head>
-<body>
 
+<body>
 
 <div id="layout" class="pure-g">
     <div class="sidebar pure-u-1 pure-u-md-1-4">
@@ -78,7 +82,7 @@
                 
                 
                 <li class="nav-item">
-                     <a class="pure-button" target="_blank" href="https://github.com/FireFart">
+                    <a class="pure-button" target="_blank" href="https://github.com/FireFart">
                         <i class="fa fa-github-alt"></i> Github
                     </a>
                 </li>
@@ -98,7 +102,6 @@
     </div>
 </div>
 
-
     <div class="content pure-u-1 pure-u-md-3-4">
         <div>
             
@@ -116,59 +119,40 @@
                     </header>
 
                     <div id="toc" class="well col-md-4 col-sm-6">
-                      
+                        <nav id="TableOfContents"></nav>
                     </div>
 
                     <div class="post-description">
-                      <p>On a recent pentest I got root access to a MySQL database hosting a PHP web application and also an instance of <a href="https://piwik.org/">Piwik</a>. I was able to extract the credentials from the database and crack them really fast because they were only hashed using MD5. It looks like Piwik introduced stronger hashes in Piwik 3 but luckily this target is still running version 2.</p>
-
-<p><strong>Edit</strong>:  <em>Piwik now disabled custom plugin uploads by default in 3.0.3 (<a href="https://piwik.org/changelog/piwik-3-0-3/">Changelog</a>). You have to manually enable it in the config (See <a href="https://piwik.org/faq/plugins/faq_21/">FAQ</a>) so this removes a lot attack surface from existing installs.</em></p>
-
+                        <p>On a recent pentest I got root access to a MySQL database hosting a PHP web application and also an instance of <a href="https://piwik.org/">Piwik</a>. I was able to extract the credentials from the database and crack them really fast because they were only hashed using MD5. It looks like Piwik introduced stronger hashes in Piwik 3 but luckily this target is still running version 2.</p>
+<p><strong>Edit</strong>: <em>Piwik now disabled custom plugin uploads by default in 3.0.3 (<a href="https://piwik.org/changelog/piwik-3-0-3/">Changelog</a>). You have to manually enable it in the config (See <a href="https://piwik.org/faq/plugins/faq_21/">FAQ</a>) so this removes a lot attack surface from existing installs.</em></p>
 <p>So what to do with the passwords? Only changing some Piwik parameters or reading visitor stats is not really exciting so I took a look around in the superuser dashboard and found something interesting: Piwik supports plugins.</p>
-
 <p>Piwik has 3 levels of access: view, admin and superuser. If you have an user with superuser access (the first user from the database) you can install new plugins to the server if the web root is writeable by the web server.</p>
-
 <p>Finding some tutorials on the internet for writing Piwik plugins is hard (most of them are about writing plugins for Piwik 1) so I had to download several plugins and do a copy paste to generate my own plugin.</p>
-
 <p>The plugin generally consist of a <code>plugin.json</code> containing some metadata showed in the Marketplace and a main PHP file named after the plugin containing the code.</p>
-
 <p>You can write a super fancy plugin adding new menus to the dashboard and showing some nice remote code execution pages with templates but that&rsquo;s way too much work. Luckily there is a <code>install</code> method which will be called when the plugin is activated. So this looks like a good place to put a payload in.</p>
-
 <p>If we write a plugin called <strong>pwned</strong> the folder structure would be:</p>
-
 <pre><code>pwned/
 pwned/pwned.php
 pwned/plugin.json
-</code></pre>
-
-<p>And the file content:</p>
-
+</code></pre><p>And the file content:</p>
 <p><strong>pwned.php</strong></p>
-
-<pre><code class="language-php">&lt;?php
-namespace Piwik\Plugins\pwned;
-class pwned extends \Piwik\Plugin {
-  public function install()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">namespace</span> <span style="color:#a6e22e">Piwik\Plugins\pwned</span>;
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">pwned</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">\Piwik\Plugin</span> {
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">install</span>()
   {
-    PHP_PAYLOAD
+    <span style="color:#a6e22e">PHP_PAYLOAD</span>
   }
 }
-</code></pre>
-
-<p><strong>plugin.json</strong></p>
-
-<pre><code class="language-json">{
-  &quot;name&quot;: &quot;pwned&quot;,
-  &quot;description&quot;: &quot;DESCRIPTION&quot;,
-  &quot;version&quot;: &quot;1.0&quot;,
-  &quot;theme&quot;: false
+</code></pre></div><p><strong>plugin.json</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;pwned&#34;</span>,
+  <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;DESCRIPTION&#34;</span>,
+  <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;1.0&#34;</span>,
+  <span style="color:#f92672">&#34;theme&#34;</span>: <span style="color:#66d9ef">false</span>
 }
-</code></pre>
-
-<p>You can zip those files together and upload it from the Marketplace site in the dashboard as superuser. After you activate the plugin the payload will be executed effectively turning the superuser credentials into remote code execution.</p>
-
+</code></pre></div><p>You can zip those files together and upload it from the Marketplace site in the dashboard as superuser. After you activate the plugin the payload will be executed effectively turning the superuser credentials into remote code execution.</p>
 <p>As I like to automate the boring stuff I also wrote a Metasploit module to easily pwn Piwik installations. Because the payload fires on install and the files are automatically removed once the session is opened the plugin will not show up in the Marketplace and thus be really stealthy.</p>
-
 <p>You can find the Metasploit module here: <a href="https://github.com/rapid7/metasploit-framework/pull/7917">https://github.com/rapid7/metasploit-framework/pull/7917</a></p>
                     </div>
                 </section>
@@ -181,7 +165,7 @@ class pwned extends \Piwik\Plugin {
         </ul>
     </div>
 </div>
-<script type="text/javascript" src='https://firefart.at/js/all.min.js'></script>
+<script type="text/javascript" src='https://firefart.at/js/all.js'></script>
 <script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
 
 <script type="text/javascript">
@@ -190,19 +174,27 @@ class pwned extends \Piwik\Plugin {
     _paq.push(["setCookieDomain", "*.firefart.at"]);
     _paq.push(['trackPageView']);
     _paq.push(['enableLinkTracking']);
-    (function() {
-        var u="https://tracking.firefart.at/";
-        _paq.push(['setTrackerUrl', u+'mat.php']);
+    (function () {
+        var u = "https://tracking.firefart.at/";
+        _paq.push(['setTrackerUrl', u + 'mat.php']);
         _paq.push(['setSiteId', '1']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'mat.js'; s.parentNode.insertBefore(g,s);
+        var d = document,
+            g = d.createElement('script'),
+            s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.defer = true;
+        g.src = u + 'mat.js';
+        s.parentNode.insertBefore(g, s);
     })();
 </script>
-<noscript><p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p></noscript>
-
+<noscript>
+    <p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p>
+</noscript>
 
         </div>
     </div>
 </div>
 </body>
+
 </html>

@@ -1,67 +1,71 @@
 <!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>How to run cron jobs with docker</title>
-    <meta name="description" content="How to run cron jobs with docker">
-    
-    <meta name="keywords" content="cron, crontab, cron jobs, docker periodic tasks, docker task scheduler, docker scheduled tasks, periodic, tasks, scheduler, docker, docker-compose">
-    
-    <meta name="author" content="Christian Mehlmauer">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to run cron jobs with docker</title>
+  <meta name="description"
+    content="How to run cron jobs with docker">
+  
+  <meta name="keywords" content="cron, crontab, cron jobs, docker periodic tasks, docker task scheduler, docker scheduled tasks, periodic, tasks, scheduler, docker, docker-compose">
+  
+  <meta name="author" content="Christian Mehlmauer">
 
-    <meta name="twitter:card" content="summary">
-    
-    <meta name="twitter:site" content="@firefart" />
-    <meta name="twitter:creator" content="@firefart" />
-    
-    <meta name="twitter:title" content="How to run cron jobs with docker">
-    <meta name="twitter:description" content="How to run cron jobs with docker">
-    <meta property="og:title" content="How to run cron jobs with docker">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://firefart.at/post/docker_and_cron_jobs/" />
-    <meta property="og:description" content="How to run cron jobs with docker">
-    
-    <meta property="og:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
-    <meta name="twitter:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
-    
-    <meta property="og:updated_time" content="2017-11-06 00:30:00 &#43;0100 CET"/>
-    <meta property="article:author" content="https://twitter.com/firefart"/>
+  <meta name="twitter:card" content="summary">
+  
+  <meta name="twitter:site" content="@firefart" />
+  <meta name="twitter:creator" content="@firefart" />
+  
+  <meta name="twitter:title" content="How to run cron jobs with docker">
+  <meta name="twitter:description"
+    content="How to run cron jobs with docker">
+  <meta property="og:title" content="How to run cron jobs with docker">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://firefart.at/post/docker_and_cron_jobs/" />
+  <meta property="og:description"
+    content="How to run cron jobs with docker">
+  
+  <meta property="og:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+  <meta name="twitter:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+  
+  <meta property="og:updated_time" content="2017-11-06 00:30:00 &#43;0100 CET" />
+  <meta property="article:author" content="https://twitter.com/firefart" />
 
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
-    <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet"
+    type="text/css">
+  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
+  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
 
-    <link rel="stylesheet" href='https://firefart.at/css/all.min.css'>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href='https://firefart.at/css/all.css'>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
-    
-    
-    <script type="application/ld+json">
-    [
-      {
-        "@context" : "http://schema.org",
-        "@type" : "WebSite",
-        "name" : "FireFart",
-        "url" : "https://firefart.at"
+  
+  
+  <script type="application/ld+json">
+    [{
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "name": "FireFart",
+        "url": "https://firefart.at"
       },
       {
-        "@context" : "http://schema.org",
-        "@type" : "Person",
-        "name" : "Christian Mehlmauer",
-        "url" : "https://firefart.at",
-        "sameAs" : [
+        "@context": "http://schema.org",
+        "@type": "Person",
+        "name": "Christian Mehlmauer",
+        "url": "https://firefart.at",
+        "sameAs": [
           "https://twitter.com/firefart",
           "https://github.com/FireFart",
           "https://www.facebook.com/christian.mehlmauer"
         ]
       }
     ]
-    </script>
+  </script>
 
 </head>
-<body>
 
+<body>
 
 <div id="layout" class="pure-g">
     <div class="sidebar pure-u-1 pure-u-md-1-4">
@@ -80,7 +84,7 @@
                 
                 
                 <li class="nav-item">
-                     <a class="pure-button" target="_blank" href="https://github.com/FireFart">
+                    <a class="pure-button" target="_blank" href="https://github.com/FireFart">
                         <i class="fa fa-github-alt"></i> Github
                     </a>
                 </li>
@@ -100,7 +104,6 @@
     </div>
 </div>
 
-
     <div class="content pure-u-1 pure-u-md-3-4">
         <div>
             
@@ -118,135 +121,85 @@
                     </header>
 
                     <div id="toc" class="well col-md-4 col-sm-6">
-                      
+                        <nav id="TableOfContents"></nav>
                     </div>
 
                     <div class="post-description">
-                      <p>Lately I came across the problem of running cron jobs in a docker based environment when we migrated <a href="https://wpvulndb.com">wpvulndb.com</a> to a docker based install.
+                        <p>Lately I came across the problem of running cron jobs in a docker based environment when we migrated <a href="https://wpvulndb.com">wpvulndb.com</a> to a docker based install.
 So how should we execute cron jobs when the application is running with docker or docker-compose?</p>
-
 <p>You have two choices of running cron jobs with docker:</p>
-
 <ul>
 <li>Execute them on the host system with <code>docker exec</code> or <code>docker run</code> in your application container</li>
 <li>Create a separate cron enabled docker container</li>
 </ul>
-
 <p>The first method may be the simplest for your needs. Just edit the crontab of your host system and execute single tasks in your application container. The jobs need to run as root on the host system or the user has to be to be in the <code>docker</code> group - which is basically the same as running as root.</p>
-
 <p>For example this was one of our cron jobs executed from the host inside the application container using <code>docker-compose</code>:</p>
-
-<pre><code class="language-bash">/bin/bash -c 'cd /opt/wpvulndb/ &amp;&amp; docker-compose -f docker-compose.yml -f docker-compose.staging.yml -f docker-compose.prod.yml run -T --name cron_sitemap --rm cron bundle exec rake -s sitemap:refresh'&quot;
-</code></pre>
-
-<p>The <code>cron</code> container in this case was just another instance of the main application image. We could also execute <code>docker-compose exec</code> (or <code>docker exec</code>) to run the command in the main application container but we created a separate container so we do not interrupt any processes inside the main container.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/bin/bash -c <span style="color:#e6db74">&#39;cd /opt/wpvulndb/ &amp;&amp; docker-compose -f docker-compose.yml -f docker-compose.staging.yml -f docker-compose.prod.yml run -T --name cron_sitemap --rm cron bundle exec rake -s sitemap:refresh&#39;</span><span style="color:#e6db74">&#34;
+</span></code></pre></div><p>The <code>cron</code> container in this case was just another instance of the main application image. We could also execute <code>docker-compose exec</code> (or <code>docker exec</code>) to run the command in the main application container but we created a separate container so we do not interrupt any processes inside the main container.</p>
 <p>But there is one simple problem with this setup:</p>
-
 <p>Normally errors are written to stdout and the cron daemon keeps sending every output from the jobs to the email address specified in the <code>MAILTO</code> environment variable. Sadly <code>docker-compose</code> does NOT support a quiet/silent flag so the starting messages of the single containers are always printed out and interpreted as errors by the cron daemon.</p>
-
-<pre><code class="language-text">Starting wpvulndb_redis
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Starting wpvulndb_redis
 Starting wpvulndb_db
 Starting wpvulndb_sidekiq
 Starting wpvulndb_web
-</code></pre>
-
-<p>This ended up with a lot of emails for every cron job although we are only interested in errors.</p>
-
+</code></pre></div><p>This ended up with a lot of emails for every cron job although we are only interested in errors.</p>
 <p>So my choice for running the cron jobs was directly inside an container. There are some blog posts and stack overflow comments about this topic out there but either they are really old or miss some important details.</p>
-
 <p>One thing you find a lot on the internet is something like: <code>cron &amp;&amp; tail -f /var/log/cron.log</code> as the main docker command - This is bad</p>
-
 <p>This command would execute cron and tails the log file so it will be visible with <code>docker logs</code>. But there is an problem with this:
 If the cron daemon fails after some time the docker container will continue to run because it tails the log file and does not monitor the cron process as it should be. The crash of crond will be undetected. So from outside the container it looks like your cron jobs are running - but they don&rsquo;t. Only the tail of the log file is running, beeing monitored by docker and reported as UP.</p>
-
 <p>You should try to only have one main process running inside the container so the docker engine can monitor the health of your containers and restart them if needed or notify you.</p>
-
 <p>So how to run the cron daemon correctly?</p>
-
 <p>Normally all docker base images are stripped down with no running processes (like the cron daemon) because of the one process concept mentioned above. In the alpine base image there is a cron daemon installed but you need to run it on your own.</p>
-
 <p>The following Dockerfile creates a separate user and copies a new crontab file to the machine. When this container is run all logs will be available via <code>docker logs</code> or <code>docker-compose logs</code>.</p>
-
-<pre><code class="language-docker">FROM alpine:latest
-LABEL maintainer=&quot;Christian Mehlmauer &lt;FireFart@gmail.com&gt;&quot;
-
-ENV APP_USER appuser
-
-RUN adduser -g &quot;App User&quot; -D $APP_USER
-
-COPY crontab /var/spool/cron/crontabs/$APP_USER
-RUN chmod 0600 /var/spool/cron/crontabs/$APP_USER
-
-ENTRYPOINT &quot;crond&quot;
-
-CMD [&quot;-f&quot;, &quot;-d&quot;, &quot;8&quot;]
-</code></pre>
-
-<p><code>crontab</code> file:</p>
-
-<pre><code class="language-text">0 2 * * * /bin/date
-</code></pre>
-
-<p>The cron daemon parameters in use are:</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-docker" data-lang="docker"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> alpine:latest</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">LABEL</span> maintainer<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Christian Mehlmauer &lt;FireFart@gmail.com&gt;&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> APP_USER appuser<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> adduser -g <span style="color:#e6db74">&#34;App User&#34;</span> -D $APP_USER<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> crontab /var/spool/cron/crontabs/$APP_USER<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> chmod <span style="color:#ae81ff">0600</span> /var/spool/cron/crontabs/$APP_USER<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENTRYPOINT</span> <span style="color:#e6db74">&#34;crond&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;-f&#34;</span>, <span style="color:#e6db74">&#34;-d&#34;</span>, <span style="color:#e6db74">&#34;8&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span></code></pre></div><p><code>crontab</code> file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">0 2 * * * /bin/date
+</code></pre></div><p>The cron daemon parameters in use are:</p>
 <ul>
 <li><code>-f</code>: The cron daemon will run in the foreground. This way docker is able to monitor the process.</li>
 <li><code>-d 8</code>: This instructs the daemon to log to stderr with the default log level 8. Without this flag messages are only written to syslog and you can&rsquo;t access them via the <code>logs</code> command.</li>
 </ul>
-
 <p>Using this method of cron involves monitoring the logs of the container using some kind of monitoring like a log management or send the output from the jobs itself as email.</p>
-
 <p>The cron files on alpine Linux work like this:</p>
-
 <p><strong>/var/spool/cron/crontabs/root</strong></p>
-
 <p>This file contains every cronjob that should be executed by the root user.</p>
-
 <p>If you have a look at the file it contains the following lines per default:</p>
-
-<pre><code class="language-text"># do daily/weekly/monthly maintenance
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># do daily/weekly/monthly maintenance
 # min   hour   day   month   weekday   command
 */15    *   *   *   *   run-parts /etc/periodic/15min
 0   *   *   *   *   run-parts /etc/periodic/hourly
 0   2   *   *   *   run-parts /etc/periodic/daily
 0   3   *   *   6   run-parts /etc/periodic/weekly
 0   5   1   *   *   run-parts /etc/periodic/monthly
-</code></pre>
-
-<p>This means you can also put your executable scripts inside one of these folders and they will be run by root automatically. If you put a bash script into <code>/etc/periodic/15min</code> and make it executable the cron daemon will execute it every 15 minutes.</p>
-
+</code></pre></div><p>This means you can also put your executable scripts inside one of these folders and they will be run by root automatically. If you put a bash script into <code>/etc/periodic/15min</code> and make it executable the cron daemon will execute it every 15 minutes.</p>
 <p>If you want your jobs to be executed at different times just add a line to this file using cron syntax.</p>
-
 <p><strong>ATTENTION</strong>: You MUST NOT use an extension on the files placed inside the <code>periodic</code> folders. If you place a shell script inside just omit the extension and make sure it starts with the correct shebang <code>#!/bin/sh</code>. See here for details: <a href="https://wiki.alpinelinux.org/wiki/Alpine_Linux:FAQ#My_cron_jobs_don.27t_run.3F">https://wiki.alpinelinux.org/wiki/Alpine_Linux:FAQ#My_cron_jobs_don.27t_run.3F</a></p>
-
 <p><strong>/var/spool/cron/crontabs/APPUSER</strong></p>
-
 <p>This file contains cronjobs that should be executed by the user matching the file name. This is handy if you want to run cron jobs as a different user. It&rsquo;s a good habit to run jobs as a separate user if the job does not require root privileges to reduce the attack surface.</p>
-
 <p>You can also integrate the steps mentioned above inside your main Dockerfile (if it&rsquo;s based on an alpine based image) and change the entrypoint and command to the cron commands if you need access to the main application for the cron jobs.</p>
-
 <p>For example our <code>docker-compose.yml</code> file uses the following snippet on the main Dockerfile to use it as a cron container with a different entrypoint (the <code>user: root</code> is important as the cron daemon needs to run as root):</p>
-
-<pre><code class="language-text">entrypoint: &quot;&quot;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">entrypoint: &#34;&#34;
 user: root
 command: crond -f -d 8
-</code></pre>
-
-<p>Also be sure to mount your local timezone file into the container so the time inside matches your host system time and the jobs get executed at the correct time.</p>
-
+</code></pre></div><p>Also be sure to mount your local timezone file into the container so the time inside matches your host system time and the jobs get executed at the correct time.</p>
 <p>In <code>docker-compose</code> use the following:</p>
-
-<pre><code class="language-yml">volumes:
-    - /etc/localtime:/etc/localtime:ro
-</code></pre>
-
-<p>In docker use the following command line option:</p>
-
-<pre><code class="language-text">-v /etc/localtime:/etc/localtime:ro
-</code></pre>
-
-<p>I hope this post gave a good overview on how to design your docker setup to also run cron jobs.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">volumes</span>:
+  - /etc/localtime:/etc/localtime:ro
+</code></pre></div><p>In docker use the following command line option:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">-v /etc/localtime:/etc/localtime:ro
+</code></pre></div><p>I hope this post gave a good overview on how to design your docker setup to also run cron jobs.</p>
                     </div>
                 </section>
             </div>
@@ -258,7 +211,7 @@ command: crond -f -d 8
         </ul>
     </div>
 </div>
-<script type="text/javascript" src='https://firefart.at/js/all.min.js'></script>
+<script type="text/javascript" src='https://firefart.at/js/all.js'></script>
 <script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
 
 <script type="text/javascript">
@@ -267,19 +220,27 @@ command: crond -f -d 8
     _paq.push(["setCookieDomain", "*.firefart.at"]);
     _paq.push(['trackPageView']);
     _paq.push(['enableLinkTracking']);
-    (function() {
-        var u="https://tracking.firefart.at/";
-        _paq.push(['setTrackerUrl', u+'mat.php']);
+    (function () {
+        var u = "https://tracking.firefart.at/";
+        _paq.push(['setTrackerUrl', u + 'mat.php']);
         _paq.push(['setSiteId', '1']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'mat.js'; s.parentNode.insertBefore(g,s);
+        var d = document,
+            g = d.createElement('script'),
+            s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.defer = true;
+        g.src = u + 'mat.js';
+        s.parentNode.insertBefore(g, s);
     })();
 </script>
-<noscript><p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p></noscript>
-
+<noscript>
+    <p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p>
+</noscript>
 
         </div>
     </div>
 </div>
 </body>
+
 </html>
