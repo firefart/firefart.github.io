@@ -4,9 +4,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title></title>
+  <title>How to build your Dockerhub Images with Github Actions</title>
   <meta name="description"
-    content="">
+    content="How to build your Dockerhub Images with Github Actions">
+  
+  <meta name="keywords" content="Github Actions, Dockerhub, Github, Docker">
   
   <meta name="author" content="Christian Mehlmauer">
 
@@ -15,19 +17,19 @@
   <meta name="twitter:site" content="@firefart" />
   <meta name="twitter:creator" content="@firefart" />
   
-  <meta name="twitter:title" content="">
+  <meta name="twitter:title" content="How to build your Dockerhub Images with Github Actions">
   <meta name="twitter:description"
-    content="">
-  <meta property="og:title" content="">
+    content="How to build your Dockerhub Images with Github Actions">
+  <meta property="og:title" content="How to build your Dockerhub Images with Github Actions">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://firefart.at/post/github_actions_dockerhub/" />
   <meta property="og:description"
-    content="">
+    content="How to build your Dockerhub Images with Github Actions">
   
-  <meta property="og:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
-  <meta name="twitter:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+  <meta property="og:image" content="https://firefart.at/img/misc/hacker.jpg" />
+  <meta name="twitter:image" content="https://firefart.at/img/misc/hacker.jpg" />
   
-  <meta property="og:updated_time" content="0001-01-01 00:00:00 &#43;0000 UTC" />
+  <meta property="og:updated_time" content="2021-08-03 07:00:00 &#43;0100 &#43;0100" />
   <meta property="article:author" content="https://twitter.com/firefart" />
 
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet"
@@ -106,11 +108,11 @@
         <div>
             
             <div class="posts">
-                <h1 class="content-subhead">01 Jan 0001, 00:00</h1>
+                <h1 class="content-subhead">03 Aug 2021, 07:00</h1>
                 <section class="post">
                     <header class="post-header">
 
-                        <a href="/post/github_actions_dockerhub/" class="post-title"></a>
+                        <a href="/post/github_actions_dockerhub/" class="post-title">How to build your Dockerhub Images with Github Actions</a>
 
                         <p class="post-meta">
                             
@@ -123,13 +125,7 @@
                     </div>
 
                     <div class="post-description">
-                        <p>Description = &ldquo;How to build your Dockerhub Images with Github Actions&rdquo;
-title = &ldquo;How to build your Dockerhub Images with Github Actions&rdquo;
-date = &ldquo;2021-08-03T09:00:00+01:00&rdquo;
-image = &ldquo;/img/misc/hacker.jpg&rdquo;
-metakeys = [&ldquo;Github Actions&rdquo;, &ldquo;Dockerhub&rdquo;, &ldquo;Github&rdquo;, &ldquo;Docker&rdquo;]
-+++</p>
-<p>Dockerhub recently removed the autobuild feature for all free users. This means that every docker image that relies on docker hub to auto build the images on new pushes or new releases will not be updated anymore. Users now need to build those images manually and push them to Docker Hub.</p>
+                        <p>Dockerhub recently removed the autobuild feature for all free users. This means that every docker image that relies on docker hub to auto build the images on new pushes or new releases will not be updated anymore. Users now need to build those images manually and push them to Docker Hub.</p>
 <p>Thankfully you can use Github Actions to build the images for you and push them to the docker hub registry.</p>
 <p>To get started you need to create a new folder in your project root called <code>.github/workflows</code>. Inside this folder place the following file named <code>dockerhub.yml</code>.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build Docker Images</span>
