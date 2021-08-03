@@ -130,11 +130,11 @@ Here is my solution to run the Firmware in a VMware Infrastructure, or simply mo
 <p>After you finished the download you will get an exe containing the firmware. Run this file under Windows, select the Button named &ldquo;Image&rdquo; and save the extracted image.</p>
 <p><img src="/img/thinclient/thinclient_extract.png" alt="Extract" title="Extract"></p>
 <p>This will give you a gz image. Transfer this image to your favorite linux box (I used kali) und run gunzip to unzip it</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gunzip T6X43101.dd.gz
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gunzip T6X43101.dd.gz
 </code></pre></div><p>Now you have a .dd file, which is a raw ext3 disk image created with the dd command.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">T6X43101.dd: x86 boot sector; GRand Unified Bootloader, stage1 version 0x3, 1st sector stage2 0x1380c5; partition 1: ID=0x83, active, starthead 1, startsector 63, 2001825 sectors, code offset 0x48
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">T6X43101.dd: x86 boot sector; GRand Unified Bootloader, stage1 version 0x3, 1st sector stage2 0x1380c5; partition 1: ID=0x83, active, starthead 1, startsector 63, 2001825 sectors, code offset 0x48
 </code></pre></div><p>Here is the binwalk output from this file</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">DECIMAL         HEX             DESCRIPTION
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">DECIMAL         HEX             DESCRIPTION
 -------------------------------------------------------------------------------------------------------------------
 32256           0x7E00          Linux EXT filesystem, rev 1.0 ext3 filesystem data, UUID=c0cba688-cc23-404f-a7fb-d67fde13de13, volume name &#34;ROOT&#34;
 1606144         0x188200        Squashfs filesystem, little endian, version 4.0, compression: gzip, size: 462368156 bytes,  33965 inodes, blocksize: 131072 bytes, created: Thu Mar 28 01:57:34 2013
@@ -149,12 +149,12 @@ Here is my solution to run the Firmware in a VMware Infrastructure, or simply mo
 679509504       0x28807E00      Linux EXT filesystem, rev 1.0 ext3 filesystem data, UUID=c0cba688-cc23-404f-a7fb-d67fde13de13, volume name &#34;ROOT&#34;
 </code></pre></div><p>To convert this image to a VMware Harddisk you first need to install the package <strong><em>qemu</em></strong> (if you only want to browse this image, scroll down a bit).</p>
 <p>To start the conversion run the following command:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">qemu-img convert -f raw -O vmdk T6X43101.dd thinpro.vmdk
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">qemu-img convert -f raw -O vmdk T6X43101.dd thinpro.vmdk
 </code></pre></div><p>Next create an empty Virtual Machine, select existing Harddisk and use the converted thinpro.vmdk image. If you get a prompt to convert this image to a newer version of VMware, select yes.</p>
 <p>Now you can boot and configure your very own &ldquo;Thinclient&rdquo; inside a VM :)</p>
 <p><img src="/img/thinclient/thinclient_vm.png" alt="VM" title="VM"></p>
 <p>If you just need to browse the image contents, run parted on the .dd image to get the offset (User input is bold) or just use the offset from the binwalk output above.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">parted T6X43101.dd
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">parted T6X43101.dd
 GNU Parted 2.3
 Using /media/psf/ThinClient/T6X43101.dd
 Welcome to GNU Parted! Type &#39;help&#39; to view a list of commands.
@@ -169,12 +169,12 @@ Number  Start   End          Size         Type     File system  Flags
 1      32256B  1024966655B  1024934400B  primary  ext3         boot
 (parted) quit
 </code></pre></div><p>Now mount the image with the correct offset</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mkdir /media/thinclient
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mkdir /media/thinclient
 mount -o loop,ro,offset<span style="color:#f92672">=</span><span style="color:#ae81ff">32256</span> T6X43101.dd /media/thinclient/
 </code></pre></div><p>This will mount the dd image readonly and you will get some kernel images and the filesystem as a squashfs file. Install <a href="https://code.google.com/p/firmware-mod-kit/">firmware-mod-kit</a> on your linux box so you get the tools needed to extract the filesystem.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/root/firmware-mod-kit/unsquashfs_all.sh /media/thinclient/filesystem.squash extract
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/root/firmware-mod-kit/unsquashfs_all.sh /media/thinclient/filesystem.squash extract
 </code></pre></div><p>This will extract the harddisk content to the folder extract.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@kali:/media/psf/ThinClient/extract# ls -alh
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@kali:/media/psf/ThinClient/extract# ls -alh
 total <span style="color:#ae81ff">0</span>
 drwxr-xr-x <span style="color:#ae81ff">1</span> root root  <span style="color:#ae81ff">646</span> May <span style="color:#ae81ff">22</span> 21:43 .
 drwxr-xr-x <span style="color:#ae81ff">1</span> root root  <span style="color:#ae81ff">442</span> May <span style="color:#ae81ff">23</span> 09:58 ..

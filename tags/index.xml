@@ -6,10 +6,6 @@
     <description>Recent content in Tags on FireFart</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>Copyright by Christian Mehlmauer</copyright>
-    
-	<atom:link href="https://firefart.at/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <copyright>Copyright by Christian Mehlmauer</copyright><atom:link href="https://firefart.at/tags/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

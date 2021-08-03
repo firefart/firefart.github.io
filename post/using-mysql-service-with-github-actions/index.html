@@ -131,40 +131,40 @@
 <p>The following YML code can be used as an example for such an action.</p>
 <p>In the <code>services</code> section we define which database docker image to start (<code>mariadb:latest</code> in this case) and which ports are exposed. The Environment variables passed to it are used by the docker image to create the initial database and specify the users. See <a href="https://hub.docker.com/_/mariadb/">https://hub.docker.com/_/mariadb/</a> or <a href="https://hub.docker.com/_/mysql">https://hub.docker.com/_/mysql</a> for more details. The <code>options</code> specified are passed to docker for it&rsquo;s internal healthcheck. This command ensures that the database is reachable during the tests and docker will auto restart the container if the command specified fails for <code>health-retries</code> times.
 In the <code>Verify MariaDB connection</code> section a simple <code>mysqladmin ping</code> is executed to ensure the database is fully up and running before continuing with the tests. As the port from the container is mapped to a random port on the host we also need to grab it via the exposed variable <code>${{ job.services.mariadb.ports[3306] }}</code> and pass it via an environment variable to the command.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">name</span>: Tests
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">name</span>: <span style="color:#ae81ff">Tests</span>
 
-<span style="color:#66d9ef">on</span>: [push]
+<span style="color:#f92672">on</span>: [<span style="color:#ae81ff">push]</span>
 
-<span style="color:#66d9ef">jobs</span>:
-  <span style="color:#66d9ef">build</span>:
-    <span style="color:#66d9ef">runs-on</span>: ubuntu-latest
+<span style="color:#f92672">jobs</span>:
+  <span style="color:#f92672">build</span>:
+    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
 
-    <span style="color:#66d9ef">services</span>:
-      <span style="color:#66d9ef">mariadb</span>:
-        <span style="color:#66d9ef">image</span>: mariadb:latest
-        <span style="color:#66d9ef">ports</span>:
+    <span style="color:#f92672">services</span>:
+      <span style="color:#f92672">mariadb</span>:
+        <span style="color:#f92672">image</span>: <span style="color:#ae81ff">mariadb:latest</span>
+        <span style="color:#f92672">ports</span>:
           - <span style="color:#ae81ff">3306</span>
-        <span style="color:#66d9ef">env</span>:
-          <span style="color:#66d9ef">MYSQL_USER</span>: user
-          <span style="color:#66d9ef">MYSQL_PASSWORD</span>: password
-          <span style="color:#66d9ef">MYSQL_DATABASE</span>: test
-          <span style="color:#66d9ef">MYSQL_ROOT_PASSWORD</span>: password
-        <span style="color:#66d9ef">options</span>: --health-cmd=<span style="color:#e6db74">&#34;mysqladmin ping&#34;</span> --health-interval=5s --health-timeout=2s --health-retries=<span style="color:#ae81ff">3</span>
+        <span style="color:#f92672">env</span>:
+          <span style="color:#f92672">MYSQL_USER</span>: <span style="color:#ae81ff">user</span>
+          <span style="color:#f92672">MYSQL_PASSWORD</span>: <span style="color:#ae81ff">password</span>
+          <span style="color:#f92672">MYSQL_DATABASE</span>: <span style="color:#ae81ff">test</span>
+          <span style="color:#f92672">MYSQL_ROOT_PASSWORD</span>: <span style="color:#ae81ff">password</span>
+        <span style="color:#f92672">options</span>: --<span style="color:#ae81ff">health-cmd=&#34;mysqladmin ping&#34; --health-interval=5s --health-timeout=2s --health-retries=3</span>
 
-    <span style="color:#66d9ef">steps</span>:
-      - <span style="color:#66d9ef">uses</span>: actions/checkout@v1
+    <span style="color:#f92672">steps</span>:
+      - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v1</span>
 
-      - <span style="color:#66d9ef">name</span>: Verify MariaDB connection
-        <span style="color:#66d9ef">env</span>:
-          <span style="color:#66d9ef">PORT</span>: ${{ job.services.mariadb.ports[<span style="color:#ae81ff">3306</span>] }}
-        <span style="color:#66d9ef">run</span>: <span style="color:#e6db74">|
-</span><span style="color:#e6db74">          while ! mysqladmin ping -h&#34;127.0.0.1&#34; -P&#34;$PORT&#34; --silent; do</span>
-            sleep <span style="color:#ae81ff">1</span>
-          done
+      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Verify MariaDB connection</span>
+        <span style="color:#f92672">env</span>:
+          <span style="color:#f92672">PORT</span>: <span style="color:#ae81ff">${{ job.services.mariadb.ports[3306] }}</span>
+        <span style="color:#f92672">run</span>: |<span style="color:#e6db74">
+</span><span style="color:#e6db74">          while ! mysqladmin ping -h&#34;127.0.0.1&#34; -P&#34;$PORT&#34; --silent; do
+</span><span style="color:#e6db74">            sleep 1
+</span><span style="color:#e6db74">          done</span>          
 
-      - <span style="color:#66d9ef">name</span>: Test
-        <span style="color:#66d9ef">run</span>: <span style="color:#e6db74">|
-</span><span style="color:#e6db74">          your tests</span>
+      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Test</span>
+        <span style="color:#f92672">run</span>: |<span style="color:#e6db74">
+</span><span style="color:#e6db74">          </span>          <span style="color:#ae81ff">your tests</span>
 </code></pre></div>
                     </div>
                 </section>

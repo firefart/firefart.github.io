@@ -155,7 +155,7 @@
 <p>The script uses the PHP variable <code>$self</code> in various places. It&rsquo;s possible to inject script code in the script name and thus the script is vulnerable to reflected cross site scripting.</p>
 <pre><code>http://server.com/loader-wizard.php/%3Cxss%3E
 </code></pre><p>The string <code>&lt;xss&gt;</code> is printed out unescaped 10 times.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/css&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/loader-wizard.php/&lt;xss&gt;?page=css&#34;</span>&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/css&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/loader-wizard.php/&lt;xss&gt;?page=css&#34;</span>&gt;
 setTimeout(&#34;window.location.href = &#39;/loader-wizard.php/&lt;<span style="color:#f92672">xss</span>&gt;?page=default&amp;amp;timeout=1&#39;&#34;,1000);
 window.location.href = &#39;/loader-wizard.php/&lt;<span style="color:#f92672">xss</span>&gt;?page=default&#39;;
 xmlHttp.open(&#34;GET&#34;,&#34;/loader-wizard.php/&lt;<span style="color:#f92672">xss</span>&gt;?page=loaderversion&#34;,true);
@@ -173,42 +173,42 @@ setTimeout(&#34;window.location.href = &#39;/loader-wizard.php/&lt;<span style="
 </code></pre><p><img src="/img/ioncube/file.png" alt="file" title="file"></p>
 <h2 id="vulnerable-code">Vulnerable code</h2>
 <p>You can see you need to set the <code>download</code> parameter to supply an own <code>ininame</code>. On line 30 the filepath is constructed without sanitizing the filename.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function phpconfig_page()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">phpconfig_page</span>()
 {
-    info_disabled_check();
-    $sys = get_sysinfo();
-    $download = get_request_parameter(&#39;download&#39;);
-    $ini_file_name = &#39;&#39;;
-    if (!empty($download)) {
-        $ini_file_name = get_request_parameter(&#39;ininame&#39;);
-        if (empty($ini_file_name)) {
-            $ini_file_name = ini_file_name();
+    <span style="color:#a6e22e">info_disabled_check</span>();
+    $sys <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_sysinfo</span>();
+    $download <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_request_parameter</span>(<span style="color:#e6db74">&#39;download&#39;</span>);
+    $ini_file_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;
+    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#66d9ef">empty</span>($download)) {
+        $ini_file_name <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_request_parameter</span>(<span style="color:#e6db74">&#39;ininame&#39;</span>);
+        <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">empty</span>($ini_file_name)) {
+            $ini_file_name <span style="color:#f92672">=</span> <span style="color:#a6e22e">ini_file_name</span>();
         }
-        header(&#39;Content-Type: text/plain&#39;);
-        header(&#39;Content-Disposition: attachment; filename=&#39; . $ini_file_name);
-    } else {
-        header(&#39;Content-Type: text/plain&#39;);
+        <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Content-Type: text/plain&#39;</span>);
+        <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Content-Disposition: attachment; filename=&#39;</span> <span style="color:#f92672">.</span> $ini_file_name);
+    } <span style="color:#66d9ef">else</span> {
+        <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Content-Type: text/plain&#39;</span>);
     }
-    $exclude_original = get_request_parameter(&#39;newlinesonly&#39;);
-    $prepend = get_request_parameter(&#39;prepend&#39;);
-    $stype = get_request_parameter(&#39;stype&#39;);
-    $server_type = find_server_type($stype);
-    if (!empty($exclude_original) || !empty($prepend)) {
-        $loader_dir = loader_install_dir($server_type);
-        $zend_lines = zend_extension_lines($loader_dir);
-        echo join(PHP_EOL,$zend_lines);
-        echo PHP_EOL;
+    $exclude_original <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_request_parameter</span>(<span style="color:#e6db74">&#39;newlinesonly&#39;</span>);
+    $prepend <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_request_parameter</span>(<span style="color:#e6db74">&#39;prepend&#39;</span>);
+    $stype <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_request_parameter</span>(<span style="color:#e6db74">&#39;stype&#39;</span>);
+    $server_type <span style="color:#f92672">=</span> <span style="color:#a6e22e">find_server_type</span>($stype);
+    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#66d9ef">empty</span>($exclude_original) <span style="color:#f92672">||</span> <span style="color:#f92672">!</span><span style="color:#66d9ef">empty</span>($prepend)) {
+        $loader_dir <span style="color:#f92672">=</span> <span style="color:#a6e22e">loader_install_dir</span>($server_type);
+        $zend_lines <span style="color:#f92672">=</span> <span style="color:#a6e22e">zend_extension_lines</span>($loader_dir);
+        <span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">join</span>(<span style="color:#a6e22e">PHP_EOL</span>,$zend_lines);
+        <span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">PHP_EOL</span>;
     }
-    if (empty($ini_file_name) || empty($sys[&#39;PHP_INI_DIR&#39;]) || ($sys[&#39;PHP_INI_BASENAME&#39;] == $ini_file_name)) {
-        $original_ini_file = isset($sys[&#39;PHP_INI&#39;])?$sys[&#39;PHP_INI&#39;]:&#39;&#39;;
-    } else {
-        $original_ini_file = $sys[&#39;PHP_INI_DIR&#39;] . DIRECTORY_SEPARATOR . $ini_file_name;
+    <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">empty</span>($ini_file_name) <span style="color:#f92672">||</span> <span style="color:#66d9ef">empty</span>($sys[<span style="color:#e6db74">&#39;PHP_INI_DIR&#39;</span>]) <span style="color:#f92672">||</span> ($sys[<span style="color:#e6db74">&#39;PHP_INI_BASENAME&#39;</span>] <span style="color:#f92672">==</span> $ini_file_name)) {
+        $original_ini_file <span style="color:#f92672">=</span> <span style="color:#a6e22e">isset</span>($sys[<span style="color:#e6db74">&#39;PHP_INI&#39;</span>])<span style="color:#f92672">?</span>$sys[<span style="color:#e6db74">&#39;PHP_INI&#39;</span>]<span style="color:#f92672">:</span><span style="color:#e6db74">&#39;&#39;</span>;
+    } <span style="color:#66d9ef">else</span> {
+        $original_ini_file <span style="color:#f92672">=</span> $sys[<span style="color:#e6db74">&#39;PHP_INI_DIR&#39;</span>] <span style="color:#f92672">.</span> <span style="color:#a6e22e">DIRECTORY_SEPARATOR</span> <span style="color:#f92672">.</span> $ini_file_name;
     }
-    if (empty($exclude_original) <span style="color:#960050;background-color:#1e0010">&amp;&amp;</span> !empty($original_ini_file) <span style="color:#960050;background-color:#1e0010">&amp;&amp;</span> @file_exists($original_ini_file)) {
-        if (!empty($download)) {
-            @readfile($original_ini_file);
-        } else {
-            echo all_ini_contents();
+    <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">empty</span>($exclude_original) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span><span style="color:#66d9ef">empty</span>($original_ini_file) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">@</span><span style="color:#a6e22e">file_exists</span>($original_ini_file)) {
+        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#66d9ef">empty</span>($download)) {
+            <span style="color:#f92672">@</span><span style="color:#a6e22e">readfile</span>($original_ini_file);
+        } <span style="color:#66d9ef">else</span> {
+            <span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">all_ini_contents</span>();
         }
     }
 }

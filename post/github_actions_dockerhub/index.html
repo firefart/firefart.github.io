@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <meta name="description"
+    content="">
+  
+  <meta name="author" content="Christian Mehlmauer">
+
+  <meta name="twitter:card" content="summary">
+  
+  <meta name="twitter:site" content="@firefart" />
+  <meta name="twitter:creator" content="@firefart" />
+  
+  <meta name="twitter:title" content="">
+  <meta name="twitter:description"
+    content="">
+  <meta property="og:title" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://firefart.at/post/github_actions_dockerhub/" />
+  <meta property="og:description"
+    content="">
+  
+  <meta property="og:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+  <meta name="twitter:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+  
+  <meta property="og:updated_time" content="0001-01-01 00:00:00 &#43;0000 UTC" />
+  <meta property="article:author" content="https://twitter.com/firefart" />
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet"
+    type="text/css">
+  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
+  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+
+  <link rel="stylesheet" href='https://firefart.at/css/all.css'>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+  
+  <script type="application/ld+json">
+    [{
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "name": "FireFart",
+        "url": "https://firefart.at"
+      },
+      {
+        "@context": "http://schema.org",
+        "@type": "Person",
+        "name": "Christian Mehlmauer",
+        "url": "https://firefart.at",
+        "sameAs": [
+          "https://twitter.com/firefart",
+          "https://github.com/FireFart",
+          "https://www.facebook.com/christian.mehlmauer"
+        ]
+      }
+    ]
+  </script>
+
+</head>
+
+<body>
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <h1 class="brand-title"><a href="/">FireFart</a></h1>
+        <h2 class="brand-tagline"> that austrian security guy </h2>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href="https://twitter.com/firefart">
+                        <i class="fa fa-twitter"></i> Twitter
+                    </a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href="https://github.com/FireFart">
+                        <i class="fa fa-github-alt"></i> Github
+                    </a>
+                </li>
+                
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="/page/about/"><i class="fa fa-info"></i> about me</a>
+                </li>
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href='https://firefart.at/index.xml'>
+                        <i class="fa fa-rss"></i> rss
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">01 Jan 0001, 00:00</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/github_actions_dockerhub/" class="post-title"></a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div id="toc" class="well col-md-4 col-sm-6">
+                        <nav id="TableOfContents"></nav>
+                    </div>
+
+                    <div class="post-description">
+                        <p>Description = &ldquo;How to build your Dockerhub Images with Github Actions&rdquo;
+title = &ldquo;How to build your Dockerhub Images with Github Actions&rdquo;
+date = &ldquo;2021-08-03T09:00:00+01:00&rdquo;
+image = &ldquo;/img/misc/hacker.jpg&rdquo;
+metakeys = [&ldquo;Github Actions&rdquo;, &ldquo;Dockerhub&rdquo;, &ldquo;Github&rdquo;, &ldquo;Docker&rdquo;]
++++</p>
+<p>Dockerhub recently removed the autobuild feature for all free users. This means that every docker image that relies on docker hub to auto build the images on new pushes or new releases will not be updated anymore. Users now need to build those images manually and push them to Docker Hub.</p>
+<p>Thankfully you can use Github Actions to build the images for you and push them to the docker hub registry.</p>
+<p>To get started you need to create a new folder in your project root called <code>.github/workflows</code>. Inside this folder place the following file named <code>dockerhub.yml</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build Docker Images</span>
+
+<span style="color:#f92672">on</span>:
+  <span style="color:#f92672">push</span>:
+    <span style="color:#f92672">branches</span>:
+      - <span style="color:#ae81ff">master</span>
+  <span style="color:#f92672">workflow_dispatch</span>:
+  <span style="color:#f92672">schedule</span>:
+    - <span style="color:#f92672">cron</span>: <span style="color:#e6db74">&#39;0 0 * * *&#39;</span>
+
+<span style="color:#f92672">jobs</span>:
+  <span style="color:#f92672">dockerhub</span>:
+    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+
+    <span style="color:#f92672">steps</span>:
+      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">checkout sources</span>
+        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v2.3.4</span>
+
+      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Set up Docker Buildx</span>
+        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">docker/setup-buildx-action@v1</span>
+
+      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Login to Docker Hub</span>
+        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">docker/login-action@v1.10.0</span>
+        <span style="color:#f92672">with</span>:
+          <span style="color:#f92672">username</span>: <span style="color:#ae81ff">${{ secrets.DOCKERHUB_USERNAME }}</span>
+          <span style="color:#f92672">password</span>: <span style="color:#ae81ff">${{ secrets.DOCKERHUB_TOKEN }}</span>
+
+      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build and push</span>
+        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">docker/build-push-action@v2</span>
+        <span style="color:#f92672">with</span>:
+          <span style="color:#f92672">push</span>: <span style="color:#66d9ef">true</span>
+          <span style="color:#f92672">tags</span>: <span style="color:#ae81ff">USERNAME/REPO:TAG</span>
+</code></pre></div><p>Please adjust the <code>USERNAME</code>, <code>REPO</code> and <code>TAG</code> to your needs. This is also just a basic example that only pushes one tag but the script can be extended to your needs. This script is configured to run on every push to the <code>master</code> branch (change this if you renamed your branch), daily at 00:00 and also manually via <code>workflow_dispatch</code>.</p>
+<p>To keep the dependencies in this script up to date we create the file <code>.github/dependabot.yml</code> with the following content:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">version</span>: <span style="color:#ae81ff">2</span>
+<span style="color:#f92672">updates</span>:
+  - <span style="color:#f92672">package-ecosystem</span>: <span style="color:#e6db74">&#34;github-actions&#34;</span>
+    <span style="color:#f92672">directory</span>: <span style="color:#e6db74">&#34;/&#34;</span>
+    <span style="color:#f92672">schedule</span>:
+      <span style="color:#75715e"># Check for updates to GitHub Actions every weekday</span>
+      <span style="color:#f92672">interval</span>: <span style="color:#e6db74">&#34;daily&#34;</span>
+</code></pre></div><p>This tells github to check the used actions daily for new versions and create pull requests for you if there is a new version available.</p>
+<p>Lastly we need to create an access token on Docker Hub for Github Actions to authenticate with. Login to Docker Hub, go to Account Settings &ndash;&gt; Security (<a href="https://hub.docker.com/settings/security">https://hub.docker.com/settings/security</a>) and create a new Access Token. As of today it&rsquo;s only possible to create one single Token with full super admin rights to your account for free users (which I think is a big security mistake) so create this token and note the displayed token. As you can also only create one token I suggest you put it in your password manager if you want to use it in other projects too as you can&rsquo;t display the value of the token afterwards.</p>
+<p>Now head over to your github repositories settings and click on <code>Secrets</code> on the left. Create one secret called <code>DOCKERHUB_USERNAME</code> with your Dockerhub username and one named <code>DOCKERHUB_TOKEN</code> with your copied token.</p>
+<p>Now push the two yml files to your repository and watch the build on the <code>Actions</code> tab of your repository.</p>
+                    </div>
+                </section>
+            </div>
+            <div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>Copyright by Christian Mehlmauer</li>
+            <li>source code available on <a href="https://github.com/FireFart/blog">Github</a></li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src='https://firefart.at/js/all.js'></script>
+<script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
+
+<script type="text/javascript">
+    var _paq = window._paq || [];
+     
+    _paq.push(["setCookieDomain", "*.firefart.at"]);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function () {
+        var u = "https://tracking.firefart.at/";
+        _paq.push(['setTrackerUrl', u + 'mat.php']);
+        _paq.push(['setSiteId', '1']);
+        var d = document,
+            g = d.createElement('script'),
+            s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.defer = true;
+        g.src = u + 'mat.js';
+        s.parentNode.insertBefore(g, s);
+    })();
+</script>
+<noscript>
+    <p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p>
+</noscript>
+
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
