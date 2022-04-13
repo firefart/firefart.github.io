@@ -132,49 +132,49 @@ The installation was tested with Ubuntu 14.04 LTS 64bit.</p>
 </ul>
 <p>I personally like to add the IP of the VM to the login dialog so i can spot the IP when booting the VM without logging in, and then use putty or something else to SSH into the machine.
 To add the IP to the login screen we have to change the <code>/etc/issue</code> file. Because this is only a text file, we need to add the IP on boot to it. So add the following lines to your <code>/etc/rc.local</code> file (right above the <code>exit 0;</code> statement):</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">IP<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>/sbin/ifconfig eth0 | grep <span style="color:#e6db74">&#39;inet addr:&#39;</span> | cut -d: -f2 | awk <span style="color:#e6db74">&#39;{ print $1}&#39;</span><span style="color:#66d9ef">)</span>
-echo <span style="color:#e6db74">&#34;eth0 IP: </span>$IP<span style="color:#e6db74">&#34;</span> &gt; /etc/issue
-</code></pre></div><p>Now log in via SSH to the machine and execute the following commands:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo su
-apt update
-apt -qy install apache2 mariadb-server php-mysql php libapache2-mod-php php-gd unzip curl ed wget vim
-</code></pre></div><p>Enter your MYSQL root PW during installation when prompted</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/usr/bin/mysql_secure_installation
-</code></pre></div><p>Enter your MYSQL root password again, select no do not change it and answer all other questions with <code>YES</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cd /var/www/
-wget http://wordpress.org/latest.zip
-unzip latest.zip
-rm latest.zip
-cd wordpress/
-mv wp-config-sample.php wp-config.php
-<span style="color:#75715e"># create DB user</span>
-mysql -u root -ppassword -e <span style="color:#e6db74">&#34;CREATE DATABASE wordpress;&#34;</span>
-mysql -u root -ppassword -e <span style="color:#e6db74">&#34;CREATE USER wordpress@localhost;&#34;</span>
-mysql -u root -ppassword -e <span style="color:#e6db74">&#34;SET PASSWORD FOR wordpress@localhost=PASSWORD(&#39;wordpress&#39;);&#34;</span>
-mysql -u root -ppassword -e <span style="color:#e6db74">&#34;GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost;&#34;</span>
-mysql -u root -ppassword -e <span style="color:#e6db74">&#34;FLUSH PRIVILEGES;&#34;</span>
-<span style="color:#75715e"># configure Wordpress</span>
-sed -i -r <span style="color:#e6db74">&#34;s/define\(\s*&#39;DB_NAME&#39;, &#39;[^&#39;]+&#39;\s*\);/define\( &#39;DB_NAME&#39;, &#39;wordpress&#39; \);/g&#34;</span> wp-config.php
-sed -i -r <span style="color:#e6db74">&#34;s/define\(\s*&#39;DB_USER&#39;, &#39;[^&#39;]+&#39;\s*\);/define\( &#39;DB_USER&#39;, &#39;wordpress&#39; \);/g&#34;</span> wp-config.php
-sed -i -r <span style="color:#e6db74">&#34;s/define\(\s*&#39;DB_PASSWORD&#39;, &#39;[^&#39;]+&#39;\s*\);/define\( &#39;DB_PASSWORD&#39;, &#39;wordpress&#39; \);/g&#34;</span> wp-config.php
-<span style="color:#75715e"># add Salts</span>
-printf <span style="color:#e6db74">&#39;%s\n&#39;</span> <span style="color:#e6db74">&#34;g/put your unique phrase here/d&#34;</span> a <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -sL https://api.wordpress.org/secret-key/1.1/salt/<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> . w | ed -s wp-config.php
-chown -R www-data:www-data /var/www
-cd /etc/apache2/sites-available/
-cp 000-default.conf 001-wordpress.conf
-vim 001-wordpress.conf
-</code></pre></div><p>set <code>DocumentRoot</code> to <code>/var/www/wordpress</code></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">a2dissite 000-default <span style="color:#75715e"># disable default site</span>
-a2ensite 001-wordpress <span style="color:#75715e"># enable new wordpress site</span>
-<span style="color:#75715e"># set file upload size to something bigger then 2MB</span>
-sed -i <span style="color:#e6db74">&#34;s/upload_max_filesize = 2M/upload_max_filesize = 20M/&#34;</span> /etc/php7.2/apache2/php.ini
-service apache2 restart
-</code></pre></div><p>If you want to disable automatic updates to have a stable testing machine, just add the following lines to your <code>wp-config.php</code> right before the line <code>/* That's all, stop editing! Happy blogging. */</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#a6e22e">define</span>( <span style="color:#e6db74">&#39;WP_AUTO_UPDATE_CORE&#39;</span>, <span style="color:#66d9ef">false</span> );
-<span style="color:#a6e22e">define</span>( <span style="color:#e6db74">&#39;AUTOMATIC_UPDATER_DISABLED&#39;</span>, <span style="color:#66d9ef">true</span> );
-</code></pre></div><p>If you also want to block all external internet traffic from your machine (ie when sitting behind a proxy) add the following line to <code>wp-config.php</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#a6e22e">define</span>( <span style="color:#e6db74">&#39;WP_HTTP_BLOCK_EXTERNAL&#39;</span>, <span style="color:#66d9ef">TRUE</span> );
-</code></pre></div><p>Now call the site via your browser, configure the last details and your blog is fully configured.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>IP<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>/sbin/ifconfig eth0 | grep <span style="color:#e6db74">&#39;inet addr:&#39;</span> | cut -d: -f2 | awk <span style="color:#e6db74">&#39;{ print $1}&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;eth0 IP: </span>$IP<span style="color:#e6db74">&#34;</span> &gt; /etc/issue
+</span></span></code></pre></div><p>Now log in via SSH to the machine and execute the following commands:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo su
+</span></span><span style="display:flex;"><span>apt update
+</span></span><span style="display:flex;"><span>apt -qy install apache2 mariadb-server php-mysql php libapache2-mod-php php-gd unzip curl ed wget vim
+</span></span></code></pre></div><p>Enter your MYSQL root PW during installation when prompted</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/usr/bin/mysql_secure_installation
+</span></span></code></pre></div><p>Enter your MYSQL root password again, select no do not change it and answer all other questions with <code>YES</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd /var/www/
+</span></span><span style="display:flex;"><span>wget http://wordpress.org/latest.zip
+</span></span><span style="display:flex;"><span>unzip latest.zip
+</span></span><span style="display:flex;"><span>rm latest.zip
+</span></span><span style="display:flex;"><span>cd wordpress/
+</span></span><span style="display:flex;"><span>mv wp-config-sample.php wp-config.php
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># create DB user</span>
+</span></span><span style="display:flex;"><span>mysql -u root -ppassword -e <span style="color:#e6db74">&#34;CREATE DATABASE wordpress;&#34;</span>
+</span></span><span style="display:flex;"><span>mysql -u root -ppassword -e <span style="color:#e6db74">&#34;CREATE USER wordpress@localhost;&#34;</span>
+</span></span><span style="display:flex;"><span>mysql -u root -ppassword -e <span style="color:#e6db74">&#34;SET PASSWORD FOR wordpress@localhost=PASSWORD(&#39;wordpress&#39;);&#34;</span>
+</span></span><span style="display:flex;"><span>mysql -u root -ppassword -e <span style="color:#e6db74">&#34;GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost;&#34;</span>
+</span></span><span style="display:flex;"><span>mysql -u root -ppassword -e <span style="color:#e6db74">&#34;FLUSH PRIVILEGES;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># configure Wordpress</span>
+</span></span><span style="display:flex;"><span>sed -i -r <span style="color:#e6db74">&#34;s/define\(\s*&#39;DB_NAME&#39;, &#39;[^&#39;]+&#39;\s*\);/define\( &#39;DB_NAME&#39;, &#39;wordpress&#39; \);/g&#34;</span> wp-config.php
+</span></span><span style="display:flex;"><span>sed -i -r <span style="color:#e6db74">&#34;s/define\(\s*&#39;DB_USER&#39;, &#39;[^&#39;]+&#39;\s*\);/define\( &#39;DB_USER&#39;, &#39;wordpress&#39; \);/g&#34;</span> wp-config.php
+</span></span><span style="display:flex;"><span>sed -i -r <span style="color:#e6db74">&#34;s/define\(\s*&#39;DB_PASSWORD&#39;, &#39;[^&#39;]+&#39;\s*\);/define\( &#39;DB_PASSWORD&#39;, &#39;wordpress&#39; \);/g&#34;</span> wp-config.php
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># add Salts</span>
+</span></span><span style="display:flex;"><span>printf <span style="color:#e6db74">&#39;%s\n&#39;</span> <span style="color:#e6db74">&#34;g/put your unique phrase here/d&#34;</span> a <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -sL https://api.wordpress.org/secret-key/1.1/salt/<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> . w | ed -s wp-config.php
+</span></span><span style="display:flex;"><span>chown -R www-data:www-data /var/www
+</span></span><span style="display:flex;"><span>cd /etc/apache2/sites-available/
+</span></span><span style="display:flex;"><span>cp 000-default.conf 001-wordpress.conf
+</span></span><span style="display:flex;"><span>vim 001-wordpress.conf
+</span></span></code></pre></div><p>set <code>DocumentRoot</code> to <code>/var/www/wordpress</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>a2dissite 000-default <span style="color:#75715e"># disable default site</span>
+</span></span><span style="display:flex;"><span>a2ensite 001-wordpress <span style="color:#75715e"># enable new wordpress site</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># set file upload size to something bigger then 2MB</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#34;s/upload_max_filesize = 2M/upload_max_filesize = 20M/&#34;</span> /etc/php7.2/apache2/php.ini
+</span></span><span style="display:flex;"><span>service apache2 restart
+</span></span></code></pre></div><p>If you want to disable automatic updates to have a stable testing machine, just add the following lines to your <code>wp-config.php</code> right before the line <code>/* That's all, stop editing! Happy blogging. */</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">define</span>( <span style="color:#e6db74">&#39;WP_AUTO_UPDATE_CORE&#39;</span>, <span style="color:#66d9ef">false</span> );
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">define</span>( <span style="color:#e6db74">&#39;AUTOMATIC_UPDATER_DISABLED&#39;</span>, <span style="color:#66d9ef">true</span> );
+</span></span></code></pre></div><p>If you also want to block all external internet traffic from your machine (ie when sitting behind a proxy) add the following line to <code>wp-config.php</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">define</span>( <span style="color:#e6db74">&#39;WP_HTTP_BLOCK_EXTERNAL&#39;</span>, <span style="color:#66d9ef">TRUE</span> );
+</span></span></code></pre></div><p>Now call the site via your browser, configure the last details and your blog is fully configured.</p>
                     </div>
                 </section>
             </div>

