@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>FireFart</title>
+    <title>firefart</title>
     <link>https://firefart.at/</link>
-    <description>Recent content on FireFart</description>
+    <description>Recent content on firefart</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright by Christian Mehlmauer</copyright>
@@ -180,7 +180,6 @@ Here is my solution to run the Firmware in a VMware Infrastructure, or simply mo
       <description>Twitter
 Github
 Linkedin
-Keybase.io
 Affilations 
 
 Certifications</description>

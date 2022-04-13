@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Pages on FireFart</title>
+    <title>Pages on firefart</title>
     <link>https://firefart.at/page/</link>
-    <description>Recent content in Pages on FireFart</description>
+    <description>Recent content in Pages on firefart</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright by Christian Mehlmauer</copyright>
@@ -17,7 +17,6 @@
       <description>Twitter
 Github
 Linkedin
-Keybase.io
 Affilations 
 
 Certifications</description>
