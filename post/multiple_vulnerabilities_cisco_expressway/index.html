@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiple Vulnerabilities in Cisco Expressway</title>
+  <meta name="description"
+    content="Multiple Vulnerabilities in Cisco Expressway">
+  
+  <meta name="keywords" content="Cisco Expressway, STUN, TURN, CVE-2020-3482, CSCvt83751, CSCvt83753, CSCvt83761, testing, security, penetration test, red teaming, vulnerability">
+  
+  <meta name="author" content="Christian Mehlmauer">
+
+  <meta name="twitter:card" content="summary">
+  
+  <meta name="twitter:site" content="@firefart" />
+  <meta name="twitter:creator" content="@firefart" />
+  
+  <meta name="twitter:title" content="Multiple Vulnerabilities in Cisco Expressway">
+  <meta name="twitter:description"
+    content="Multiple Vulnerabilities in Cisco Expressway">
+  <meta property="og:title" content="Multiple Vulnerabilities in Cisco Expressway">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://firefart.at/post/multiple_vulnerabilities_cisco_expressway/" />
+  <meta property="og:description"
+    content="Multiple Vulnerabilities in Cisco Expressway">
+  
+  <meta property="og:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+  <meta name="twitter:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
+  
+  <meta property="og:updated_time" content="2021-08-15 22:00:00 &#43;0100 &#43;0100" />
+  <meta property="article:author" content="https://twitter.com/firefart" />
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet"
+    type="text/css">
+  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
+  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+
+  <link rel="stylesheet" href='https://firefart.at/css/all.css'>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+  
+  <script type="application/ld+json">
+    [{
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "name": "firefart",
+        "url": "https://firefart.at"
+      },
+      {
+        "@context": "http://schema.org",
+        "@type": "Person",
+        "name": "Christian Mehlmauer",
+        "url": "https://firefart.at",
+        "sameAs": [
+          "https://twitter.com/firefart",
+          "https://github.com/firefart",
+          "https://www.linkedin.com/in/firefart/"
+        ]
+      }
+    ]
+  </script>
+
+</head>
+
+<body>
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <h1 class="brand-title"><a href="/">firefart</a></h1>
+        <h2 class="brand-tagline"> that austrian security guy </h2>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href="https://twitter.com/firefart">
+                        <i class="fa fa-twitter"></i> Twitter
+                    </a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href="https://github.com/firefart">
+                        <i class="fa fa-github-alt"></i> Github
+                    </a>
+                </li>
+                
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="/page/about/"><i class="fa fa-info"></i> about me</a>
+                </li>
+                <li class="nav-item">
+                    <a class="pure-button" target="_blank" href='https://firefart.at/index.xml'>
+                        <i class="fa fa-rss"></i> rss
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">15 Aug 2021, 22:00</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="/post/multiple_vulnerabilities_cisco_expressway/" class="post-title">Multiple Vulnerabilities in Cisco Expressway</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    
+
+                    <div class="post-description">
+                        <h2 id="description">Description</h2>
+<p>Some time ago I stumbled across a <a href="https://hackerone.com/reports/333419">HackerOne report</a> about abusing Slacks TURN server for proxy functionality inside their internal network. I found this interesting and decided to take a look at our videoconferencing software at work, which happened to be Cisco Expressway. Since there are currently no public tools available, I developed a tool to help others in testing.</p>
+<p>You can get the tool over here <a href="https://github.com/firefart/stunner/">https://github.com/firefart/stunner/</a></p>
+<p>During testing of our Cisco Expressway instance I found 3 vulnerabilities which will be covered in this blog post.</p>
+<p>To enable others to test other implementations and products for this kind of vulnerabilities I implemented all protocol related vulnerabilities in <a href="https://github.com/firefart/stunner/">stunner</a>.</p>
+<p>Cisco first released the main vulnerability as <code>medium</code> serverity and later changed the article to a RTFM one (because it&rsquo;s no vulnerability if you warn on a page on the internet about the implications of the configuration). Another vulnerability which allowed config dumps with a read only user was also not accepted as a valid bug because they documented in the manual that a config dump can contain sensitive information.</p>
+<h2 id="protocols">Protocols</h2>
+<p>So lets begin with a short explanation what STUN and TURN are. Both are protocols mostly used in Audio and Video conferencing solutions. Some services that use TURN are for example MS Teams, Calls via Slack, Calls via Facebook Messenger and basically every other video conferencing software out there.</p>
+<p>Both protocols are well documented on Wikipedia and the <a href="#additional-links">referenced blog posts</a>, so this will only be a short overview.</p>
+<p>The following link to Censys.io shows how many services out there use those protocols. <a href="https://search.censys.io/search?resource=hosts&amp;sort=RELEVANCE&amp;per_page=25&amp;virtual_hosts=EXCLUDE&amp;q=services.port%3A3478">Search Results</a></p>
+<h2 id="stun">STUN</h2>
+<p>STUN is defined in <a href="https://tools.ietf.org/html/rfc5389">RFC 5389 - Session Traversal Utilities for NAT (STUN)</a> and is a protocol for devices behind a NAT Gateway to discover if they are using another IP (NAT) when communicating with a target. It&rsquo;s basically a protocol that tells you your public ip using a STUN server. This result is then used by other protocols to find the best path to communicate with each other which is heavily used in voice and video installations but does not have any other usefull usecases. The STUN protocol itself uses no authentication and uses UDP on port 3478 by default.</p>
+<p>For more information on the STUN protocol have a look at <a href="https://en.wikipedia.org/wiki/STUN">Wikipedia</a> or the <a href="https://tools.ietf.org/html/rfc5389">RFC</a> itself.</p>
+<h2 id="turn">TURN</h2>
+<p>TURN is an extension to the above mentioned STUN protocol to support relaying of UDP packets to targets behind the TURN server. It just defines new Attributes and Methods on top of the already established STUN protocol. TURN is used as kind of a proxy server to single peers where one or more endpoint are behind a NAT. The client can contact the TURN server, request that all UDP packets are forwarded to a target, and if the server is configured correctly, it should only allow forwards to known and trusted IP adresses. After this, the peers have a direct data connection to communicate with each other and the TURN server relays the packets thus the NAT is &ldquo;bypassed&rdquo;. This feature is also used in almost all video and voice call systems to route the media traffic from a client to a backend server. Using this technique the client and the backend can both be behind different NATs and still exchange packets which each other.</p>
+<p>TURN also implements authentication on top of the STUN protocol so you need a valid username and password which are exchanged via other channels like HTTP to use this protocol.</p>
+<p>The TURN extensions to the STUN protocol are defined in <a href="https://tools.ietf.org/html/rfc5766">RFC 5766 - Traversal Using Relays around NAT (TURN): Relay Extensions to Session Traversal Utilities for NAT (STUN)</a>. <a href="https://en.wikipedia.org/wiki/Traversal_Using_Relays_around_NAT">Wikipedia</a> also has some more information on the protocol and the basic behaviour.</p>
+<p>TURN also uses port 3478 UDP or TCP by default. You can also connect to a TURN server via TCP and initiate a UDP connection to the backend system.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>client --UDP--&gt; TURN Server --UDP--&gt; target
+</span></span><span style="display:flex;"><span>client --TCP--&gt; TURN Server --UDP--&gt; target
+</span></span></code></pre></div><h2 id="turn-over-tcp">TURN over TCP</h2>
+<p>This is another extension to TURN which simply enables TCP traffic to peers instead of UDP traffic.</p>
+<p>The extension is defined in <a href="https://tools.ietf.org/html/rfc6062">RFC 6062 - Traversal Using Relays around NAT (TURN) Extensions for TCP Allocations</a>.</p>
+<p>TURN over TCP uses port 3478 or 443 by default.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>client --UDP--&gt; TURN Server --TCP--&gt; target
+</span></span><span style="display:flex;"><span>client --TCP--&gt; TURN Server --TCP--&gt; target
+</span></span></code></pre></div><h2 id="vulnerabilities">Vulnerabilities</h2>
+<h3 id="cve-2020-3482---relaying-of-traffic-to-all-endpoints-cisco-bug-id-cscvt83751">CVE-2020-3482 - Relaying of traffic to all endpoints (Cisco Bug ID CSCvt83751)</h3>
+<p><a href="https://www.cisco.com/c/en/us/support/docs/csa/cisco-sa-Expressway-8J3yZ7hV.html">Cisco Advisory</a></p>
+<p>This is the most critical vulnerability. The included TURN server on port 3478 relays all TCP and UDP traffic without further restrictions when enabled. By sending a <code>Connect</code> request followed by a <code>ConnectionBind</code> request we can specify arbitrary IP addresses like 127.0.0.1 or some other internal IPs. Internal IPs can be kind of restricted by putting the system inside a restricted DMZ but there seems no way to restrict 127.0.0.1 and [::1]. The admin interface for example is available on https://127.0.0.1:7443 and accessible with the use of <a href="https://github.com/firefart/stunner/">stunner</a> even if it&rsquo;s not exposed to the internet.</p>
+<p><strong>So if you enable this functionality you create an unrestricted socks proxy inside your internal network.</strong></p>
+<p>This bug is not and will not be fixed by cisco. The easiest would be a configurable target whitelist but according to Cisco they can not implement it because of their product architecture. So if you happen to have a Cisco Expressway with open STUN/TURN ports be sure to have strong admin passwords on your admin interfaces and segregate the devices as much as possible from the rest of the network as you are able to access each IP on each port via the Expressway. I would also suggest to take a look into other products that allow a whitelist to be configured.</p>
+<p>You can use the <code>socks</code> command of <a href="https://github.com/firefart/stunner/">stunner</a> to exploit this. This command will start a local socks5 server relaying all traffic via the TURN server to the network behind it. This grants you full TCP access to all internal systems reachable by the server itself. How to get the required credentials and servers is described in the <a href="https://github.com/firefart/stunner#example-workflow">Example Workflow</a>.</p>
+<p>There are also two nice blogposts which desribe this feature and how to abuse it:</p>
+<p><a href="https://www.rtcsec.com/2020/04/01-slack-webrtc-turn-compromise/">How we abused Slack&rsquo;s TURN servers to gain access to internal services</a> and the corresponding <a href="https://hackerone.com/reports/333419">HackerOne report</a>.</p>
+<p><a href="https://www.immunit.ch/en/blog/2018/06/12/vulnerability-disclosure-cisco-meeting-server-arbitrary-tcp-relaying-2/">Vulnerability disclosure – Cisco Meeting Server (CMS) arbitrary TCP relaying</a></p>
+<h3 id="download-of-confidential-information-cisco-bug-id-cscvt83753">Download of confidential information (Cisco Bug ID CSCvt83753)</h3>
+<p>Using the vulnerability above and a captured user account from another source, I was able to access the Expressway admin interface on port 7443 as a read only user. It looks like everything is read only as it should be, except the system snapshot page: <a href="https://%5B::1%5D:7443/snapshot">https://[::1]:7443/snapshot</a>. This page allows the download of the current running configuration and also includes all user password hashes which can be cracked offline to gain administrative rights on the system. One file containing the hashes is <code>mnt\harddisk\snapshot\plugins\tshell\xconfiguration_thsell.txt</code>. The other files might also contain some internal information.</p>
+<p>Cisco did not accept this as a valid vulnerability because the docs say that a configuration dump will contain sensitive information but they said to look into removing the functionality for read only users. The fact that a read only user can dump the whole configuration of the device does not seem to be a problem to cisco 🤷🏻‍♂️.</p>
+<h3 id="memoryleak-cisco-bug-id-cscvt83761">Memoryleak (Cisco Bug ID CSCvt83761)</h3>
+<p>I found a memory leak in the application working like OpenSSL Heartbleed. When initiating a connection you open a <code>channel</code> to the TURN server and then send data packets with a special header containing the channel number to the TURN server. The server will check for a valid channel in the header and then forwards all data with the header removed to the target.</p>
+<p>The packet including the header looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>| channelnumber | length_of_data | data
+</span></span></code></pre></div><p>So we send a channelnumber, the length and the data that the TURN server should forward to the target.</p>
+<p>If we supply a arbitrary length and a very short data which does not match the length, the server returns the length we requested to the relayed server which contains memory information as it does not check for boundaries.</p>
+<p>The maximum value for the length I could get to work was 35510.</p>
+<p>So the payload is</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>| channelnumber | 35510 | xxxx
+</span></span></code></pre></div><p>and the server sends a lot of memory to the external server.</p>
+<p>Cisco did not accept this as a valid security vulnerability because the memory of the leaked data is from the buffer of the previous packet. I could not confirm nor deny this but they also said they look into fixing this.</p>
+<p>You can use the <code>memoryleak</code> command of <a href="https://github.com/firefart/stunner/">stunner</a> to test for this vulnerability.</p>
+<h2 id="testing-for-these-vulnerabilities">Testing for these vulnerabilities</h2>
+<p>To test for these vulnerabilties you need to first grab credentials. These can be captured for example by using a webclient for a meeting solution and by using an intercepting proxy like in <a href="https://hackerone.com/reports/333419">https://hackerone.com/reports/333419</a>. These credentials are most often short lived but on Cisco Expressway it&rsquo;s a configured never changing password. You can also grab the credentials for Cisco Expressway using the following script <a href="https://github.com/firefart/stunner/blob/main/expressway_get_creds.py">https://github.com/firefart/stunner/blob/main/expressway_get_creds.py</a>. You only need a meeting id which normaly is the telephone number / extension which can be found online (if you get a 401 on the websocket call simply execute the script again). You can often find some valid extensions to use on the main site under a contact page.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>python3 expressway_get_creds.py --domain https://join.xxx.com --telephonenumber 12345                                                                                                               
+</span></span><span style="display:flex;"><span>{&#39;turnPort&#39;: 3478, &#39;turnTcpPort&#39;: 443, &#39;turnAddress&#39;: &#39;xx.xx.xx.xx&#39;, &#39;turnUsername&#39;: &#39;admin&#39;, &#39;turnPassword&#39;: &#39;passw0rd!$&#39;}
+</span></span></code></pre></div><p>In this case you could run <a href="https://github.com/firefart/stunner/">stunner</a> the following way:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./stunner range-scan -s x.x.x.x:443 -u admin -p <span style="color:#e6db74">&#39;passw0rd!$&#39;</span> --protocol tcp
+</span></span><span style="display:flex;"><span>./stunner range-scan -s x.x.x.x:3478 -u admin -p <span style="color:#e6db74">&#39;passw0rd!$&#39;</span> --protocol udp
+</span></span></code></pre></div><p>if this yields any hits you can execute one of the following two commands to open a socks proxy:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./stunner socks -s x.x.x.x:443 -u admin -p <span style="color:#e6db74">&#39;passw0rd!$&#39;</span> --protocol tcp -x
+</span></span><span style="display:flex;"><span>./stunner socks -s x.x.x.x:3478 -u admin -p <span style="color:#e6db74">&#39;passw0rd!$&#39;</span> --protocol udp -x
+</span></span></code></pre></div><p>I also described a sample workflow on the <a href="https://github.com/firefart/stunner/">stunner</a> repos readme over here: <a href="https://github.com/firefart/stunner#example-workflow">Example Workflow</a>.</p>
+<h2 id="shodan-and-censys-searches">Shodan and Censys searches</h2>
+<p>This searches allow you to identify Cisco Expressway setups. The <code>Cisco Meeting App</code> is the webapplication that&rsquo;s using the TURN server so you can use these apps with a valid telephone number (no password needed to grab the credentials) to grab the TURN server informationen needed for the use of <a href="https://github.com/firefart/stunner/">stunner</a>.</p>
+<p><a href="https://www.shodan.io/search?query=%22Server%3A+CE_E%22">Shodan - Expressway Servers</a></p>
+<p><a href="https://www.shodan.io/search?query=%22Server%3A+CE_C%22">Shodan - Expressway Servers</a></p>
+<p><a href="https://www.shodan.io/search?query=http.title%3A%22Cisco+Meeting+App%22">Shodan - Cisco Meeting App</a></p>
+<p><a href="https://search.censys.io/search?resource=hosts&amp;sort=RELEVANCE&amp;per_page=25&amp;virtual_hosts=EXCLUDE&amp;q=services.http.response.html_title%3A+%22Cisco+Meeting+App%22">Censys.io - Cisco Meeting App</a></p>
+<p><a href="https://search.censys.io/search?resource=hosts&amp;sort=RELEVANCE&amp;per_page=25&amp;virtual_hosts=EXCLUDE&amp;q=services.port%3A3478">Censys.io - STUN/TURN Servers</a></p>
+<h2 id="additional-links">Additional Links</h2>
+<p><a href="https://www.cisco.com/c/dam/en/us/td/docs/voice_ip_comm/expressway/admin_guide/Cisco-Expressway-Administrator-Guide-X8-11-4.pdf">Cisco Expressway Admin Guide</a></p>
+<p><a href="https://anyconnect.com/stun-turn-ice/">STUN, TURN and ICE Description from AnyConnect</a></p>
+<p><a href="https://developer.liveswitch.io/liveswitch-server/guides/what-are-stun-turn-and-ice.html">What are STUN, TURN and ICE from LiveSwitch</a></p>
+<p><a href="https://tools.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-Expressway-8J3yZ7hV">Advisory</a></p>
+                    </div>
+                </section>
+            </div>
+            <div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>Copyright by Christian Mehlmauer</li>
+            <li>source code available on <a href="https://github.com/firefart/firefart.github.io">Github</a></li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src='https://firefart.at/js/all.js'></script>
+<script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
+
+<script type="text/javascript">
+    var _paq = window._paq || [];
+     
+    _paq.push(["setCookieDomain", "*.firefart.at"]);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function () {
+        var u = "https://tracking.firefart.at/";
+        _paq.push(['setTrackerUrl', u + 'mat.php']);
+        _paq.push(['setSiteId', '1']);
+        var d = document,
+            g = d.createElement('script'),
+            s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.defer = true;
+        g.src = u + 'mat.js';
+        s.parentNode.insertBefore(g, s);
+    })();
+</script>
+<noscript>
+    <p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p>
+</noscript>
+
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

@@ -7,7 +7,18 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright by Christian Mehlmauer</copyright>
-    <lastBuildDate>Tue, 03 Aug 2021 07:00:00 +0100</lastBuildDate><atom:link href="https://firefart.at/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 15 Aug 2021 22:00:00 +0100</lastBuildDate><atom:link href="https://firefart.at/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Multiple Vulnerabilities in Cisco Expressway</title>
+      <link>https://firefart.at/post/multiple_vulnerabilities_cisco_expressway/</link>
+      <pubDate>Sun, 15 Aug 2021 22:00:00 +0100</pubDate>
+      
+      <guid>https://firefart.at/post/multiple_vulnerabilities_cisco_expressway/</guid>
+      <description>&lt;h2 id=&#34;description&#34;&gt;Description&lt;/h2&gt;
+&lt;p&gt;Some time ago I stumbled across a &lt;a href=&#34;https://hackerone.com/reports/333419&#34;&gt;HackerOne report&lt;/a&gt; about abusing Slacks TURN server for proxy functionality inside their internal network. I found this interesting and decided to take a look at our videoconferencing software at work, which happened to be Cisco Expressway. Since there are currently no public tools available, I developed a tool to help others in testing.&lt;/p&gt;
+&lt;p&gt;You can get the tool over here &lt;a href=&#34;https://github.com/firefart/stunner/&#34;&gt;https://github.com/firefart/stunner/&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>How to build your Dockerhub Images with Github Actions</title>
       <link>https://firefart.at/post/github_actions_dockerhub/</link>
